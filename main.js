@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const XLSX = require("xlsx");
+require('update-electron-app')()
 const { app, BrowserWindow, ipcMain } = require("electron");
 const configPath = path.join(__dirname, "data/config.json");
 const musicDir = path.join(__dirname, "music");
