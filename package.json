@@ -1,0 +1,18 @@
+{
+  "name": "my-presentation-app",
+  "version": "1.0.0",
+  "description": "プレゼンテーション用アプリケーション",
+  "main": "main.js",
+  "scripts": {
+    "start": "chcp 65001 && electron ."
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "prettier": "3.5.3"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz"
+  }
+}

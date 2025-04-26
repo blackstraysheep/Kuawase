@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="home.css">
+    <title>Ku-awase</title>
+</head>
+<body>
+    <!-- audioタグ削除 -->
+    <!-- スライド表示領域 -->
+    <div id="slide-preview">
+        <iframe id="slide-frame" src="top.html"></iframe>
+    </div>
+    <!-- 管理パネル --> 
+    <div id="admin-panel">
+        <summary>対戦切り替え</summary>
+        <div id="page-controls">
+            <button onclick="changeIframeSrc('top.html')">大会TOP</button>
+            <button onclick="changeIframeSrc('index.html')">対戦TOP</button>
+            <br>
+            <button onclick="changeIframeSrc('1.html')">先鋒戦</button>
+            <button onclick="changeIframeSrc('2.html')">次鋒戦</button>
+            <button onclick="changeIframeSrc('3.html')">中堅戦</button>
+            <button onclick="changeIframeSrc('4.html')">副将戦</button>
+            <button onclick="changeIframeSrc('5.html')">大将戦</button>
+        </div>
+        <summary>披講</summary>
+        <div id="hikou">
+            <button id="showRed" onclick="audio_hikou()">紅 表示</button>
+            <button id="showWhite" onclick="audio_hikou()">白 表示</button>
+        </div>
+        <summary>BGM再生</summary>
+        <div id="audio-controls">
+            <div class="btn" onclick="audio_in()">入場</div>
+            <div class="btn" onclick="audio_out()">退場</div>
+            <div class="btn" onclick="audio_wait()">待機</div>
+            <button id="stop-bgm-btn">停止</button>
+        </div>
+        <br>
+        <div id="timer-controls">
+            <details open>
+            <summary>タイマー</summary>
+            <div class="timers-container">
+                <!-- 1つ目のタイマー -->
+                <div class="timer-block">
+                <div>
+                    <input type="number" id="minutes" min="0" value="3"> 分
+                    <input type="number" id="seconds" min="0" max="59" value="00"> 秒
+                    <button onclick="saveTimeSetting()">保存</button>
+                </div>
+                <div id="timer">03分00秒</div>
+                <div>
+                    <button onclick="startTimer()">スタート</button>
+                    <button onclick="pauseTimer()">一時停止</button>
+                    <button onclick="resetTimer()">リセット</button>
+                </div>
+                <div id="one-minute-warning"></div>
+                </div>
+
+                <!-- 2つ目のタイマー -->
+                <div class="timer-block">
+                <div>
+                    <input type="number" id="seconds2" min="0" max="59" value="30"> 秒
+                    <button onclick="saveTimeSetting2()">保存</button>
+                </div>
+                <div id="timer2">30秒</div>
+                <div>
+                    <button onclick="startTimer2()">スタート</button>
+                    <button onclick="pauseTimer2()">一時停止</button>
+                    <button onclick="resetTimer2()">リセット</button>
+                </div>
+                </div>
+            </div>
+            </details>   
+            </div>
+            <details>
+                <summary>Excelファイル管理</summary>
+                <div id="file-manager">
+                    <input type="file" id="excel-input" accept=".xlsx">
+                </div>
+            </details>
+            <details>
+                <summary>BGMファイル管理</summary>
+                <div id="file-manager">
+                    <div>
+                        <input type="file" id="music-upload-input" accept=".mp3" multiple>
+                        <button id="music-upload-btn">アップロード</button>
+                    </div>
+                    <div>
+                        <ul id="music-file-list"></ul>
+                    </div>
+                    <div>
+                        <label>披講: <select id="bgm-hikou"></select></label>
+                        <label>入場: <select id="bgm-in"></select></label>
+                        <label>退場: <select id="bgm-out"></select></label>
+                        <label>待機: <select id="bgm-wait"></select></label>
+                        <label>タイマー1: <select id="bgm-timer1"></select></label>
+                        <label>タイマー2: <select id="bgm-timer2"></select></label>
+                        <button id="save-bgm-config">BGM設定保存</button>
+                    </div>
+                </div>
+            </details>
+        </div>
+        <div id="match-setup-panel">
+            <h3>対戦指定パネル</h3>
+            <div class="match-setup-flex">
+                <div class="match-setup-fields">
+                    <div id="match-setup-panel-row">
+                        <label>紅チーム:
+                            <select id="redTeamSelect"></select>
+                        </label>
+                        <label>白チーム:
+                            <select id="whiteTeamSelect"></select>
+                        </label>
+                    </div>
+                    <div id="match-setup-panel-row">
+                        <label>兼題:
+                            <select id="kendaiSelect"></select>
+                        </label>
+                        <label>対戦名:
+                            <input type="text" id="matchTitleInput" placeholder="例: Aブロック　第１試合">
+                        </label>
+                    </div>
+                </div>
+                <button id="saveMatchConfig">保存</button>
+            </div>
+        </div>
+    </div>
+    <script defer src="js/config.js"></script>
+    <script defer src="renderer.js"></script>
+    <script src="js/music.js"></script>
+    <script src="js/music-manager.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="home.js"></script>
+    <div id="toast"></div>
+</body>
+</html>

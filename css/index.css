@@ -1,0 +1,77 @@
+@import url(https://fonts.googleapis.com/earlyaccess/notosansjp.css);
+:root {
+    --grey: #333;
+    --white: #fff;
+    --yellow: #fffc2e;
+    --deepyellow: #ffec00;
+    --pastelyellow: #fff78e;
+}
+body{
+    margin: 0rem;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+}
+.header {
+    background-image: linear-gradient(var(--yellow), var(--pastelyellow));
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    height: 6rem;
+}
+#top{
+    padding-top: 7rem;
+}
+
+.contents {
+    padding: 2rem;
+}
+.btn {
+    display: flex;
+    box-sizing: border-box;
+    background-color: #cbfd23;
+    color: #000000;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    width: 15%;
+}
+
+.debugbtn {
+    display: flex;
+    box-sizing: border-box;
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    width: 15%;
+}
+
+.contents{
+    font-size: 1.3rem;
+}
+.wrapper a{
+    font-size: 1rem;
+    text-decoration: none;
+}
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+h1 {
+    font-weight:600;
+    font-size: 3em;
+    color: black;
+}
+h2 {
+    font-weight:600;
+    font-size: 2em;
+    padding-left: 0.5rem;
+    color: black;
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: white;
+}

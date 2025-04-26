@@ -1,0 +1,469 @@
+:root {
+    --grey: #333;
+    --white: #fff;
+    --yellow: #fffc2e;
+    --deepyellow: #ffec00;
+    --pastelyellow: #fff78e;
+}
+body {
+    display: grid;
+    grid-template-columns: 70% 29%;
+    grid-template-rows: 79% 20%;
+    height: 100vh;
+    margin: 0;
+    gap: 5px;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+}
+
+button, select, input{
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+}
+
+#slide-preview {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    border: 1px solid var(--grey);
+}
+
+#slide-frame {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    border: 1px solid var(--grey);
+    box-sizing: border-box;
+    transform-origin: center;
+}
+
+#admin-panel {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+    background: #f8f9fb;
+    padding: 10px;
+    overflow-y: auto;
+    border-left: 3px solid #b0b0b0;
+}
+
+#admin-panel button,
+#admin-panel .btn {
+    background: var(--yellow);
+    color: var(--grey);
+    border: 1px solid var(--grey);
+    border-radius: 3px;
+    padding: 4px 8px;
+    margin: 6px 0;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+#admin-panel button:hover,
+#admin-panel .btn:hover {
+    background: var(--deepyellow);
+    color: #000;
+}
+
+/* 特別ボタン */
+#admin-panel #showRed {
+    background: #ffccff;
+}
+#admin-panel #showRed:hover {
+    background: #ff77ff;
+}
+#admin-panel #showWhite {
+    background: #e5e5e5;
+}
+#admin-panel #showWhite:hover {
+    background: #9b9b9b;
+}
+
+#admin-panel .btn-pair {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+#timer-panel {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    background: #999;
+    padding: 10px;
+    text-align: center;
+}
+
+/* --- 試合設定パネル --- */
+#match-setup-panel {
+    background: #f8f9fb;
+    border: 2px solid #b0b0b0;
+    border-radius: 8px;
+    margin-top: 9px;
+    padding: 14px 16px 10px 16px;
+    box-shadow: 0 2px 8px rgba(180,180,180,0.08);
+    max-width: 98%;
+    max-height: 340px;
+    overflow-y: auto;
+    font-size: 1rem;
+}
+#match-setup-panel h3 {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    color: var(--grey);
+    letter-spacing: 0.05em;
+}
+#match-setup-panel-row {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 10px;
+    align-items: flex-end;
+}
+#match-setup-panel-row label {
+    flex: 1 1 0;
+    margin-bottom: 0;
+}
+#match-setup-panel label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+#match-setup-panel select,
+#match-setup-panel input[type="text"] {
+    flex: 1 1 0;
+    padding: 4px 8px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 1rem;
+    background: #fff;
+    margin-left: 6px;
+}
+#match-setup-panel button {
+    background: var(--yellow);
+    color: var(--grey);
+    border: 1px solid var(--grey);
+    border-radius: 4px;
+    padding: 5px 14px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+#match-setup-panel button:hover {
+    background: var(--deepyellow);
+    color: #000;
+}
+
+/* --- 管理パネル --- */
+#file-manager {
+    margin: 10px 0;
+    padding: 14px 14px 10px 14px;
+    background: #fafdff;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(120,180,255,0.08);
+    font-size: 0.98rem;
+}
+#file-manager > div {
+    margin-bottom: 10px;
+}
+#file-manager label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+    font-size: 0.97em;
+    font-weight: 500;
+}
+#file-manager input[type="file"] {
+    font-size: 0.97em;
+    padding: 2px 0;
+}
+#file-manager select {
+    min-width: 90px;
+    padding: 2px 6px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 0.98em;
+    background: #fff;
+    margin-left: 2px;
+}
+#file-manager button {
+    background: var(--yellow);
+    border: 1px solid var(--grey);
+    border-radius: 4px;
+    padding: 3px 12px;
+    font-size: 0.98em;
+    font-weight: 500;
+    margin: 0 2px 0 6px;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+}
+#file-manager button:hover {
+    background: var(--deepyellow);
+    color: #000;
+}
+
+#music-file-list {
+    list-style: none;
+    padding: 0 0 0 2px;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+#music-file-list li {
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #e7e7e7;
+    border-radius: 5px;
+    padding: 2px 8px 2px 6px;
+    font-size: 0.97em;
+}
+#music-file-list button {
+    margin-left: 8px;
+    font-size: 0.93em;
+    padding: 2px 8px;
+    background: #ffe6e6;
+    border: 1px solid #d99;
+    border-radius: 3px;
+    color: #b22;
+    transition: background 0.18s;
+}
+#music-file-list button:hover {
+    background: #ffbcbc;
+    color: #900;
+}
+
+/* --- タイマーコンテナ --- */
+.timers-container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 8px;
+}
+.timer-block {
+    background: #fff;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(80,120,200,0.06);
+    padding: 10px 18px;
+    min-width: 220px;
+    max-width: 320px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.97rem;
+}
+.timer-block > div:not(:last-child) {
+    margin-bottom: 6px;
+}
+.timer-block input[type="number"] {
+    width: 38px;
+    padding: 2px 4px;
+    font-size: 1em;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    margin-right: 2px;
+    background: #f7f7fa;
+    text-align: right;
+}
+.timer-block button {
+    background: var(--yellow);
+    border: 1px solid var(--grey);
+    border-radius: 4px;
+    padding: 2px 14px;
+    font-size: 0.98em;
+    font-weight: 500;
+    margin: 0 2px;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    min-width: 70px;
+    box-sizing: border-box;
+}
+.timer-block button:hover {
+    background: var(--deepyellow);
+    color: #000;
+}
+
+#timer, #timer2 {
+    font-size: 1.5em;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #2a2a2a;
+    background: #f6faff;
+    border-radius: 7px;
+    padding: 2px 10px;
+    box-shadow: 0 1px 4px rgba(120,180,255,0.07);
+    min-width: 120px;
+    text-align: center;
+    margin-bottom: 2px;
+}
+
+#one-minute-warning {
+    color: #e74c3c;
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 2px;
+    min-height: 1.2em;
+}
+
+details {
+    border-radius: 4px;
+    padding: 0.5em 0 0;
+  }
+
+details[open] {
+    padding: 0.5em 0 0.5em;
+}
+
+summary {
+    font-size: 1.08em;
+    font-weight: 600;
+    color: #2a2a2a;
+    cursor: pointer;
+}
+
+/* --- 対戦切り替え・披講ボタン・BGM再生（調整） --- */
+#page-controls {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+    background: #fafdff;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(120,180,255,0.08);
+    padding: 14px 10px 10px 10px;
+    margin-bottom: 14px;
+    font-size: 1rem;
+}
+#page-controls button {
+    width: 70px;
+    margin: 2px 0;
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--grey);
+    border: 1px solid var(--grey);
+    border-radius: 3px;
+    padding: 4px 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(200,200,100,0.08);
+    transition: background 0.2s, color 0.2s;
+}
+#page-controls button:hover {
+    background: var(--deepyellow);
+    color: #000;
+}
+
+#hikou {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    background: #fafdff;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(120,180,255,0.08);
+    padding: 14px 10px 10px 10px;
+    margin-bottom: 14px;
+}
+#hikou button {
+    width: 100px;
+    margin: 0 8px 0 0;
+}
+
+#audio-controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: nowrap; /* 横並びで折り返さない */
+    background: #fafdff;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(120,180,255,0.08);
+    padding: 14px 10px 10px 10px;
+    margin-bottom: 14px;
+}
+#audio-controls .btn,
+#audio-controls button {
+    width: 70px;
+    margin-right: 6px;
+    margin-bottom: 0;
+    background: var(--yellow);
+    color: var(--grey);
+    border: 1px solid var(--grey);
+    border-radius: 3px;
+    padding: 4px 8px;
+    font-size: 1em;
+    font-weight: bold;           /* フォントウエイトをboldに */
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    box-sizing: border-box;
+    text-align: center;          /* 文字を中央揃えに */
+    display: flex;               /* flexで中央揃え */
+    align-items: center;
+    justify-content: center;
+}
+#audio-controls .btn:hover,
+#audio-controls button:hover {
+    background: var(--deepyellow);
+    color: #000;
+}
+/* BGM停止ボタンだけ色を変更 */
+#audio-controls #stop-bgm-btn {
+    background: #ffd6d6;
+    color: #b22;
+    border: 1.5px solid #b22;
+}
+#audio-controls #stop-bgm-btn:hover {
+    background: #ff8a8a;
+    color: #fff;
+}
+
+.match-setup-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.match-setup-fields {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    gap: 0;
+}
+
+#saveMatchConfig {
+    align-self: center;
+    margin-left: 24px;
+    white-space: nowrap;
+}
+#toast{
+    display:none;
+    position:fixed;
+    top:30px;
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--grey);
+    color:#fff;
+    padding:12px 32px;
+    border-radius:8px;
+    z-index:9999;
+    font-size:1.1em;
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
