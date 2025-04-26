@@ -3,18 +3,9 @@ const path = require("path");
 const XLSX = require("xlsx");
 
 const { app, BrowserWindow, ipcMain } = require("electron");
-const updateElectronApp = require("update-electron-app");
+require('update-electron-app')()
 const configPath = path.join(__dirname, "data/config.json");
 const musicDir = path.join(__dirname, "music");
-
-updateElectronApp({
-    repo: "blackstraysheep/Kuawase", // GitHubのリポジトリ名
-    updateInterval: "1 hour",  // アップデート確認間隔
-  });
-
-let adminWindow;
-let projectorWindow;
-let lastKnownData = null;
 
 app.whenReady().then(() => {
     autoUpdater.checkForUpdatesAndNotify();
