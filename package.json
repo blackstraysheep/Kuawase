@@ -1,7 +1,7 @@
 {
   "name": "kuawase",
-  "version": "1.0.0",
-  "description": "プレゼンテーション用アプリケーション",
+  "version": "1.0.1",
+  "description": "The Kuawase system is a software program that supports the implementation of haiku matching and tanka matching style battles.",
   "homepage": "https://github.com/blackstraysheep/Kuawase#readme",
   "bugs": {
     "url": "https://github.com/blackstraysheep/Kuawase/issues"
