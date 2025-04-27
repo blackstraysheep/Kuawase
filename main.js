@@ -1,3 +1,5 @@
+const { updateElectronApp } = require('update-electron-app')
+updateElectronApp()
 const fs = require("fs");
 const path = require("path");
 const XLSX = require("xlsx");
