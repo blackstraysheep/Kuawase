@@ -43,7 +43,7 @@ async function playAudioByType(type) {
     };
     const file = fileMap[type];
     if (!file) {
-        showToastAndReload("BGMが設定されていません");
+        showToast("BGMが設定されていません");
         return;
     }
     let audioId = "audio_dynamic";

@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             timer2: selects.timer2.value,
         };
         await window.electron.setBgmConfig(bgmConfig);
-        showToastAndReload("BGM設定を保存しました！");
+        showToast("BGM設定を保存しました！");
     };
 
     refreshListAndSelects();

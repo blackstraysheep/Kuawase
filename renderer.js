@@ -361,3 +361,13 @@ function showToastAndReload(message, isError = false) {
         location.reload();
     }, 1500); // 1.5秒後にリロード
 }
+
+function showToast(message, isError = false) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.style.background = isError ? "#b22" : "#222";
+    toast.style.display = "block";
+    setTimeout(() => {
+        toast.style.display = "none";
+    }, 1500); 
+}
