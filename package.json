@@ -38,5 +38,49 @@
     "electron": "^28.3.3",
     "prettier": "3.5.3",
     "update-electron-app": "^3.1.1"
+  },
+"build": {
+  "appId": "com.blackstraysheep.kuawase",
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "blackstraysheep",
+      "repo": "Kuawase"
+    }
+  ],
+  "files": [
+    "data/**/*",
+    "music/**/*",
+    "css/**/*",
+    "js/**/*",
+    "top.html",
+    "index.html",
+    "1.html",
+    "2.html",
+    "3.html",
+    "4.html",
+    "5.html",
+    "top.js",
+    "index.js",
+    "1.js",
+    "2.js",
+    "3.js",
+    "4.js",
+    "5.js",
+    "home.html",
+    "home.js",
+    "home.css",
+    "preload.js",
+    "main.js",
+    "renderer.js",
+    "favicon.ico",
+    "!forge.config.js"
+  ],
+  "directories": {
+    "output": "out"
+  },
+  "win": {
+    "target": "squirrel"
   }
+}
 }
