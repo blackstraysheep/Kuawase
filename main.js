@@ -1,9 +1,13 @@
-const { updateElectronApp } = require('update-electron-app')
-updateElectronApp()
 const fs = require("fs");
 const path = require("path");
 const XLSX = require("xlsx");
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron"); // ←ここを先に
+
+if (!app.isPackaged) {
+    const { updateElectronApp } = require('update-electron-app');
+    updateElectronApp();
+}
+
 const configPath = path.join(__dirname, "data/config.json");
 const musicDir = path.join(__dirname, "music");
 
