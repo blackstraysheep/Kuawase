@@ -1,17 +1,18 @@
 const { contextBridge, ipcRenderer } = require("electron");
-
+console.log("[preload.js] Loaded");
 contextBridge.exposeInMainWorld("electron", {
     env: {
-        NODE_ENV: process.env.NODE_ENV || "production" // 環境変数を取得
+        NODE_ENV: process.env.NODE_ENV || "production"
     },
     targetOrigin: process.env.NODE_ENV === "development" ? "*" : "file://",
-    invoke: (channel, data) => ipcRenderer.invoke(channel, data),
+    invoke: (channel, ...args) => ipcRenderer.invoke(channel, ...args), 
+    send: (channel, ...args) => ipcRenderer.send(channel, ...args),
     on: (channel, callback) => ipcRenderer.on(channel, (_, data) => callback(data)),
     changeIframeSrc: (src) => ipcRenderer.send("change-iframe-src", src),
     receive: (channel, callback) => {
-        console.log("[preload.js] Listening for:", channel);  // 追加
+        console.log("[preload.js] Listening for:", channel);
         ipcRenderer.on(channel, (_, data) => {
-            console.log("[preload.js] Received data:", data);  // 追加
+            console.log("[preload.js] Received data:", data);
             callback(data);
         });
     },

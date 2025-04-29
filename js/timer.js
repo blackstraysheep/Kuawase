@@ -8,8 +8,8 @@ let soundPlayed = false;
 function updateDisplay() {
   const minutes = Math.floor(remainingTime / 60);
   const seconds = remainingTime % 60;
-  document.getElementById('timer').textContent = 
-    String(minutes).padStart(2, '0') + "分" + 
+  document.getElementById('timer').textContent =
+    String(minutes).padStart(2, '0') + "分" +
     String(seconds).padStart(2, '0') + "秒";
 
   if (remainingTime <= 60 && remainingTime > 0) {
@@ -49,21 +49,21 @@ function startTimer() {
       clearInterval(countdown);
       isRunning = false;
       if (!soundPlayed) {
-        // ▼ここから変更
         let played = false;
-        if (window.electron && window.electron.getBgmConfig) {
+        if (window.electron?.getBgmConfig) {
           const bgm = await window.electron.getBgmConfig();
           if (bgm.timer1) {
+            const path = await window.electron.invoke("get-music-file-path", bgm.timer1);
             let audio = document.getElementById("audio_timer1");
             if (!audio) {
               audio = document.createElement("audio");
               audio.id = "audio_timer1";
               document.body.appendChild(audio);
             }
-            audio.src = `music/${bgm.timer1}`;
+            audio.src = path;
             audio.muted = false;
             audio.currentTime = 0;
-            audio.play();
+            await audio.play();
             played = true;
           }
         }
@@ -89,12 +89,14 @@ function resetTimer() {
   isRunning = false;
   remainingTime = initialTime;
   updateDisplay();
+  soundPlayed = false;
   let audio = document.getElementById("audio_timer1");
   if (audio) {
     audio.pause();
-    audio.currentTime = 0;
+    audio.remove(); // ← 完全にDOMから削除（再生の不具合回避）
   }
 }
+
 
 // --- 2つ目のタイマー ---
 let countdown2;
@@ -104,7 +106,7 @@ let initialTime2 = 30;
 let soundPlayed2 = false;
 
 function updateDisplay2() {
-  document.getElementById('timer2').textContent = 
+  document.getElementById('timer2').textContent =
     String(remainingTime2).padStart(2, '0') + "秒";
 }
 
@@ -135,19 +137,20 @@ function startTimer2() {
       isRunning2 = false;
       if (!soundPlayed2) {
         let played = false;
-        if (window.electron && window.electron.getBgmConfig) {
+        if (window.electron?.getBgmConfig) {
           const bgm = await window.electron.getBgmConfig();
           if (bgm.timer2) {
+            const path = await window.electron.invoke("get-music-file-path", bgm.timer2);
             let audio = document.getElementById("audio_timer2");
             if (!audio) {
               audio = document.createElement("audio");
               audio.id = "audio_timer2";
               document.body.appendChild(audio);
             }
-            audio.src = `music/${bgm.timer2}`;
+            audio.src = path;
             audio.muted = false;
             audio.currentTime = 0;
-            audio.play();
+            await audio.play();
             played = true;
           }
         }
@@ -172,13 +175,13 @@ function resetTimer2() {
   isRunning2 = false;
   remainingTime2 = initialTime2;
   updateDisplay2();
+  soundPlayed2 = false;
   let audio = document.getElementById("audio_timer2");
   if (audio) {
     audio.pause();
-    audio.currentTime = 0;
+    audio.remove();  // ← ここも同様に追加
   }
 }
-
 // 初期表示
 updateDisplay();
 updateDisplay2();

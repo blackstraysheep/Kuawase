@@ -56,7 +56,7 @@ async function playAudioByType(type) {
         audio.id = audioId;
         document.body.appendChild(audio);
     }
-    audio.src = `music/${file}`;
+    audio.src = await window.electron.invoke('get-music-file-path', file);
     audio.currentTime = 0;
     audio.play();
 }

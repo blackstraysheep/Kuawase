@@ -15,7 +15,7 @@
   "type": "commonjs",
   "main": "main.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "chcp 65001 && electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish"

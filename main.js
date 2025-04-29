@@ -1,23 +1,52 @@
+const { app, BrowserWindow, ipcMain, protocol } = require('electron');
 const fs = require("fs");
 const path = require("path");
 const XLSX = require("xlsx");
-const { app, BrowserWindow, ipcMain } = require("electron"); // ←ここを先に
+
 
 if (!app.isPackaged) {
     const { updateElectronApp } = require('update-electron-app');
     updateElectronApp();
 }
 
-const configPath = path.join(__dirname, "data/config.json");
-const musicDir = path.join(__dirname, "music");
+const configPath = path.join(app.getPath('userData'), "config.json");
+const musicDir = path.join(app.getPath('userData'), "music");
+
 
 app.whenReady().then(() => {
+
+    function ensureConfigExists() {
+        const userDataPath = app.getPath('userData');
+        const userConfigPath = path.join(userDataPath, 'config.json');
+        const defaultConfigPath = path.join(__dirname, 'data', 'default_config.json');
+    
+        if (!fs.existsSync(userConfigPath)) {
+            try {
+                if (!fs.existsSync(path.dirname(userConfigPath))) {
+                    fs.mkdirSync(path.dirname(userConfigPath), { recursive: true });
+                }
+                fs.copyFileSync(defaultConfigPath, userConfigPath);
+                console.log('初期設定ファイルを作成しました:', userConfigPath);
+            } catch (error) {
+                console.error('初期設定ファイルの作成に失敗しました:', error);
+            }
+        } else {
+            console.log('設定ファイルは既に存在しています:', userConfigPath);
+        }
+    }
+
+    ensureConfigExists();
+    
     // 管理者ウィンドウを先に表示
     adminWindow = new BrowserWindow({
         width: 1200,
         height: 800,
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
+            contextIsolation: true,  // ← 追加！
+            enableRemoteModule: false,
+            nodeIntegration: false,  // ← 重要！ 
+            sandbox: false
         }
     });
     adminWindow.loadFile("home.html");
@@ -41,6 +70,10 @@ app.whenReady().then(() => {
         height: 768,
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
+        contextIsolation: true, 
+        enableRemoteModule: false,
+        nodeIntegration: false, 
+        sandbox: false
         }
     });
     projectorWindow.loadFile("top.html");
@@ -101,22 +134,22 @@ ipcMain.handle("update-config", async (_event, newConfig) => {
 });
 
 ipcMain.handle("get-excel-data", () => {
-    const jsonPath = path.join(__dirname, "data", "excelData.json");
-    if (!fs.existsSync(jsonPath)) {
-        console.error("保存されたExcelデータが見つかりません:", jsonPath);
-        return {};
-    }
     try {
+        const userDataPath = app.getPath('userData');
+        const jsonPath = path.join(userDataPath, 'excelData.json'); // ← userData側
+        if (!fs.existsSync(jsonPath)) {
+            console.error("保存されたExcelデータが見つかりません:", jsonPath);
+            return {};
+        }
         const fileContent = fs.readFileSync(jsonPath, "utf8");
         const data = JSON.parse(fileContent);
-        console.log("取得したデータ:", data); // デバッグ用
+        console.log("取得したデータ:", data);
         return data;
     } catch (error) {
         console.error("Excelデータの読み込みエラー:", error);
         return {};
     }
 });
-
 ipcMain.handle("set-excel-file", async (_, { filePath, numProblems, numTeams }) => {
     if (!filePath || !fs.existsSync(filePath)) {
         console.error("ファイルが存在しません:", filePath);
@@ -126,21 +159,25 @@ ipcMain.handle("set-excel-file", async (_, { filePath, numProblems, numTeams }) 
     return saveExcelData(filePath, numProblems, numTeams);
 });
 
-ipcMain.handle("change-projector-src", (_, src) => {
+ipcMain.handle("change-projector-src", async (_, src) => {
     if (projectorWindow) {
-        projectorWindow.loadFile(src).then(() => {
-            console.log("projectorWindow has finished loading:", src);
-            if (lastKnownData) {
-                projectorWindow.webContents.send("update-content", lastKnownData);
-            }
-        }).catch(error => {
-            console.error("Failed to load projector window:", error);
-        });
-    }
-    if (adminWindow) {
-        adminWindow.webContents.send("change-iframe-src", src);
+        const fullPath = path.join(__dirname, src);
+
+        // 正しくファイルパスを組み立ててfile://で開く
+        const fileUrl = `file://${fullPath.replace(/\\/g, '/')}`;
+
+        console.log("[main.js] projectorWindow switching to:", fileUrl);
+
+        await projectorWindow.loadURL(fileUrl); // ← loadURLを使う！！！
+
+        console.log("[main.js] projectorWindow loaded:", fileUrl);
+
+        if (lastKnownData) {
+            projectorWindow.webContents.send("update-content", lastKnownData);
+        }
     }
 });
+
 
 ipcMain.handle("send-data-to-projector", (_, data) => {
     lastKnownData = data;
@@ -193,7 +230,7 @@ function saveExcelData(filePath, numProblems = 0, numTeams = 0) {
         }
     }
 
-    const jsonPath = path.join(__dirname, "data", "excelData.json");
+    const jsonPath = path.join(app.getPath('userData'), "excelData.json");
     const jsonContent = JSON.stringify(excelData, null, 4);
 
     if (!fs.existsSync(path.dirname(jsonPath))) {
@@ -218,10 +255,18 @@ ipcMain.handle("list-music-files", async () => {
 
 ipcMain.handle("upload-music-file", async (_event, { name, buffer }) => {
     try {
+        const userDataPath = app.getPath('userData');
+        const musicDir = path.join(userDataPath, 'music');
+
+        if (!fs.existsSync(musicDir)) {
+            fs.mkdirSync(musicDir, { recursive: true });
+        }
+
         const filePath = path.join(musicDir, name);
         fs.writeFileSync(filePath, Buffer.from(buffer));
         return { success: true };
     } catch (e) {
+        console.error('音楽ファイルのアップロード失敗:', e);
         return { success: false, error: e.message };
     }
 });
@@ -257,4 +302,22 @@ ipcMain.handle("set-bgm-config", async (_event, bgmConfig) => {
     } catch (e) {
         return { success: false, error: e.message };
     }
+});
+
+ipcMain.handle("get-config", async () => {
+    try {
+        const userDataPath = app.getPath('userData');
+        const userConfigPath = path.join(userDataPath, 'config.json');
+        const config = JSON.parse(fs.readFileSync(userConfigPath, "utf-8"));
+        return config;
+    } catch (error) {
+        console.error("設定ファイルの読み込みエラー:", error);
+        return {}; // エラー時は空オブジェクト返す
+    }
+});
+
+ipcMain.handle("get-music-file-path", async (_event, filename) => {
+    const userDataPath = app.getPath('userData');
+    const filePath = path.join(userDataPath, 'music', filename);
+    return filePath;
 });
