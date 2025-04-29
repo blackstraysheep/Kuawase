@@ -1,3 +1,14 @@
+// 1) 披講パネルの表示/非表示を切り替える関数
+function updateHikouPanelVisibility(src) {
+      const panel = document.getElementById("hikou-panel");
+      if (!panel) return;
+      // src が "1.html" ～ "5.html" なら表示、それ以外は非表示
+      // iframe.src がフルURLの場合も考慮してファイル名だけ抽出
+      const filename = src.split("/").pop().split("\\").pop();
+      const isMatchPage = /^[1-5]\.html$/.test(filename);
+      panel.style.display = isMatchPage ? "" : "none";
+    }
+
 document.getElementById("excel-input").addEventListener("change", async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -27,21 +38,24 @@ function sendContent(type, content) {
 }
 
 function changeIframeSrc(src) {
-    const iframe = document.getElementById('slide-frame');
-    iframe.onload = () => {
-        console.log("[changeIframeSrc] iframeが読み込まれたのでデータを送信します");
-        sendInitialData();
-    };
-    iframe.src = src;
+       // 2) iframe切り替え前に披講パネルの表示/非表示を更新
+   updateHikouPanelVisibility(src);
 
-    window.electron.invoke("change-projector-src", src)
-        .then(() => {
-            console.log("[renderer.js] projectorWindowの切り替えを指示しました:", src);
-        })
-        .catch((error) => {
-            console.error("[renderer.js] projectorWindow切り替えエラー:", error);
-        });
-}
+   const iframe = document.getElementById('slide-frame');
+   iframe.onload = () => {
+       console.log("[changeIframeSrc] iframeが読み込まれたのでデータを送信します");
+       sendInitialData();
+   };
+   iframe.src = src;
+
+   window.electron.invoke("change-projector-src", src)
+       .then(() => {
+           console.log("[renderer.js] projectorWindowの切り替えを指示しました:", src);
+       })
+       .catch((error) => {
+           console.error("[renderer.js] projectorWindow切り替えエラー:", error);
+       });
+ }
 
 async function restoreMatchConfig() {
     try {
@@ -75,14 +89,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         await restoreMatchConfig();
         setupIframeSync();
 
-        const iframe = document.getElementById("slide-frame");
-        if (iframe?.contentDocument?.readyState === "complete") {
-            sendInitialData();
+                const iframe = document.getElementById("slide-frame");
+        if (iframe) {
+            // 初回ロード時にも披講パネルを隠す／出す
+            const filename = iframe.src.split("/").pop().split("\\").pop();
+            updateHikouPanelVisibility(filename);
+            if (iframe.contentDocument?.readyState === "complete") {
+                sendInitialData();
+            }
         }
-    } catch (error) {
-        console.error("初期データの読み込みに失敗:", error);
-    }
-});
+     } catch (error) {
+         console.error("初期データの読み込みに失敗:", error);
+     }
+ });
 
 function setupIframeSync() {
     const iframe = document.getElementById("slide-frame");

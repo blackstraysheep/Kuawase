@@ -5,13 +5,24 @@ const path = require('path');
 module.exports = {
   packagerConfig: {
     asar: true,
-    icon: path.join(__dirname, 'favicon.ico')
+        icon: path.join(__dirname, 'favicon.ico'),
+    // windows:既定のProgram Filesにインストールされます
   },
   rebuildConfig: {},
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+            config: {
+                name: 'Kuawase',
+                authors: 'blackstraysheep',
+                exe: 'Kuawase.exe',
+                setupExe: 'Kuawase-2.0.1.exe',
+                description: 'The Kuawase system is a software program that supports the implementation of haiku matching and tanka matching style battles.',
+                iconUrl: 'https://raw.githubusercontent.com/blackstraysheep/Kuawase/main/favicon.ico',
+                setupIcon: './favicon.ico',
+                noMsi: true,
+                // licenseUrl: 'https://raw.githubusercontent.com/blackstraysheep/Kuawase/main/LICENSE.txt'
+              },
     },
     {
       name: '@electron-forge/maker-zip',
@@ -51,7 +62,8 @@ module.exports = {
           owner: 'blackstraysheep',
           name: 'Kuawase',
         },
-        prerelease: false
+        prerelease: false,
+        draft: true
       },
     },
   ],
