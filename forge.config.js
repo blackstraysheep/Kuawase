@@ -4,8 +4,7 @@ const path = require('path');
 
 module.exports = {
   packagerConfig: {
-    asar: true,
-        icon: path.join(__dirname, 'favicon.ico'),
+    asar: true
     // windows:既定のProgram Filesにインストールされます
   },
   rebuildConfig: {},
@@ -19,7 +18,6 @@ module.exports = {
                 setupExe: 'Kuawase-2.0.1.exe',
                 description: 'The Kuawase system is a software program that supports the implementation of haiku matching and tanka matching style battles.',
                 iconUrl: 'https://raw.githubusercontent.com/blackstraysheep/Kuawase/main/favicon.ico',
-                setupIcon: './favicon.ico',
                 noMsi: true,
                 licenseUrl: 'https://raw.githubusercontent.com/blackstraysheep/Kuawase/main/LICENSE'
               },
