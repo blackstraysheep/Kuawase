@@ -41,6 +41,7 @@ app.whenReady().then(() => {
     adminWindow = new BrowserWindow({
         width: 1200,
         height: 800,
+        title: "Kuawase",
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
             contextIsolation: true,  // ← 追加！
@@ -68,12 +69,13 @@ app.whenReady().then(() => {
     projectorWindow = new BrowserWindow({
         width: 1024,
         height: 768,
+        title: "Kuawase",
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
         contextIsolation: true, 
         enableRemoteModule: false,
         nodeIntegration: false, 
-        sandbox: false
+        sandbox: false,
         }
     });
     projectorWindow.loadFile("top.html");

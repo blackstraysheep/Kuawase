@@ -1,6 +1,6 @@
 {
   "name": "kuawase",
-  "version": "1.0.2",
+  "version": "2.0.1",
   "description": "The Kuawase system is a software program that supports the implementation of haiku matching and tanka matching style battles.",
   "homepage": "https://github.com/blackstraysheep/Kuawase#readme",
   "bugs": {
@@ -50,7 +50,6 @@
   ],
   "files": [
     "data/**/*",
-    "music/**/*",
     "css/**/*",
     "js/**/*",
     "top.html",
@@ -62,11 +61,7 @@
     "5.html",
     "top.js",
     "index.js",
-    "1.js",
-    "2.js",
-    "3.js",
-    "4.js",
-    "5.js",
+    "battle.js",
     "home.html",
     "home.js",
     "home.css",

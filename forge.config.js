@@ -21,7 +21,7 @@ module.exports = {
                 iconUrl: 'https://raw.githubusercontent.com/blackstraysheep/Kuawase/main/favicon.ico',
                 setupIcon: './favicon.ico',
                 noMsi: true,
-                // licenseUrl: 'https://raw.githubusercontent.com/blackstraysheep/Kuawase/main/LICENSE.txt'
+                licenseUrl: 'https://raw.githubusercontent.com/blackstraysheep/Kuawase/main/LICENSE'
               },
     },
     {
