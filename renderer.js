@@ -124,7 +124,9 @@ function sendInitialData() {
 
 function populateMatchSelectors(excelData) {
     const teams = Object.entries(excelData).filter(([k]) => /^B\d+$/.test(k) && k !== "B1");
-    const kendais = Object.entries(excelData).filter(([k]) => /^[A-Z]+1$/.test(k));
+    const kendais = Object.entries(excelData)
+       .filter(([k]) => /^[A-Z]+1$/.test(k))
+       .filter(([k]) => k !== "B1" && k !== "D1" && k !== "F1");
 
     const redSel = document.getElementById("redTeamSelect");
     const whiteSel = document.getElementById("whiteTeamSelect");
