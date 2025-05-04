@@ -40,14 +40,18 @@ if (window.electron?.receive) {
 // 3) 初回ロード時に直接 Excel データから大会名を取得して描画
 //    これで admin 側からのメッセージがなくても必ず表示されます
 document.addEventListener("DOMContentLoaded", async () => {
-    try {
-        // Excel の B1 セルに大会名が入っている想定
-        const excelData = await window.electron.invoke("get-excel-data");
-        const compename = excelData["B1"] || "";
+        let compename = "";
+        try {
+            if (window.electron?.invoke) {
+                const excelData = await window.electron.invoke("get-excel-data");
+                compename = excelData["B1"] || "";
+            }
+        } catch (e) {
+            console.error("[top.js] 初回 Excel データ取得エラー:", e);
+        }
+        // 取得できなかった／空文字ならデフォルトを表示
+        if (!compename) compename = "Kuawase";
         renderTitle({ compename });
-    } catch (e) {
-        console.error("[top.js] 初回 Excel データ取得エラー:", e);
-    }
 
     // 管理画面起動時に ready を通知
     window.parent.postMessage({ type: "ready" }, "*");
