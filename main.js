@@ -126,14 +126,25 @@ app.on("window-all-closed", () => {
 
 ipcMain.handle("update-config", async (_event, newConfig) => {
     try {
-        fs.writeFileSync(configPath, JSON.stringify(newConfig, null, 2), "utf-8");
-        console.log("設定を保存しました:", newConfig);
-        return true;
+      // 1) 既存ファイルを読み込む
+      let existing = {};
+      if (fs.existsSync(configPath)) {
+        existing = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+      }
+      // 2) bgm セクションを保持
+      const { bgm } = existing;
+      // 3) 対戦設定だけ上書き
+      const merged = { ...existing, ...newConfig, bgm };
+      // 4) 書き戻し
+      fs.writeFileSync(configPath, JSON.stringify(merged, null, 2), "utf-8");
+      console.log("設定を保存しました:", merged);
+      return true;
     } catch (error) {
-        console.error("設定の保存に失敗:", error);
-        return false;
+      console.error("設定の保存に失敗:", error);
+      return false;
     }
-});
+  });
+  
 
 ipcMain.handle("get-excel-data", () => {
     try {
