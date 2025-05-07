@@ -34,6 +34,16 @@ module.exports = {
       name: '@electron-forge/maker-rpm',
       config: {},
     },
+    {
+      name: '@electron-forge/maker-nsis',
+      config: {
+        oneClick: false,                       // ウィザード形式に
+        allowToChangeInstallationDirectory: true,
+        createDesktopShortcut: 'always',       // デスクトップに常にショートカット作成
+        createStartMenuShortcut: true,         // スタートメニューにショートカット作成
+        shortcutName: 'Kuawase'                // ショートカット名
+      }
+    },
   ],
   plugins: [
     {

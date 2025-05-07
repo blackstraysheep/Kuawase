@@ -21,8 +21,10 @@
     "publish": "electron-forge publish"
   },
   "dependencies": {
+    "electron-log": "^5.4.0",
     "electron-squirrel-startup": "^1.0.1",
     "electron-updater": "^6.6.2",
+    "log": "^6.3.2",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz"
   },
   "devDependencies": {
@@ -39,43 +41,43 @@
     "prettier": "3.5.3",
     "update-electron-app": "^3.1.1"
   },
-"build": {
-  "appId": "com.blackstraysheep.kuawase",
-  "publish": [
-    {
-      "provider": "github",
-      "owner": "blackstraysheep",
-      "repo": "Kuawase"
+  "build": {
+    "appId": "com.blackstraysheep.kuawase",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "blackstraysheep",
+        "repo": "Kuawase"
+      }
+    ],
+    "files": [
+      "data/**/*",
+      "css/**/*",
+      "js/**/*",
+      "top.html",
+      "index.html",
+      "1.html",
+      "2.html",
+      "3.html",
+      "4.html",
+      "5.html",
+      "top.js",
+      "index.js",
+      "battle.js",
+      "home.html",
+      "home.js",
+      "home.css",
+      "preload.js",
+      "main.js",
+      "renderer.js",
+      "favicon.ico",
+      "!forge.config.js"
+    ],
+    "directories": {
+      "output": "out"
+    },
+    "win": {
+      "target": "squirrel"
     }
-  ],
-  "files": [
-    "data/**/*",
-    "css/**/*",
-    "js/**/*",
-    "top.html",
-    "index.html",
-    "1.html",
-    "2.html",
-    "3.html",
-    "4.html",
-    "5.html",
-    "top.js",
-    "index.js",
-    "battle.js",
-    "home.html",
-    "home.js",
-    "home.css",
-    "preload.js",
-    "main.js",
-    "renderer.js",
-    "favicon.ico",
-    "!forge.config.js"
-  ],
-  "directories": {
-    "output": "out"
-  },
-  "win": {
-    "target": "squirrel"
   }
-}
 }
