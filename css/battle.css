@@ -3,9 +3,9 @@
 :root {
     --grey: #333;
     --white: #fff;
-    --yellow: #fffc2e;
-    --deepyellow: #ffec00;
-    --pastelyellow: #fff78e;
+    --primary: #fffc2e;
+    --primary-dark: #ffec00;
+    --primary-light: #fff78e;
 
 }
 body{
@@ -19,7 +19,7 @@ html{
 }
 /*HEADER================================================ */
 header {
-    background-image: linear-gradient(var(--yellow), var(--pastelyellow));
+    background-image: linear-gradient(var(--primary), var(--primary-light));
     position: fixed;
     width: 100%;
     z-index: 1;
@@ -78,7 +78,7 @@ header a {
 .btn {
 display: flex;
     box-sizing: border-box;
-    background-color: var(--pastelyellow);
+    background-color: var(--primary-light);
     color: #000000;
     cursor: pointer;
     align-items: center;
