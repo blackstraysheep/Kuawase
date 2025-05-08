@@ -101,6 +101,35 @@ document.addEventListener("DOMContentLoaded", async () => {
      } catch (error) {
          console.error("初期データの読み込みに失敗:", error);
      }
+     const themeSelect = document.getElementById("theme-select");
+    if (themeSelect && window.THEMES) {
+        themeSelect.innerHTML = "";
+        Object.keys(window.THEMES).forEach(name => {
+            const opt = document.createElement("option");
+            opt.value = name;
+            opt.textContent = name;
+            themeSelect.appendChild(opt);
+        });
+        // 保存済みテーマを適用
+        const savedTheme = localStorage.getItem("theme") || "yellow";
+        themeSelect.value = savedTheme;
+        window.applyTheme(savedTheme);
+
+        // 変更時
+        themeSelect.onchange = () => {
+            const theme = themeSelect.value;
+            window.applyTheme(theme);
+            // iframeにも伝える
+            const iframe = document.getElementById("slide-frame");
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({ type: "theme", theme }, "*");
+            }
+            // projectorWindowにも伝える
+            if (window.electron) {
+                window.electron.invoke("send-data-to-projector", { type: "theme", content: theme });
+            }
+        };
+    }
  });
 
 function setupIframeSync() {
@@ -294,3 +323,9 @@ function getHaikuCellKey(teamKey, kendaiKey, matchIndex) {
     const cellCol = nextCol(col, offset);
     return cellCol + teamRow;
 }
+
+window.addEventListener("message", (event) => {
+    if (event.data?.type === "theme" && window.applyTheme) {
+        window.applyTheme(event.data.theme);
+    }
+});

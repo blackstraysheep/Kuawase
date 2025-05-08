@@ -48,3 +48,21 @@ if (window.electron) {
 
 document.getElementById("gameid").innerHTML = "Undefined";
 window.parent.postMessage({ type: "ready" }, "*");
+
+window.addEventListener("message", (event) => {
+    if (event.data?.type === "theme" && window.applyTheme) {
+        window.applyTheme(event.data.theme);
+    }
+});
+if (window.electron) {
+    window.electron.receive("update-content", (data) => {
+        if (data.type === "theme" && window.applyTheme) {
+            window.applyTheme(data.content);
+        }
+    });
+}
+// 初回ロード時にlocalStorageからテーマ適用
+document.addEventListener("DOMContentLoaded", () => {
+    const theme = localStorage.getItem("theme") || "yellow";
+    if (window.applyTheme) window.applyTheme(theme);
+});

@@ -101,6 +101,23 @@
                     </div>
                 </div>
             </details>
+            <details>
+                <summary>テーマカラー</summary>
+                <div>
+                <label for="theme-select">テーマカラー：</label>
+                    <select id="theme-select">
+                        <option value="yellow">Yellow</option>
+                        <option value="blue">Blue</option>
+                        <option value="green">Green</option>
+                        <option value="red">Red</option>
+                        <option value="purple">Purple</option>
+                        <option value="orange">Orange</option>
+                        <option value="teal">Teal</option>
+                        <option value="pink">Pink</option>
+                        <option value="mint">Mint</option>
+                    </select>
+                </div>
+            </details>
         </div>
         <div id="match-setup-panel">
             <h3>対戦指定パネル</h3>
@@ -127,11 +144,12 @@
             </div>
         </div>
     </div>
+    <script src="js/color.js"></script>
     <script defer src="js/config.js"></script>
-    <script defer src="renderer.js"></script>
     <script src="js/music.js"></script>
     <script src="js/music-manager.js"></script>
     <script src="js/timer.js"></script>
+    <script defer src="renderer.js"></script>
     <script src="home.js"></script>
     <div id="toast"></div>
 </body>
