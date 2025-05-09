@@ -82,6 +82,12 @@ app.whenReady().then(() => {
   adminWindow.webContents.once('did-finish-load', () => {
     adminWindow.webContents.send('set-role', 'admin');
   });
+  adminWindow.webContents.on('did-finish-load', () => {
+    // adminWindowがリロードされたらprojectorWindowもリロード
+    if (projectorWindow && !projectorWindow.isDestroyed()) {
+      projectorWindow.loadFile('top.html');
+    }
+  });
   adminWindow.webContents.on('before-input-event', (e, input) => {
     if (
       input.type === 'keyDown' &&
