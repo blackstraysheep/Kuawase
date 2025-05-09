@@ -1,7 +1,7 @@
 {
   "name": "kuawase",
   "version": "0.5.0",
-  "description": "The Kuawase system is a software program that supports the implementation of haiku matching and tanka matching style battles.",
+  "description": "Kuawase is a software application that assists in organizing competitions in the “Kuawase style” by pairing haiku, tanka, or other short-form poems.",
   "homepage": "https://github.com/blackstraysheep/Kuawase#readme",
   "bugs": {
     "url": "https://github.com/blackstraysheep/Kuawase/issues"
@@ -11,14 +11,15 @@
     "url": "git+https://github.com/blackstraysheep/Kuawase.git"
   },
   "license": "ISC",
-  "author": "Kengo TAMURA",
+  "author": "BlackStraySheep",
   "type": "commonjs",
   "main": "main.js",
   "scripts": {
     "start": "chcp 65001 && electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "publish": "electron-forge publish"
+    "publish": "electron-forge publish",
+    "dist": "electron-builder"
   },
   "dependencies": {
     "electron-log": "^5.4.0",
@@ -38,6 +39,7 @@
     "@electron-forge/publisher-github": "^7.8.0",
     "@electron/fuses": "^1.8.0",
     "electron": "^28.3.3",
+    "electron-builder": "^26.0.12",
     "prettier": "3.5.3",
     "update-electron-app": "^3.1.1"
   },
@@ -77,7 +79,7 @@
       "output": "out"
     },
     "win": {
-      "target": "squirrel"
+      "target": "nsis"
     }
   }
 }
