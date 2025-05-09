@@ -178,13 +178,14 @@ button, select, input{
     margin-bottom: 4px;
     font-size: 0.97em;
     font-weight: 500;
+    justify-content: space-between;
 }
 #file-manager input[type="file"] {
     font-size: 0.97em;
     padding: 2px 0;
 }
 #file-manager select {
-    min-width: 90px;
+    max-width: 250px;
     padding: 2px 6px;
     border: 1px solid #bbb;
     border-radius: 4px;
@@ -226,18 +227,19 @@ button, select, input{
     font-size: 0.97em;
 }
 #music-file-list button {
+    width: 50px;
     margin-left: 8px;
     font-size: 0.93em;
     padding: 2px 8px;
-    background: #ffe6e6;
-    border: 1px solid #d99;
-    border-radius: 3px;
+    background: #ffd6d6;
     color: #b22;
+    border: 1.5px solid #b22;
+    border-radius: 3px;
     transition: background 0.18s;
 }
 #music-file-list button:hover {
-    background: #ffbcbc;
-    color: #900;
+    background: #ff8a8a;
+    color: #fff;
 }
 
 /* --- タイマーコンテナ --- */
@@ -380,6 +382,16 @@ summary {
 #hikou button {
     width: 100px;
     margin: 0 8px 0 0;
+}
+
+#file-manager #reset-data-btn {
+    background: #ffd6d6;
+    color: #b22;
+    border: 1.5px solid #b22;
+}
+#file-manager #reset-data-btn:hover {
+    background: #ff8a8a;
+    color: #fff;
 }
 
 #audio-controls {

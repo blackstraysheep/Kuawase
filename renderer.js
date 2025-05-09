@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
      } catch (error) {
          console.error("初期データの読み込みに失敗:", error);
      }
-     const themeSelect = document.getElementById("theme-select");
+    const themeSelect = document.getElementById("theme-select");
     if (themeSelect && window.THEMES) {
         themeSelect.innerHTML = "";
         Object.keys(window.THEMES).forEach(name => {
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             themeSelect.appendChild(opt);
         });
         // 保存済みテーマを適用
-        const savedTheme = localStorage.getItem("theme") || "yellow";
+        const savedTheme = localStorage.getItem("theme") || "Gray";
         themeSelect.value = savedTheme;
         window.applyTheme(savedTheme);
 

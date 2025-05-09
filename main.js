@@ -316,3 +316,16 @@ function saveExcelData(filePath, numProblems = 0, numTeams = 0) {
     console.log("Excelデータ保存完了:", jsonPath);
     return true;
 }
+
+ipcMain.handle('reset-data', async () => {
+  try {
+    // config.jsonを空オブジェクトで上書き
+    fs.writeFileSync(configPath, '{}', 'utf-8');
+    // excelData.jsonも空オブジェクトで上書き
+    const excelPath = path.join(app.getPath('userData'), 'excelData.json');
+    fs.writeFileSync(excelPath, '{}', 'utf-8');
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: e.message };
+  }
+});

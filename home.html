@@ -37,7 +37,6 @@
             <div class="btn" onclick="audio_wait()">待機</div>
             <button id="stop-bgm-btn">停止</button>
         </div>
-        <br>
         <div id="timer-controls">
             <details open>
             <summary>タイマー</summary>
@@ -78,6 +77,7 @@
                 <summary>Excelファイル管理</summary>
                 <div id="file-manager">
                     <input type="file" id="excel-input" accept=".xlsx">
+                    <button id="reset-data-btn">初期化</button>
                 </div>
             </details>
             <details>
@@ -103,18 +103,9 @@
             </details>
             <details>
                 <summary>テーマカラー</summary>
-                <div>
+                <div id="file-manager">
                 <label for="theme-select">テーマカラー：</label>
                     <select id="theme-select">
-                        <option value="yellow">Yellow</option>
-                        <option value="blue">Blue</option>
-                        <option value="green">Green</option>
-                        <option value="red">Red</option>
-                        <option value="purple">Purple</option>
-                        <option value="orange">Orange</option>
-                        <option value="teal">Teal</option>
-                        <option value="pink">Pink</option>
-                        <option value="mint">Mint</option>
                     </select>
                 </div>
             </details>
