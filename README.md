@@ -1,5 +1,5 @@
 # Kuawase
-Kuawase is software that assists in conducting matches using the “Kuawase style” pairing of haiku and tanka.
+Kuawase is a software application that assists in organizing competitions in the “Kuawase style” by pairing haiku, tanka, or other short-form poems.
 
 ## Features
 Supports pairing haiku and tanka and managing competitive events
