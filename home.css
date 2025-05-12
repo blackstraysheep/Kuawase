@@ -398,20 +398,18 @@ summary {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
     flex-wrap: nowrap; /* 横並びで折り返さない */
     background: #fafdff;
     border: 1.5px solid #d0d0d0;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(120,180,255,0.08);
-    padding: 14px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
     margin-bottom: 14px;
 }
 #audio-controls .btn,
 #audio-controls button {
     width: 70px;
     margin-right: 6px;
-    margin-bottom: 0;
     background: var(--primary);
     color: var(--grey);
     border: 1px solid var(--grey);
@@ -442,6 +440,17 @@ summary {
     background: #ff8a8a;
     color: #fff;
 }
+#toggle-wait-loop-checkbox {
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+}
+#audio-controls label {
+    font-size: 1em;
+    cursor: pointer;
+    user-select: none;
+}
+
 
 .match-setup-flex {
     display: flex;

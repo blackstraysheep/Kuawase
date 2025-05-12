@@ -29,6 +29,9 @@ window.stopBgm = function(fadeMs = 1200) {
     });
 };
 
+// ループ状態管理
+let waitLoopEnabled = false;
+
 // ------- Audio再生 共通関数 --------
 async function playAudioByType(type) {
     let bgm = {};
@@ -58,6 +61,7 @@ async function playAudioByType(type) {
     }
     audio.src = await window.electron.invoke('get-music-file-path', file);
     audio.currentTime = 0;
+    audio.loop = (type === "wait") ? waitLoopEnabled : false;
     audio.play();
 }
 
@@ -76,6 +80,16 @@ function toggleMuteDynamic() {
 
 // ------- 音声排他再生処理 --------
 document.addEventListener('DOMContentLoaded', () => {
+const checkbox = document.getElementById('toggle-wait-loop-checkbox');
+    if (checkbox) {
+        checkbox.checked = waitLoopEnabled;
+        checkbox.onchange = () => {
+            waitLoopEnabled = checkbox.checked;
+            // すでに再生中の待機BGMにも反映
+            const audio = document.getElementById("audio_dynamic_wait");
+            if (audio) audio.loop = waitLoopEnabled;
+        };
+    }
     document.addEventListener('play', (e) => {
         const audios = document.querySelectorAll('audio');
         audios.forEach((audio) => {
@@ -86,3 +100,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, true);
 }, false);
+
