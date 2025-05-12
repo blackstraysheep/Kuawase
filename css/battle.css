@@ -11,8 +11,9 @@
 body{
     margin: 0rem;
     color: #000000;
+    background-color: white;
     height: 100%;
-    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", 'Noto Sans JP', sans-serif;
 }
 html{
     height: 100%;
@@ -92,76 +93,76 @@ display: flex;
     text-decoration: none;
 }
 #btnA, #btnB {
-width: 100px;
-height: 50px;
-}
+    width: 100px;
+    height: 50px;
+    }
 h1 {
-font-weight:600;
-font-size: 3em;
-color: black;
-padding: 0.5rem;
-margin: 0;
-padding-bottom: 2rem;
-}
+    font-weight:600;
+    font-size: 3em;
+    color: black;
+    padding: 0.5rem;
+    margin: 0;
+    padding-bottom: 2rem;
+    }
 h2 {
-font-weight:600;
-padding: 0.5rem;
-font-size: 2em;
-color: black;
-margin: 0;
-}
+    font-weight:600;
+    padding: 0.5rem;
+    font-size: 2em;
+    color: black;
+    margin: 0;
+    }
 h3 {
-font-weight:500;
-font-size: 1.8em;
-margin: 0;
-padding-top: 0.5rem;
-padding-bottom: 1.5rem;
-}
+    font-weight:500;
+    font-size: 1.8em;
+    margin: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 1.5rem;
+    }
 #left {
-list-style-position: inside;
-text-align: left;
-float: center;
-height: 80vh;
-box-sizing: border-box;
-background: #ffccff;
-}
+    list-style-position: inside;
+    text-align: left;
+    float: center;
+    height: 80vh;
+    box-sizing: border-box;
+    background: #ffccff;
+    }
 #main {
-float: left;
-text-align: center;
-width: 30%;
-height: 80vh;
-box-sizing: border-box;
-background: #ffffff;
-padding: 1rem;
-}
+    float: left;
+    text-align: center;
+    width: 30%;
+    height: 80vh;
+    box-sizing: border-box;
+    background: #ffffff;
+    padding: 1rem;
+    }
 #right {
-list-style-position: inside;
-text-align: left;
-float: center;
-height: 80vh;
-box-sizing: border-box;
-background: #ffffff;
-}
+    list-style-position: inside;
+    text-align: left;
+    float: center;
+    height: 80vh;
+    box-sizing: border-box;
+    background: #ffffff;
+    }
 #left2 {
-list-style-position: inside;
-text-align: center;
-float: left;
-width: 35%;
-height: 90vh;
-box-sizing: border-box;
-background: #ffccff;
-border: 2px solid #000000;
-}
+    list-style-position: inside;
+    text-align: center;
+    float: left;
+    width: 35%;
+    height: 90vh;
+    box-sizing: border-box;
+    background: #ffccff;
+    border: 2px solid #000000;
+    }
 #right2 {
-list-style-position: inside;
-text-align: center;
-float: right;
-width: 35%;
-height: 90vh;
-box-sizing: border-box;
-background: #ffffff;
-border: 2px solid #000000;
-}
+    list-style-position: inside;
+    text-align: center;
+    float: right;
+    width: 35%;
+    height: 90vh;
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 2px solid #000000;
+    }
 
 
 #left3 {
@@ -184,34 +185,44 @@ border: 2px solid #000000;
     background: #ffffff;
     border: 2px solid #000000;
     }
-    .team {
-        font-weight:700;
-        font-size: 2em;
-        color: black;
-        -ms-writing-mode: tb-rl;
-        writing-mode: vertical-rl;
-        text-align: left;
-        display: inline-block;
-        min-height: 30vh;
-        max-height: 60vh;
-        }
-        
-body {
-font-family: 'Noto Sans JP', sans-serif;
-background-color: white;
-}
+.team {
+    font-weight:700;
+    font-size: 2em;
+    color: black;
+    -ms-writing-mode: tb-rl;
+    writing-mode: vertical-rl;
+    text-align: left;
+    display: inline-block;
+    min-height: 30vh;
+    max-height: 60vh;
+    }
+
 .kunakami {
-font-weight:700;
-font-size: 2.8em;
-color: black;
--ms-writing-mode: tb-rl;
-writing-mode: vertical-rl;
-text-align: left;
-display: inline-block;
+    font-weight:700;
+    font-size: 2.8em;
+    color: black;
+    -ms-writing-mode: tb-rl;
+    writing-mode: vertical-rl;
+    text-align: left;
+    display: inline-block;
+    justify-content: space-between;
 }
 .hikou {
-writing-mode: horizontal-tb;
+    writing-mode: horizontal-tb;
 }
 .tcy {
     text-combine-upright: all;
+}
+
+.fade-in {
+    clip-path: inset(0 0 100% 0); /* 最初は下全部隠す */
+    animation: fadeSlideDown 1.2s cubic-bezier(.4,0,.4,.5) forwards;
+}
+@keyframes fadeSlideDown {
+    from {
+        clip-path: inset(0 0 100% 0);
+    }
+    to {
+        clip-path: inset(0 0 0 0);
+    }
 }

@@ -23,8 +23,20 @@ window.addEventListener("message", (event) => {
         lastTitleData = content;
         renderTitle(content);
     } else if (type === "red") {
+        const el = document.getElementById("redHaiku");
+        if (el) {
+            el.classList.remove("fade-in");
+            void el.offsetWidth;
+            el.classList.add("fade-in");
+        }
         document.getElementById("redHaiku").innerHTML = Object.values(content)[0] || "";
     } else if (type === "white") {
+        const er = document.getElementById("whiteHaiku");
+        if (er) {
+            er.classList.remove("fade-in");
+            void er.offsetWidth;
+            er.classList.add("fade-in");
+        }
         document.getElementById("whiteHaiku").innerHTML = Object.values(content)[0] || "";
     }
 });
@@ -39,8 +51,20 @@ if (window.electron) {
             lastTitleData = content;
             renderTitle(content);
         } else if (type === "red") {
+            const el = document.getElementById("redHaiku");
+            if (el) {
+            el.classList.remove("fade-in");
+            void el.offsetWidth;
+            el.classList.add("fade-in");
+        }
             document.getElementById("redHaiku").innerHTML = Object.values(content)[0] || "";
         } else if (type === "white") {
+            const er = document.getElementById("whiteHaiku");
+            if (er) {
+            er.classList.remove("fade-in");
+            void er.offsetWidth;
+            er.classList.add("fade-in");
+        }
             document.getElementById("whiteHaiku").innerHTML = Object.values(content)[0] || "";
         }
     });

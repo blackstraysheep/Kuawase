@@ -106,18 +106,18 @@ app.whenReady().then(() => {
       sandbox: false
     }
   });
-  projectorWindow.loadFile('top.html');
-  projectorWindow.webContents.once('did-finish-load', () => {
-    if (lastKnownData) {
-      projectorWindow.webContents.send('update-content', lastKnownData);
-    }
-  });
   projectorWindow.webContents.on('before-input-event', (e, input) => {
     if (
       input.type === 'keyDown' &&
       (input.key === 'F5' ||
         (input.key === 'r' && (input.control || input.meta)))
     ) e.preventDefault();
+  });
+  projectorWindow.loadFile('top.html');
+  projectorWindow.webContents.once('did-finish-load', () => {
+    if (lastKnownData) {
+      projectorWindow.webContents.send('update-content', lastKnownData);
+    }
   });
   projectorWindow.webContents.on('did-finish-load', () => {
     if (lastKnownData) {

@@ -12,6 +12,30 @@ document.addEventListener("DOMContentLoaded", async () => {
         timer2: document.getElementById("bgm-timer2"),
     };
 
+    // --- 追加: BGMプリロード用 ---
+    window.bgmAudioElements = {}; // グローバルで参照できるように
+
+    async function preloadBgmAudios() {
+        if (!window.electron?.getBgmConfig) return;
+        const bgm = await window.electron.getBgmConfig();
+        const types = ["hikou", "in", "out", "wait", "timer1", "timer2"];
+        for (const type of types) {
+            const file = bgm[type];
+            if (!file) continue;
+            const path = await window.electron.invoke('get-music-file-path', file);
+            let audio = document.getElementById("audio_dynamic_" + type);
+            if (!audio) {
+                audio = document.createElement("audio");
+                audio.id = "audio_dynamic_" + type;
+                audio.preload = "auto";
+                document.body.appendChild(audio);
+            }
+            audio.src = path;
+            window.bgmAudioElements[type] = audio;
+        }
+    }
+    // --- ここまで追加 ---
+
     async function refreshListAndSelects() {
         const files = await window.electron.listMusicFiles();
         fileList.innerHTML = "";
@@ -24,6 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (confirm(`${f} を削除しますか？`)) {
                     await window.electron.deleteMusicFile(f);
                     refreshListAndSelects();
+                    await preloadBgmAudios(); // 削除時もプリロード更新
                 }
             };
             li.appendChild(del);
@@ -46,6 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         selects.wait.value = bgm.wait || "";
         selects.timer1.value = bgm.timer1 || "";
         selects.timer2.value = bgm.timer2 || "";
+        await preloadBgmAudios(); // リスト更新時もプリロード
     }
 
     uploadBtn.onclick = async () => {
@@ -56,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             await window.electron.uploadMusicFile(file.name, new Uint8Array(arrayBuffer));
         }
         uploadInput.value = "";
-        refreshListAndSelects();
+        await refreshListAndSelects();
     };
 
     saveBtn.onclick = async () => {
@@ -70,7 +96,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         };
         await window.electron.setBgmConfig(bgmConfig);
         showToast("BGM設定を保存しました！");
+        await preloadBgmAudios(); // 設定保存時もプリロード
     };
 
-    refreshListAndSelects();
+    await refreshListAndSelects();
 });
