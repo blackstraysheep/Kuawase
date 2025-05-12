@@ -78,7 +78,7 @@ document.getElementById("saveMatchConfig").addEventListener("click", async () =>
     const success = await window.electron.invoke("update-config", newConfig);
     if (success) {
         window.appConfig = newConfig;
-        showToastAndReload("設定を保存しました！");
+        showToastAndReload("対戦指定を保存しました！");
     }
 });
 
