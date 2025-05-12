@@ -7,6 +7,7 @@
 - Load match data from Excel (.xlsx) files and easily assign matchups.  
 - Configure background music (BGM).  
 - Separate windows for spectator projection and administrator controls.
+- Operable offline; aside from checking for updates, it does not communicate with any external servers.
 
 ---
 
@@ -120,17 +121,24 @@ Then click **Save**. “Saved!” appears at the top of the window, and the view
 
 ## 7. Configuring BGM
 
-1. Open ▶ **BGM File Management** → **Select File**, choose one or more audio files (mp3, wav, etc.), and click **Upload**.  
-2. Uploaded files appear in the list with a **Delete** button. Deleting removes only the copy in Kuawase’s folder—not your original.  
-3. Assign BGM to each scene, then click **Save BGM Settings** (“BGM settings saved!” appears).  
-4. Uploaded files and settings persist after restart.
+1. In **BGM File Management**, click **Select File**, choose audio files (mp3, wav, etc.), and click **Upload**.  
+2. After uploading, files appear in the list with a **Delete** button available.  
+   > *Note: Deleting here removes only the copy in Kuawase’s working directory; your original files remain unchanged.*  
+3. Assign BGM to each scene and click **Save BGM Settings** to apply.  
+4. Uploaded audio files and settings persist after restart.  
 
 **Available Scenes**  
 - Recitation  
 - Entrance  
 - Exit  
 - Standby  
-- Timer End (each timer can have its own BGM)
+- Timer End (configurable per timer)  
+
+**Notes**  
+- Only one BGM track plays at a time; starting a new track overrides the current one (applies to timers, recitation, etc.).  
+- If you attempt to play the same BGM file that’s already playing, playback restarts from the beginning.  
+- When the **Standby Loop** checkbox is ON, the Standby BGM will loop continuously until you press the **Stop** button.  
+  - Toggling the checkbox during playback takes effect immediately.  
 
 ---
 
