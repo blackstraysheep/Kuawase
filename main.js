@@ -21,8 +21,20 @@ autoUpdater.setFeedURL({
 const configPath = path.join(app.getPath('userData'), "config.json");
 const musicDir = path.join(app.getPath('userData'), "music");
 let adminWindow, projectorWindow, lastKnownData = null;
+let splashWindow;
 
 app.whenReady().then(() => {
+  splashWindow = new BrowserWindow({
+        width: 400,
+        height: 300,
+        frame: false,
+        alwaysOnTop: true,
+        transparent: false,
+        resizable: false,
+        show: true,
+    });
+    splashWindow.loadFile('splash.html');
+    setTimeout(() => {
     // --- 自動アップデートの起動 ---
     autoUpdater.checkForUpdatesAndNotify();
     autoUpdater.on('update-available', info => {
@@ -136,6 +148,11 @@ app.whenReady().then(() => {
       adminWindow.close();
     }
   });
+  if (splashWindow) {
+            splashWindow.close();
+            splashWindow = null;
+        }
+    }, 1800);
 });
 
 // 全ウィンドウ終了時
