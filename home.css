@@ -1,9 +1,9 @@
 :root {
     --grey: #333;
     --white: #fff;
-    --primary: #fffc2e;
-    --primary-dark: #ffec00;
-    --primary-light: #fff78e;
+    --primary: #e0e0e0;
+    --primary-dark: #bdbdbd;
+    --primary-light: #f5f5f5;
 }
 body {
     display: grid;
