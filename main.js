@@ -5,6 +5,8 @@ const fs = require("fs");
 const path = require("path");
 const XLSX = require("xlsx");
 
+require('@electron/remote/main').initialize();
+
 // ──────────── 自動アップデート設定 ────────────
 // ログを electron-log に出力
 autoUpdater.logger = log;
@@ -25,6 +27,11 @@ let splashWindow;
 
 app.whenReady().then(() => {
   splashWindow = new BrowserWindow({
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
+            contextIsolation: true,
+            nodeIntegration: false
+            },       
         width: 400,
         height: 300,
         frame: false,
@@ -33,6 +40,7 @@ app.whenReady().then(() => {
         resizable: false,
         show: true,
     });
+    require('@electron/remote/main').enable(splashWindow.webContents);
     splashWindow.loadFile('splash.html');
     setTimeout(() => {
     // --- 自動アップデートの起動 ---
@@ -352,3 +360,6 @@ ipcMain.handle('reset-data', async () => {
     return { success: false, error: e.message };
   }
 });
+
+//version取得
+ipcMain.handle('get-app-version', () => app.getVersion());

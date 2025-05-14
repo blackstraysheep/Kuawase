@@ -1,5 +1,8 @@
 const { contextBridge, ipcRenderer } = require("electron");
-console.log("[preload.js] Loaded");
+
+contextBridge.exposeInMainWorld('appVersion', {
+  get: () => ipcRenderer.invoke('get-app-version')
+});
 contextBridge.exposeInMainWorld("electron", {
     env: {
         NODE_ENV: process.env.NODE_ENV || "production"
