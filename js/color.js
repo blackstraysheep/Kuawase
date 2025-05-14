@@ -1,19 +1,18 @@
 const THEMES = {
-  Pink:   { primary: '#ffe4f0', 'primary-dark': '#ffb6d5', 'primary-light': '#fff6fa' },
-  Red:    { primary: '#ff9e9e', 'primary-dark': '#ff6e6e', 'primary-light': '#ffd4d4' },
-  Orange: { primary: '#ffd9a3', 'primary-dark': '#ffb84d', 'primary-light': '#ffeecc' },
-  Yellow: { primary: '#fffc2e', 'primary-dark': '#ffec00', 'primary-light': '#fff78e' },
-  Lime:   { primary: '#e6ff8f', 'primary-dark': '#c4dd00', 'primary-light': '#f0ffb3' },
-  Limegreen:{ primary: '#c6ff8f', 'primary-dark': '#a3d600', 'primary-light': '#e6ffb3' },
-  Green:   { primary: '#b2f2bb', 'primary-dark': '#8ce99a', 'primary-light': '#e2fcec' },
-  Skyblue: { primary: '#b3e5fc', 'primary-dark': '#4fc3f7', 'primary-light': '#e1f5fe' }, 
-  Blue:    { primary: '#90caf9', 'primary-dark': '#1976d2', 'primary-light': '#e3f2fd' }, 
-  Indigo: { primary: '#8c9eff', 'primary-dark': '#536dfe', 'primary-light': '#b2cfff' },
-  Purple: { primary: '#d1c4e9', 'primary-dark': '#b39ddb', 'primary-light': '#e8dffb' },
-  Brown:  { primary: '#e7d3b5', 'primary-dark': '#b89b7a', 'primary-light': '#f9f3ea' },
-  Gray:   { primary: '#e0e0e0', 'primary-dark': '#bdbdbd', 'primary-light': '#f5f5f5' },
+  Pink:   { primary: '#ffb6d5', 'primary-dark': '#ff7fb2', 'primary-light': '#ffe3ef' },
+  Red:    { primary: '#ff8a8a', 'primary-dark': '#ff4d4d', 'primary-light': '#ffc1c1' },
+  Orange: { primary: '#ffd180', 'primary-dark': '#ffb300', 'primary-light': '#ffe7c2' },
+  Yellow: { primary: '#fffc2e', 'primary-dark': '#ffec00', 'primary-light': '#fff78e' }, // 変更なし
+  Lime:   { primary: '#e6ff8f', 'primary-dark': '#c4dd00', 'primary-light': '#f0ffb3' }, // 変更なし
+  Limegreen:{ primary: '#c6ff8f', 'primary-dark': '#a3d600', 'primary-light': '#e6ffb3' }, // 変更なし
+  Green:   { primary: '#7fdca0', 'primary-dark': '#4fc47a', 'primary-light': '#b2f2cc' },
+  Skyblue: { primary: '#7fdcff', 'primary-dark': '#00b8f4', 'primary-light': '#bfeaff' },
+  Blue:    { primary: '#7fbfff', 'primary-dark': '#338be6', 'primary-light': '#d0e8ff' },
+  Indigo:  { primary: '#a0b3ff', 'primary-dark': '#5c6bc0', 'primary-light': '#dde3ff' },
+  Purple:  { primary: '#c6b3e6', 'primary-dark': '#9575cd', 'primary-light': '#ede7f6' },
+  Brown:   { primary: '#d2bfa0', 'primary-dark': '#a1887f', 'primary-light': '#f3e5c9' },
+  Gray:    { primary: '#e0e0e0', 'primary-dark': '#bdbdbd', 'primary-light': '#f5f5f5' }, // 変更なし
 };
-
 // グローバル化
 window.THEMES = THEMES;
 
