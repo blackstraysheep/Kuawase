@@ -208,6 +208,13 @@ button, select, input{
     background: var(--primary-dark);
     color: #000;
 }
+#file-manager #note {
+    padding: 2px 0 0 0;
+    margin: 0;
+    color: #000;
+    font-size: 0.8rem;
+
+}
 
 #music-file-list {
     list-style: none;
