@@ -58,6 +58,7 @@
       "data/**/*",
       "css/**/*",
       "js/**/*",
+      "img/**/*",
       "top.html",
       "index.html",
       "1.html",
