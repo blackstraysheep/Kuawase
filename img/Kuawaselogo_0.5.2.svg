@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_レイヤー_1" data-name="レイヤー 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 61.24 64">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #000;
+        stroke-width: .5px;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-1, .cls-3 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-4 {
+        fill: #fff;
+      }
+
+      .cls-5 {
+        fill: #c1272d;
+      }
+
+      .cls-3 {
+        stroke: url(#_市松2);
+        stroke-width: 10px;
+      }
+    </style>
+    <pattern id="_市松2" data-name="市松2" x="0" y="0" width="8" height="8" patternTransform="translate(-9.76 -8)" patternUnits="userSpaceOnUse" viewBox="0 0 8 8">
+      <g>
+        <rect class="cls-2" width="8" height="8"/>
+        <g>
+          <polygon class="cls-5" points="2 8 4 8 4 6 2 6 2 8"/>
+          <polygon class="cls-4" points="4 8 6 8 6 6 4 6 4 8"/>
+          <polygon class="cls-5" points="6 8 8 8 8 6 6 6 6 8"/>
+          <polygon class="cls-4" points="0 8 2 8 2 6 0 6 0 8"/>
+        </g>
+        <g>
+          <polygon class="cls-5" points="2 4 4 4 4 2 2 2 2 4"/>
+          <polygon class="cls-4" points="4 4 6 4 6 2 4 2 4 4"/>
+          <polygon class="cls-5" points="4 6 6 6 6 4 4 4 4 6"/>
+          <polygon class="cls-5" points="6 4 8 4 8 2 6 2 6 4"/>
+          <polygon class="cls-5" points="0 6 2 6 2 4 0 4 0 6"/>
+          <polygon class="cls-4" points="2 6 4 6 4 4 2 4 2 6"/>
+          <g>
+            <polygon class="cls-4" points="6 6 8 6 8 4 6 4 6 6"/>
+            <polygon class="cls-4" points="0 4 2 4 2 2 0 2 0 4"/>
+          </g>
+        </g>
+        <g>
+          <polygon class="cls-5" points="4 2 6 2 6 0 4 0 4 2"/>
+          <polygon class="cls-5" points="0 2 2 2 2 0 0 0 0 2"/>
+          <polygon class="cls-4" points="2 2 4 2 4 0 2 0 2 2"/>
+          <polygon class="cls-4" points="6 2 8 2 8 0 6 0 6 2"/>
+        </g>
+      </g>
+    </pattern>
+  </defs>
+  <path class="cls-3" d="M55.83,27.31c-2.59-14.68-16.59-24.49-31.27-21.9-6.15,1.08-11.43,4.18-15.32,8.48v36.21c6.02,6.64,15.21,10.15,24.69,8.48,14.68-2.59,24.49-16.59,21.9-31.27Z"/>
+  <g>
+    <g>
+      <g>
+        <path class="cls-4" d="M52.98,44.87H12.23v5h38.75c1.93,0,3.5-1.57,3.5-3.5h0c0-.83-.67-1.5-1.5-1.5Z"/>
+        <g>
+          <path class="cls-4" d="M11.63,48.75v-2.75h41.37c.21,0,.38.17.38.38,0,1.31-1.07,2.38-2.38,2.38H11.63Z"/>
+          <path d="M52.73,46.62c-.12.85-.85,1.5-1.73,1.5H12.25v-1.5h40.48M53,45.37H11v4h40c1.66,0,3-1.34,3-3,0-.55-.45-1-1-1h0Z"/>
+        </g>
+      </g>
+      <g>
+        <g>
+          <path class="cls-4" d="M49.01,45.12H12.51V14.12h36.5c1.38,0,2.5,1.12,2.5,2.5v26c0,1.38-1.12,2.5-2.5,2.5Z"/>
+          <g>
+            <path class="cls-4" d="M11.75,43.87V15.37h37.25c.69,0,1.25.56,1.25,1.25v26c0,.69-.56,1.25-1.25,1.25H11.75Z"/>
+            <path d="M49,16.12c.28,0,.5.22.5.5v26c0,.28-.22.5-.5.5H12.5v-27h36.5M49,14.62H11v30h38c1.1,0,2-.9,2-2v-26c0-1.1-.9-2-2-2h0Z"/>
+          </g>
+        </g>
+        <line class="cls-1" x1="11.98" y1="35.82" x2="40.76" y2="35.82"/>
+        <line class="cls-1" x1="40.71" y1="15.15" x2="40.71" y2="43.13"/>
+      </g>
+    </g>
+    <g>
+      <g>
+        <rect class="cls-4" x="3" y="53.46" width="7" height="5" rx="1.5" ry="1.5"/>
+        <g>
+          <rect class="cls-4" x="3.5" y="53.96" width="6" height="4" rx="1" ry="1"/>
+          <path d="M8.5,53.96h-4c-.55,0-1,.45-1,1v2c0,.55.45,1,1,1h4c.55,0,1-.45,1-1v-2c0-.55-.45-1-1-1h0Z"/>
+        </g>
+      </g>
+      <g>
+        <rect class="cls-4" x="3" y="5.54" width="7" height="5" rx="1.5" ry="1.5"/>
+        <g>
+          <rect class="cls-4" x="3.5" y="6.04" width="6" height="4" rx="1" ry="1"/>
+          <path d="M8.5,6.04h-4c-.55,0-1,.45-1,1v2c0,.55.45,1,1,1h4c.55,0,1-.45,1-1v-2c0-.55-.45-1-1-1h0Z"/>
+        </g>
+      </g>
+      <g>
+        <rect class="cls-4" y="9.96" width="13" height="44" rx="2.5" ry="2.5"/>
+        <g>
+          <rect class="cls-4" x="1.25" y="11.21" width="10.5" height="41.5" rx="1.25" ry="1.25"/>
+          <path d="M10.5,11.96c.28,0,.5.22.5.5v39c0,.28-.22.5-.5.5H2.5c-.28,0-.5-.22-.5-.5V12.46c0-.28.22-.5.5-.5h8M10.5,10.46H2.5c-1.1,0-2,.9-2,2v39c0,1.1.9,2,2,2h8c1.1,0,2-.9,2-2V12.46c0-1.1-.9-2-2-2h0Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

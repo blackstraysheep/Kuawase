@@ -27,13 +27,14 @@ let splashWindow;
 
 app.whenReady().then(() => {
   splashWindow = new BrowserWindow({
+        icon: path.join(__dirname, 'img', 'icon.ico'),
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
             nodeIntegration: false
             },       
-        width: 400,
-        height: 300,
+        width: 800,
+        height: 600,
         frame: false,
         alwaysOnTop: true,
         transparent: false,
@@ -90,6 +91,7 @@ app.whenReady().then(() => {
     
   // --- 管理者ウィンドウ ---
   adminWindow = new BrowserWindow({
+    icon: path.join(__dirname, 'img', 'icon.ico'),
     width: 1200, height: 800, title: 'Kuawase',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -118,6 +120,7 @@ app.whenReady().then(() => {
 
   // --- 投影ウィンドウ ---
   projectorWindow = new BrowserWindow({
+    icon: path.join(__dirname, 'img', 'icon.ico'),
     width: 1024, height: 768, title: 'Kuawase',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
