@@ -8,14 +8,14 @@ let soundPlayed = false;
 function updateDisplay() {
   const minutes = Math.floor(remainingTime / 60);
   const seconds = remainingTime % 60;
-  document.getElementById('timer').textContent =
-    String(minutes).padStart(2, '0') + "分" +
-    String(seconds).padStart(2, '0') + "秒";
-
+  document.getElementById('timer1min').textContent =
+    String(minutes).padStart(2, '0');
+  document.getElementById('timer1sec').textContent =
+    String(seconds).padStart(2, '0');
   if (remainingTime <= 60 && remainingTime > 0) {
-    document.getElementById('one-minute-warning').textContent = "1分前";
+    document.getElementById('one-minute-warning').textContent = t("minwarn");
   } else if (remainingTime === 0) {
-    document.getElementById('one-minute-warning').textContent = "そこまで";
+    document.getElementById('one-minute-warning').textContent = t("minfin");
   } else {
     document.getElementById('one-minute-warning').textContent = "";
   }
@@ -106,8 +106,8 @@ let initialTime2 = 30;
 let soundPlayed2 = false;
 
 function updateDisplay2() {
-  document.getElementById('timer2').textContent =
-    String(remainingTime2).padStart(2, '0') + "秒";
+  document.getElementById('timer2sec').textContent =
+    String(remainingTime2).padStart(2, '0');
 }
 
 function saveTimeSetting2() {

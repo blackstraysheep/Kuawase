@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             timer2: selects.timer2.value,
         };
         await window.electron.setBgmConfig(bgmConfig);
-        showToast("BGM設定を保存しました！");
+        showToast(t("bgm-save-success"));
         await preloadBgmAudios(); // 設定保存時もプリロード
     };
 

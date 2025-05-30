@@ -35,7 +35,7 @@ let waitLoopEnabled = false;
 function playAudioByType(type) {
     const audio = window.bgmAudioElements?.[type];
     if (!audio) {
-        showToast("BGMが設定されていません");
+        showToastAndReload(t("audio-empty"));
         return;
     }
     audio.currentTime = 0;

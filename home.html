@@ -12,51 +12,52 @@
     </div>
     <!-- 管理パネル --> 
     <div id="admin-panel">
-        <summary>対戦切り替え</summary>
+        <summary data-lang="change-match">対戦切り替え</summary>
         <div id="page-controls">
-            <button onclick="changeIframeSrc('top.html')">大会TOP</button>
-            <button onclick="changeIframeSrc('index.html')">対戦TOP</button>
+            <button onclick="changeIframeSrc('top.html')" data-lang="pc-competop">大会TOP</button>
+            <button onclick="changeIframeSrc('index.html')" data-lang="pc0">対戦TOP</button>
             <br>
-            <button onclick="changeIframeSrc('1.html')">先鋒戦</button>
-            <button onclick="changeIframeSrc('2.html')">次鋒戦</button>
-            <button onclick="changeIframeSrc('3.html')">中堅戦</button>
-            <button onclick="changeIframeSrc('4.html')">副将戦</button>
-            <button onclick="changeIframeSrc('5.html')">大将戦</button>
+            <button onclick="changeIframeSrc('1.html')" data-lang="pc1">先鋒戦</button>
+            <button onclick="changeIframeSrc('2.html')" data-lang="pc2">次鋒戦</button>
+            <button onclick="changeIframeSrc('3.html')" data-lang="pc3">中堅戦</button>
+            <button onclick="changeIframeSrc('4.html')" data-lang="pc4">副将戦</button>
+            <button onclick="changeIframeSrc('5.html')" data-lang="pc5">大将戦</button>
         </div>
         <div id="hikou-panel">
-            <summary>披講</summary>
+            <summary data-lang="hikou">披講</summary>
             <div id="hikou">
-                <button id="showRed">紅 披講</button>
-                <button id="showWhite">白 披講</button>
+                <button id="showRed" data-lang="hikou-red">紅 披講</button>
+                <button id="showWhite" data-lang="hikou-white">白 披講</button>
             </div>
         </div>
-        <summary>BGM再生</summary>
+        <summary data-lang="bgmstart">BGM再生</summary>
         <div id="audio-controls">
-            <div class="btn" onclick="audio_in()">入場</div>
-            <div class="btn" onclick="audio_out()">退場</div>
-            <div class="btn" onclick="audio_wait()">待機</div>
-            <button id="stop-bgm-btn">停止</button>
+            <div class="btn" onclick="audio_in()" data-lang="bgm-in">入場</div>
+            <div class="btn" onclick="audio_out()" data-lang="bgm-out">退場</div>
+            <div class="btn" onclick="audio_wait()" data-lang="bgm-wait">待機</div>
+            <button id="stop-bgm-btn" data-lang="bgm-stop">停止</button>
             <label>
-                <input type="checkbox" id="toggle-wait-loop-checkbox">
-                待機ループ
+                <input type="checkbox" id="toggle-wait-loop-checkbox"><span data-lang="wait-loop">待機ループ</span>
             </label>
         </div>
         <div id="timer-controls">
             <details open>
-            <summary>タイマー</summary>
+            <summary data-lang="timer">タイマー</summary>
             <div class="timers-container">
                 <!-- 1つ目のタイマー -->
                 <div class="timer-block">
                 <div>
-                    <input type="number" id="minutes" min="0" value="3"> 分
-                    <input type="number" id="seconds" min="0" max="59" value="00"> 秒
-                    <button onclick="saveTimeSetting()">保存</button>
+                    <input type="number" id="minutes" min="0" value="3"><span data-lang="min">分</span>
+                    <input type="number" id="seconds" min="0" max="59" value="00"><span data-lang="sec">秒</span>
+                    <button onclick="saveTimeSetting()" data-lang="save">保存</button>
                 </div>
-                <div id="timer">03分00秒</div>
+                <div id="timer">
+                    <span id="timer1min">03</span><span data-lang="min" class="unit">分</span><span id="timer1sec">00</span><span data-lang="sec" class="unit">秒</span>
+                </div>
                 <div>
-                    <button onclick="startTimer()">スタート</button>
-                    <button onclick="pauseTimer()">一時停止</button>
-                    <button onclick="resetTimer()">リセット</button>
+                    <button onclick="startTimer()" data-lang="start">スタート</button>
+                    <button onclick="pauseTimer()" data-lang="pause">一時停止</button>
+                    <button onclick="resetTimer()" data-lang="reset">リセット</button>
                 </div>
                 <div id="one-minute-warning"></div>
                 </div>
@@ -64,94 +65,123 @@
                 <!-- 2つ目のタイマー -->
                 <div class="timer-block">
                 <div>
-                    <input type="number" id="seconds2" min="0" max="59" value="30"> 秒
-                    <button onclick="saveTimeSetting2()">保存</button>
+                    <input type="number" id="seconds2" min="0" max="59" value="30"><span data-lang="sec" >秒</span>
+                    <button onclick="saveTimeSetting2()" data-lang="save">保存</button>
                 </div>
-                <div id="timer2">30秒</div>
+                <div id="timer2">
+                    <span id="timer2sec">30</span><span data-lang="sec" class="unit">秒</span>
+                </div>
                 <div>
-                    <button onclick="startTimer2()">スタート</button>
-                    <button onclick="pauseTimer2()">一時停止</button>
-                    <button onclick="resetTimer2()">リセット</button>
+                    <button onclick="startTimer2()" data-lang="start">スタート</button>
+                    <button onclick="pauseTimer2()" data-lang="pause">一時停止</button>
+                    <button onclick="resetTimer2()" data-lang="reset">リセット</button>
                 </div>
                 </div>
             </div>
             </details>   
             </div>
             <details>
-                <summary>Excelファイル管理</summary>
+                <summary data-lang="excel">Excelファイル管理</summary>
                 <div id="file-manager">
                     <div>
                         <input type="file" id="excel-input" accept=".xlsx">
-                        <button id="reset-data-btn">初期化</button>
+                        <button id="reset-data-btn" data-lang="excel-reset">初期化</button>
                     </div>
-                    <div id="note">
+                    <div id="note" data-lang="excel-note">
                         Note:「ファイルを選択」の横にある表示は、読み込み後「選択されていません」に戻ります。
                         ファイルを正しく読み込めているかどうかは、反映される大会名などで確認してください。
                     </div>
                 </div>
             </details>
             <details>
-                <summary>BGMファイル管理</summary>
+                <summary data-lang="bgmcheck">BGMファイル管理</summary>
                 <div id="file-manager">
                     <div>
                         <input type="file" id="music-upload-input" multiple accept="audio/*">
-                        <button id="music-upload-btn">アップロード</button>
+                        <button id="music-upload-btn" data-lang="bgm-upload">アップロード</button>
                     </div>
                     <div>
                         <ul id="music-file-list"></ul>
                     </div>
                     <div>
-                        <label>披講: <select id="bgm-hikou"></select></label>
-                        <label>入場: <select id="bgm-in"></select></label>
-                        <label>退場: <select id="bgm-out"></select></label>
-                        <label>待機: <select id="bgm-wait"></select></label>
-                        <label>タイマー1: <select id="bgm-timer1"></select></label>
-                        <label>タイマー2: <select id="bgm-timer2"></select></label>
-                        <button id="save-bgm-config">BGM設定保存</button>
+                        <label>
+                            <span data-lang="bgm-up-hikou">披講: </span>
+                            <select id="bgm-hikou"></select>
+                        </label>
+                        <label>
+                            <span data-lang="bgm-up-in">入場: </span>
+                            <select id="bgm-in"></select>
+                        </label>
+                        <label>
+                            <span data-lang="bgm-up-out">退場: </span>
+                            <select id="bgm-out"></select>
+                        </label>
+                        <label>
+                            <span data-lang="bgm-up-wait">待機: </span>
+                            <select id="bgm-wait"></select>
+                        </label>
+                        <label>
+                            <span data-lang="bgm-up-timer1">タイマー1:</span>
+                            <select id="bgm-timer1"></select>
+                        </label>
+                        <label>
+                            <span data-lang="bgm-up-timer2">タイマー2:</span>
+                            <select id="bgm-timer2"></select>
+                        </label>
+                        <button id="save-bgm-config" data-lang="bgm-save">BGM設定保存</button>
                     </div>
                 </div>
             </details>
             <details>
-                <summary>テーマカラー</summary>
+                <summary data-lang="color">テーマカラー</summary>
                 <div id="file-manager">
-                <label for="theme-select">テーマカラー：</label>
+                <label for="theme-select" data-lang="color">テーマカラー：</label>
                     <select id="theme-select">
                     </select>
                 </div>
             </details>
+            <details>
+                <summary data-lang="lang">Language</summary>
+                <div id="file-manager">
+                <label for="theme-select" data-lang="lang">Language: </label>
+                    <button onclick="setLanguage('ja')">日本語</button>
+                    <button onclick="setLanguage('en')">English</button>
+                </div>
+            </details>
         </div>
         <div id="match-setup-panel">
-            <h3>対戦指定パネル</h3>
+            <h3 data-lang="battle-decide">対戦指定パネル</h3>
             <div class="match-setup-flex">
                 <div class="match-setup-fields">
                     <div id="match-setup-panel-row">
-                        <label>紅チーム:
+                        <label><span data-lang="bd-red">紅チーム: </span>
                             <select id="redTeamSelect"></select>
                         </label>
-                        <label>白チーム:
+                        <label><span data-lang="bd-white">白チーム: </span>
                             <select id="whiteTeamSelect"></select>
                         </label>
                     </div>
                     <div id="match-setup-panel-row">
-                        <label>兼題:
+                        <label><span data-lang="theme">兼題: </span>
                             <select id="kendaiSelect"></select>
                         </label>
-                        <label>対戦名:
+                        <label><span data-lang="match-name">対戦名: </span>
                             <input type="text" id="matchTitleInput" placeholder="例: Aブロック<br>第１試合 *HTMLタグが使えます">
                         </label>
                     </div>
                 </div>
-                <button id="saveMatchConfig">保存</button>
+                <button id="saveMatchConfig" data-lang="save">保存</button>
             </div>
         </div>
     </div>
+    <script src="js/lang.js"></script>
+    <script src="home.js"></script>
     <script src="js/color.js"></script>
     <script defer src="js/config.js"></script>
     <script src="js/music.js"></script>
     <script src="js/music-manager.js"></script>
     <script src="js/timer.js"></script>
     <script defer src="renderer.js"></script>
-    <script src="home.js"></script>
     <div id="toast"></div>
 </body>
 </html>

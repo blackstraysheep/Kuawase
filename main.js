@@ -163,7 +163,7 @@ app.whenReady().then(() => {
             splashWindow.close();
             splashWindow = null;
         }
-    }, 1800);
+    }, 6000);
 });
 
 // 全ウィンドウ終了時

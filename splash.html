@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Kuawase - 起動中</title>
+  <title data-lang="load-title">Kuawase - loading</title>
   <style>
     body {
       margin: 0;
@@ -44,7 +44,7 @@
 <body>
   <div class="logo">Kuawase</div>
   <img src="img/Kuawaselogo_0.5.2.svg" alt="Kuawase ロゴ" style="height:128px;">
-  <div class="loading">読み込み中...</div>
+  <div class="loading" data-lang="onload">読み込み中...</div>
   <div class="spinner"></div>
   <div id="version" style="color:#888; margin-top:1.5em; font-size:0.95em;"></div>
 <script>
@@ -60,5 +60,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
+<script src="js/lang.js"></script>
 </body>
 </html>

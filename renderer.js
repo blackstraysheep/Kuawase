@@ -16,11 +16,11 @@ document.getElementById("excel-input").addEventListener("change", async (event) 
             const success = await window.electron.invoke("set-excel-file", { filePath: file.path });
             if (success) {
                 await updateExcelData();
-                showToastAndReload("Excelデータを読み込みました！");
+                showToastAndReload(t("excel-success"));
             }
         } catch (error) {
             console.error("Excelファイルの読み込みに失敗しました:", error);
-            showToastAndReload("Excelデータの読み込みに失敗しました", true);
+            showToastAndReload(t("excel-fail"), true);
         }
     }
 });
@@ -78,7 +78,7 @@ document.getElementById("saveMatchConfig").addEventListener("click", async () =>
     const success = await window.electron.invoke("update-config", newConfig);
     if (success) {
         window.appConfig = newConfig;
-        showToastAndReload("対戦指定を保存しました！");
+        showToastAndReload(t("save-success"));
     }
 });
 
