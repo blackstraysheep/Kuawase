@@ -235,7 +235,7 @@ button, select, input{
 }
 .music-file-name {
     display: block;
-    max-width: 170px; /* 必要に応じて調整 */
+    max-width: 360px; /* 必要に応じて調整 */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
