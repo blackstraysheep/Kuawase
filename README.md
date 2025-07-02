@@ -70,7 +70,6 @@
 - Download the Excel template from our GitHub repository and fill in match data according to the instructions.  
 1. In the Administrator Window, open ▶ **Excel File Management** → **Select File**, then choose your `.xlsx` file.  
 2. Once loaded, “Excel data loaded!” appears at the top of the window, and the contents refresh automatically.  
-   > After refreshing, the file selector label resets to “No file selected.”
 
 ### 5.2 Selecting a Match
 
@@ -164,8 +163,6 @@ Then click **Save**. “Saved!” appears at the top of the window, and the view
   → Click ▼ **Timer** to collapse; timer continues running.
 
 - **Excel data not loading**  
-  → “No file selected” is normal after load.  
-  → Look for “Excel data loaded!” or correct tournament name display.  
   → If loading fails, retry or restart the application.
 
 - **BGM won’t play**  
