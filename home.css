@@ -55,7 +55,7 @@ button, select, input{
     color: var(--grey);
     border: 1px solid var(--grey);
     border-radius: 3px;
-    padding: 4px 8px;
+    padding: 4px 4px;
     margin: 6px 0;
     font-size: 1rem;
     font-weight: bold;
@@ -135,7 +135,7 @@ button, select, input{
 #match-setup-panel select,
 #match-setup-panel input[type="text"] {
     flex: 1 1 0;
-    padding: 4px 8px;
+    padding: 4px 4px;
     border: 1px solid #bbb;
     border-radius: 4px;
     font-size: 1rem;
@@ -185,7 +185,7 @@ button, select, input{
     padding: 2px 0;
 }
 #file-manager select {
-    max-width: 250px;
+    max-width: 280px;
     padding: 2px 6px;
     border: 1px solid #bbb;
     border-radius: 4px;
@@ -246,7 +246,7 @@ button, select, input{
     max-width: 60px;
     margin-left: 8px;
     font-size: 0.93em;
-    padding: 2px 8px;
+    padding: 2px 4px;
     background: #ffd6d6;
     color: #b22;
     border: 1.5px solid #b22;
@@ -376,7 +376,7 @@ summary {
     color: var(--grey);
     border: 1px solid var(--grey);
     border-radius: 3px;
-    padding: 4px 8px;
+    padding: 4px 4px;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
@@ -405,12 +405,51 @@ summary {
     margin: 0 8px 0 0;
 }
 
-#file-manager #reset-data-btn {
+#file-manager #reset-data-btn,
+#file-manager #delete-all-music-btn {
     background: #ffd6d6;
     color: #b22;
     border: 1.5px solid #b22;
+    border-radius: 4px;
+    font-size: 0.98em;
+    font-weight: 500;
+    margin: 0 2px 0 6px;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    padding: 3px 12px;
 }
-#file-manager #reset-data-btn:hover {
+#file-manager #reset-data-btn:hover,
+#file-manager #delete-all-music-btn:hover {
+    background: #ff8a8a;
+    color: #fff;
+}
+
+/* --- 共通: 非表示 --- */
+.hide {
+    display: none !important;
+}
+
+/* --- 共通: Excel/BGMファイル名表示用 --- */
+.last-excel-file {
+    margin-left: 10px;
+    color: #555;
+    font-size: 0.95em;
+}
+
+/* --- 一括削除ボタンを初期化ボタンと同じデザインに --- */
+#delete-all-music-btn {
+    background: #ffd6d6;
+    color: #b22;
+    border: 1.5px solid #b22;
+    border-radius: 4px;
+    font-size: 0.98em;
+    font-weight: 500;
+    margin: 0 2px 0 6px;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    padding: 3px 12px;
+}
+#delete-all-music-btn:hover {
     background: #ff8a8a;
     color: #fff;
 }
@@ -435,7 +474,7 @@ summary {
     color: var(--grey);
     border: 1px solid var(--grey);
     border-radius: 3px;
-    padding: 4px 8px;
+    padding: 4px 4px;
     font-size: 1em;
     font-weight: bold;           /* フォントウエイトをboldに */
     cursor: pointer;
@@ -506,4 +545,40 @@ summary {
     z-index:9999;
     font-size:1.1em;
     box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+
+.custom-file-label {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--grey);
+    border: 1px solid var(--grey);
+    border-radius: 4px;
+    padding: 4px 14px;
+    font-size: 0.98em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    margin-right: 8px;
+    margin-bottom: 0;
+    box-shadow: 0 2px 6px rgba(200,200,100,0.06);
+    user-select: none;
+    vertical-align: middle;
+}
+.custom-file-label:hover {
+    background: var(--primary-dark);
+    color: #000;
+}
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.right-buttons {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }

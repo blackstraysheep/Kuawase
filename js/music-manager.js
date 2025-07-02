@@ -44,7 +44,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             nameSpan.textContent = f;
             li.appendChild(nameSpan);
             const del = document.createElement("button");
-            del.textContent = "削除";
+            del.setAttribute("data-lang", "bgm-delete");
+            del.textContent = t ? t("bgm-delete") : "削除";
             del.onclick = async () => {
                 if (confirm(`${f} を削除しますか？`)) {
                     await window.electron.deleteMusicFile(f);

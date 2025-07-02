@@ -15,6 +15,12 @@ document.getElementById("excel-input").addEventListener("change", async (event) 
         try {
             const success = await window.electron.invoke("set-excel-file", { filePath: file.path });
             if (success) {
+                // lastExcelFileをconfigに保存
+                const config = await window.electron.invoke("get-config");
+                config.lastExcelFile = file.name;
+                await window.electron.invoke("update-config", config);
+                // 表示を更新
+                document.getElementById("last-excel-file").textContent = file.name;
                 await updateExcelData();
                 showToastAndReload(t("excel-success"));
             }
@@ -89,7 +95,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         await restoreMatchConfig();
         setupIframeSync();
 
-                const iframe = document.getElementById("slide-frame");
+        // lastExcelFileの表示
+        const config = await window.electron.invoke("get-config");
+        const lastFile = config.lastExcelFile || "選択されていません";
+        document.getElementById("last-excel-file").textContent = lastFile;
+
+        const iframe = document.getElementById("slide-frame");
         if (iframe) {
             // 初回ロード時にも披講パネルを隠す／出す
             const filename = iframe.src.split("/").pop().split("\\").pop();

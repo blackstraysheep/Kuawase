@@ -83,24 +83,25 @@
             <details open>
                 <summary data-lang="excel">Excelファイル管理</summary>
                 <div id="file-manager">
-                    <div>
-                        <label for="excel-input" class="custom-file-label">Excelファイルを選択</label>
-                        <input type="file" id="excel-input" accept=".xlsx" style="display:none;">
-                        <button id="reset-data-btn" data-lang="excel-reset">初期化</button>
-                    </div>
-                    <div id="note" data-lang="excel-note">
-                        Note:「Excelファイルを選択」の横にある表示は、読み込み後「選択されていません」に戻ります。
-                        ファイルを正しく読み込めているかどうかは、反映される大会名などで確認してください。
+                    <div class="flex-row">
+                        <label for="excel-input" class="custom-file-label" data-lang="excel-select">Excelファイルを選択</label>
+                        <input type="file" id="excel-input" accept=".xlsx" class="hide">
+                        <span id="last-excel-file" class="last-excel-file" data-lang="not-selected">選択されていません</span>
+                        <div class="right-buttons">
+                            <button id="reset-data-btn" data-lang="excel-reset">初期化</button>
+                        </div>
                     </div>
                 </div>
             </details>
             <details>
                 <summary data-lang="bgmcheck">BGMファイル管理</summary>
                 <div id="file-manager">
-                    <div>
-                        <label for="music-upload-input" class="custom-file-label">BGMファイルを選択</label>
-                        <input type="file" id="music-upload-input" multiple accept="audio/*" style="display:none;">
-                        <button id="delete-all-music-btn" data-lang="bgm-delete-all">一括削除</button>
+                    <div class="flex-row">
+                        <label for="music-upload-input" class="custom-file-label" data-lang="bgm-select">BGMファイルを選択</label>
+                        <input type="file" id="music-upload-input" multiple accept="audio/*" class="hide">
+                        <div class="right-buttons">
+                            <button id="delete-all-music-btn" data-lang="bgm-delete-all">一括削除</button>
+                        </div>
                     </div>
                     <div>
                         <ul id="music-file-list"></ul>
