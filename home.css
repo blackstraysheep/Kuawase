@@ -231,9 +231,19 @@ button, select, input{
     border-radius: 5px;
     padding: 2px 8px 2px 6px;
     font-size: 0.97em;
+    gap: 10px; /* 追加: ボタンとファイル名の間隔を一定に */
+}
+.music-file-name {
+    display: block;
+    max-width: 170px; /* 必要に応じて調整 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 #music-file-list button {
-    width: 50px;
+    width: 60px; /* 幅をやや広げて固定 */
+    min-width: 60px;
+    max-width: 60px;
     margin-left: 8px;
     font-size: 0.93em;
     padding: 2px 8px;
@@ -242,6 +252,7 @@ button, select, input{
     border: 1.5px solid #b22;
     border-radius: 3px;
     transition: background 0.18s;
+    flex-shrink: 0;
 }
 #music-file-list button:hover {
     background: #ff8a8a;

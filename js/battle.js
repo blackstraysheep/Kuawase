@@ -87,6 +87,6 @@ if (window.electron) {
 }
 // 初回ロード時にlocalStorageからテーマ適用
 document.addEventListener("DOMContentLoaded", () => {
-    const theme = localStorage.getItem("theme") || "yellow";
+    const theme = localStorage.getItem("theme") || "gray";
     if (window.applyTheme) window.applyTheme(theme);
 });

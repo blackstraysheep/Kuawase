@@ -34,14 +34,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.bgmAudioElements[type] = audio;
         }
     }
-    // --- ここまで追加 ---
 
     async function refreshListAndSelects() {
         const files = await window.electron.listMusicFiles();
         fileList.innerHTML = "";
         files.forEach(f => {
             const li = document.createElement("li");
-            li.textContent = f;
+            const nameSpan = document.createElement("span");
+            nameSpan.className = "music-file-name";
+            nameSpan.textContent = f;
+            li.appendChild(nameSpan);
             const del = document.createElement("button");
             del.textContent = "削除";
             del.onclick = async () => {
