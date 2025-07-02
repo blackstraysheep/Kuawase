@@ -6,6 +6,7 @@ const THEMES = {
   Lime:   { primary: '#e6ff8f', 'primary-dark': '#c4dd00', 'primary-light': '#f0ffb3' }, // 変更なし
   Limegreen:{ primary: '#c6ff8f', 'primary-dark': '#a3d600', 'primary-light': '#e6ffb3' }, // 変更なし
   Green:   { primary: '#7fdca0', 'primary-dark': '#4fc47a', 'primary-light': '#b2f2cc' },
+  Emerald: { primary: '#7dd4e0', 'primary-dark': '#5bb3c5', 'primary-light': '#a8e6f0' }, 
   Skyblue: { primary: '#7fdcff', 'primary-dark': '#00b8f4', 'primary-light': '#bfeaff' },
   Blue:    { primary: '#7fbfff', 'primary-dark': '#338be6', 'primary-light': '#d0e8ff' },
   Indigo:  { primary: '#a0b3ff', 'primary-dark': '#5c6bc0', 'primary-light': '#dde3ff' },
