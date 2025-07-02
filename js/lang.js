@@ -22,8 +22,13 @@
      });
  }
 
+ function getCurrentLang() {
+    return (window.currentLang || localStorage.getItem("lang") || "ja");
+}
+
  window.setLanguage = loadLocale;
  window.t = t;
+ window.getCurrentLang = getCurrentLang;
 
 document.addEventListener('DOMContentLoaded', () => {
   loadLocale(currentLang);
