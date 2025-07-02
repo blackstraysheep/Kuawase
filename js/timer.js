@@ -68,11 +68,12 @@ function startTimer() {
           }
         }
         if (!played) {
-          document.getElementById('alarm-sound').play();
+          const alarm = document.getElementById('alarm-sound');
+          if (alarm) alarm.play();
         }
         soundPlayed = true;
-        resetTimer2();
       }
+      resetTimer2();
     }
   }, 1000);
 
@@ -155,7 +156,8 @@ function startTimer2() {
           }
         }
         if (!played) {
-          document.getElementById('alarm-sound2').play();
+          const alarm = document.getElementById('alarm-sound2');
+          if (alarm) alarm.play();
         }
         soundPlayed2 = true;
       }
