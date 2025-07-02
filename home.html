@@ -80,15 +80,16 @@
             </div>
             </details>   
             </div>
-            <details>
+            <details open>
                 <summary data-lang="excel">Excelファイル管理</summary>
                 <div id="file-manager">
                     <div>
-                        <input type="file" id="excel-input" accept=".xlsx">
+                        <label for="excel-input" class="custom-file-label">Excelファイルを選択</label>
+                        <input type="file" id="excel-input" accept=".xlsx" style="display:none;">
                         <button id="reset-data-btn" data-lang="excel-reset">初期化</button>
                     </div>
                     <div id="note" data-lang="excel-note">
-                        Note:「ファイルを選択」の横にある表示は、読み込み後「選択されていません」に戻ります。
+                        Note:「Excelファイルを選択」の横にある表示は、読み込み後「選択されていません」に戻ります。
                         ファイルを正しく読み込めているかどうかは、反映される大会名などで確認してください。
                     </div>
                 </div>
@@ -97,8 +98,9 @@
                 <summary data-lang="bgmcheck">BGMファイル管理</summary>
                 <div id="file-manager">
                     <div>
-                        <input type="file" id="music-upload-input" multiple accept="audio/*">
-                        <button id="music-upload-btn" data-lang="bgm-upload">アップロード</button>
+                        <label for="music-upload-input" class="custom-file-label">BGMファイルを選択</label>
+                        <input type="file" id="music-upload-input" multiple accept="audio/*" style="display:none;">
+                        <button id="delete-all-music-btn" data-lang="bgm-delete-all">一括削除</button>
                     </div>
                     <div>
                         <ul id="music-file-list"></ul>

@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const fileList = document.getElementById("music-file-list");
     const uploadInput = document.getElementById("music-upload-input");
-    const uploadBtn = document.getElementById("music-upload-btn");
     const saveBtn = document.getElementById("save-bgm-config");
     const selects = {
         hikou: document.getElementById("bgm-hikou"),
@@ -76,7 +75,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         await preloadBgmAudios(); // リスト更新時もプリロード
     }
 
-    uploadBtn.onclick = async () => {
+    // アップロード処理を直接changeイベントで定義
+    uploadInput.addEventListener("change", async () => {
         const files = uploadInput.files;
         if (!files || files.length === 0) return;
         for (const file of files) {
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         uploadInput.value = "";
         await refreshListAndSelects();
-    };
+    });
 
     saveBtn.onclick = async () => {
         const bgmConfig = {
@@ -100,6 +100,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         showToast(t("bgm-save-success"));
         await preloadBgmAudios(); // 設定保存時もプリロード
     };
+
+    const deleteAllBtn = document.getElementById("delete-all-music-btn");
+    if (deleteAllBtn) {
+        deleteAllBtn.onclick = async () => {
+            if (!confirm("すべてのBGMファイルを削除しますか？")) return;
+            const files = await window.electron.listMusicFiles();
+            for (const f of files) {
+                await window.electron.deleteMusicFile(f);
+            }
+            await refreshListAndSelects();
+            await preloadBgmAudios();
+        };
+    }
 
     await refreshListAndSelects();
 });
