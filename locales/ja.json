@@ -25,7 +25,7 @@
   "reset": "リセット",
   "minwarn": "1分前",
   "minfin": "そこまで",
-  "excel": "Excelファイル管理",
+  "ku-data": "句データ管理",
   "excel-reset": "初期化",
   "excel-note": "Note:「ファイルを選択」の横にある表示は、読み込み後「選択されていません」に戻ります。ファイルを正しく読み込めているかどうかは、反映される大会名などで確認してください。",
   "bgmcheck": "BGMファイル管理",
@@ -59,5 +59,13 @@
   "white": "白",
   "excel-select": "Excelファイルを選択",
   "bgm-select": "BGMファイルを選択",
-  "not-selected": "選択されていません"
+  "not-selected": "選択されていません",
+  "gs-url": "Googleスプレッドシート URL",
+  "gs-load": "読み込み",
+  "gs-load-btn": "Googleスプレッドシートから読み込み",
+  "current-file": "読み込み元:",
+  "gs-modal-title": "Googleスプレッドシートから読み込み",
+  "gs-modal-desc1": "読み込みたいGoogleスプレッドシートを開き、右上の「共有」ボタンをクリックしてください。",
+  "gs-modal-desc2": "「一般的なアクセス」を「リンクを知っている全員」に変更し、権限が「閲覧者」になっていることを確認してください。",
+  "gs-modal-desc3": "その後、「リンクをコピー」して、下の入力欄に貼り付けてください。"
 }

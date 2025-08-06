@@ -4,6 +4,7 @@ const log = require('electron-log');
 const fs = require("fs");
 const path = require("path");
 const XLSX = require("xlsx");
+const axios = require('axios');
 
 require('@electron/remote/main').initialize();
 
@@ -210,9 +211,14 @@ ipcMain.handle('get-excel-data', () => {
 ipcMain.handle('set-excel-file', async (_e, { filePath, numProblems, numTeams }) => {
   if (!filePath || !fs.existsSync(filePath)) {
     console.error("ファイルが存在しません:", filePath);
-    return false;
+    return { success: false, error: "ファイルが存在しません" };
   }
-  return saveExcelData(filePath, numProblems, numTeams);
+  const ok = saveExcelData(filePath, numProblems, numTeams);
+  if (ok) {
+    return { success: true };
+  } else {
+    return { success: false, error: "Excelデータ保存に失敗しました" };
+  }
 });
 
 // (3) プロジェクタ表示切替
@@ -361,6 +367,49 @@ ipcMain.handle('reset-data', async () => {
     return { success: true };
   } catch (e) {
     return { success: false, error: e.message };
+  }
+});
+
+ipcMain.handle('load-from-google-sheet', async (_e, url) => {
+  try {
+    // Google Sheet URLをCSVエクスポート用のURLに変換
+    const sheetId = url.match(/\/d\/(.+?)\//)[1];
+    const exportUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=xlsx`;
+
+    const response = await axios.get(exportUrl, { responseType: 'arraybuffer' });
+    const workbook = XLSX.read(response.data, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+
+    // saveExcelDataと同様のロジックでJSONを生成
+    const excelData = {};
+    const cellB1 = "B1"; //大会名取得
+    excelData[cellB1] = sheet[cellB1] ? sheet[cellB1].v : "";
+    const cellD1 = "D1"; //チーム数取得
+    const numTeams = sheet[cellD1] ? sheet[cellD1].v : 0;
+    const cellF1 = "F1"; //兼題数取得
+    const numProblems = sheet[cellF1] ? sheet[cellF1].v : 0;
+
+    for (let k = 8; k <= numProblems * 2 + 6; k = k + 2) {
+        const cell = getColumnLetter(k) + "1"; //兼題名取得
+        excelData[cell] = sheet[cell] ? sheet[cell].v : "";
+    }
+    for (let i = 3; i <= numTeams + 2; i++) {
+        const cell = "B" + i; //チーム名取得
+        excelData[cell] = sheet[cell] ? sheet[cell].v : "";
+        for (let j = 3; j <= numProblems * 10 + 2; j = j + 2) {
+            const cellKey = getColumnLetter(j) + i;
+            excelData[cellKey] = sheet[cellKey] ? sheet[cellKey].v : "";
+        }
+    }
+
+    const jsonPath = path.join(app.getPath('userData'), "excelData.json");
+    fs.writeFileSync(jsonPath, JSON.stringify(excelData, null, 4), "utf8");
+    
+    return { success: true, sheetName: sheetName };
+  } catch (error) {
+    console.error("Google Sheetの読み込み・解析エラー:", error);
+    return { success: false, error: error.message };
   }
 });
 

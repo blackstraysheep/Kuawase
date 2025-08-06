@@ -81,15 +81,19 @@
             </details>   
             </div>
             <details open>
-                <summary data-lang="excel">Excelファイル管理</summary>
+                <summary data-lang="ku-data">句データ管理</summary>
                 <div id="file-manager">
-                    <div class="flex-row">
+                    <div class="flex-row button-group">
                         <label for="excel-input" class="custom-file-label" data-lang="excel-select">Excelファイルを選択</label>
                         <input type="file" id="excel-input" accept=".xlsx" class="hide">
-                        <span id="last-excel-file" class="last-excel-file" data-lang="not-selected">選択されていません</span>
+                        <button id="open-gs-modal-btn" class="custom-file-label" data-lang="gs-load-btn">Googleスプレッドシートから読み込み</button>
                         <div class="right-buttons">
                             <button id="reset-data-btn" data-lang="excel-reset">初期化</button>
                         </div>
+                    </div>
+                    <div class="flex-row" style="margin-top: 10px;">
+                        <span data-lang="current-file" style="font-weight: 500; margin-right: 8px;">読み込み元:</span>
+                        <span id="last-excel-file" class="last-excel-file" data-lang="not-selected">選択されていません</span>
                     </div>
                 </div>
             </details>
@@ -186,5 +190,25 @@
     <script src="js/timer.js"></script>
     <script defer src="renderer.js"></script>
     <div id="toast"></div>
+    <div id="gs-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3 data-lang="gs-modal-title">Googleスプレッドシートから読み込み</h3>
+            <p data-lang="gs-modal-desc1">
+                読み込みたいGoogleスプレッドシートを開き、右上の「共有」ボタンをクリックしてください。
+            </p>
+            <p data-lang="gs-modal-desc2">
+                「一般的なアクセス」を「リンクを知っている全員」に変更し、権限が「閲覧者」になっていることを確認してください。
+            </p>
+            <img src="img/gs_share_setting.png" alt="Google Sheet Share Setting" style="max-width: 100%; border: 1px solid #ccc; margin: 10px 0;">
+            <p data-lang="gs-modal-desc3">
+                その後、「リンクをコピー」して、下の入力欄に貼り付けてください。
+            </p>
+            <div class="flex-row" style="margin-top: 15px;">
+                <input type="text" id="gs-url-input" class="url-input" placeholder="https://docs.google.com/spreadsheets/d/...">
+                <button id="load-gs-btn" data-lang="gs-load">読み込み</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

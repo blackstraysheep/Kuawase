@@ -13,21 +13,75 @@ document.getElementById("excel-input").addEventListener("change", async (event) 
     const file = event.target.files[0];
     if (file) {
         try {
-            const success = await window.electron.invoke("set-excel-file", { filePath: file.path });
-            if (success) {
-                // lastExcelFileをconfigに保存
+            const result = await window.electron.invoke("set-excel-file", { filePath: file.path });
+            if (result.success) {
                 const config = await window.electron.invoke("get-config");
                 config.lastExcelFile = file.name;
                 await window.electron.invoke("update-config", config);
-                // 表示を更新
-                document.getElementById("last-excel-file").textContent = file.name;
+
+                const lastExcelFileSpan = document.getElementById("last-excel-file");
+                lastExcelFileSpan.textContent = config.lastExcelFile;
+                lastExcelFileSpan.removeAttribute("data-lang"); // 翻訳されないように属性を削除
+
                 await updateExcelData();
                 showToastAndReload(t("excel-success"));
+            } else {
+                throw new Error(result.error);
             }
         } catch (error) {
             console.error("Excelファイルの読み込みに失敗しました:", error);
-            showToastAndReload(t("excel-fail"), true);
+            showToastAndReload(t("excel-fail") + `\n${error.message}`, true);
         }
+    }
+});
+
+document.getElementById("reset-data-btn").addEventListener("click", async () => {
+    const result = await window.electron.invoke("reset-data");
+    if (result.success) {
+        const config = await window.electron.invoke("get-config");
+        config.lastExcelFile = ""; // 設定をクリア
+        await window.electron.invoke("update-config", config);
+
+        const lastExcelFileSpan = document.getElementById("last-excel-file");
+        lastExcelFileSpan.setAttribute("data-lang", "not-selected"); // 翻訳されるように属性を再設定
+        setLanguage(localStorage.getItem("lang") || "ja"); // 表示を即時更新
+
+        await updateExcelData();
+        showToastAndReload(t("reset-success"));
+    } else {
+        showToast(t("reset-fail"), true);
+    }
+});
+
+document.getElementById("load-gs-btn").addEventListener("click", async () => {
+    const urlInput = document.getElementById("gs-url-input");
+    const url = urlInput.value;
+    if (!url || !url.startsWith("https://docs.google.com/spreadsheets/")) {
+        showToast(t("gs-invalid-url"), true);
+        return;
+    }
+
+    try {
+        const result = await window.electron.invoke("load-from-google-sheet", url);
+        if (result.success) {
+            const config = await window.electron.invoke("get-config");
+            config.lastExcelFile = url; // ファイル名ではなくURLを保存
+            await window.electron.invoke("update-config", config);
+            
+            const lastExcelFileSpan = document.getElementById("last-excel-file");
+            lastExcelFileSpan.textContent = url;
+            lastExcelFileSpan.removeAttribute("data-lang"); // 翻訳されないように属性を削除
+
+            await updateExcelData();
+            gsModal.style.display = "none"; // 成功したらモーダルを閉じる
+            urlInput.value = ""; // 入力欄をクリア
+            showToastAndReload(t("excel-success"));
+        } else {
+            throw new Error(result.error);
+        }
+    } catch (error) {
+        console.error("Google Sheetの読み込みに失敗しました:", error);
+        showToast(t("excel-fail") + `\n${error.message}`, true);
     }
 });
 
@@ -97,8 +151,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // lastExcelFileの表示
         const config = await window.electron.invoke("get-config");
-        const lastFile = config.lastExcelFile || "選択されていません";
-        document.getElementById("last-excel-file").textContent = lastFile;
+        const lastExcelFileSpan = document.getElementById("last-excel-file");
+        if (config && config.lastExcelFile) {
+            lastExcelFileSpan.textContent = config.lastExcelFile;
+            lastExcelFileSpan.removeAttribute("data-lang"); // 翻訳されないように属性を削除
+        } else {
+            lastExcelFileSpan.setAttribute("data-lang", "not-selected");
+        }
 
         const iframe = document.getElementById("slide-frame");
         if (iframe) {
@@ -338,5 +397,50 @@ function getHaikuCellKey(teamKey, kendaiKey, matchIndex) {
 window.addEventListener("message", (event) => {
     if (event.data?.type === "theme" && window.applyTheme) {
         window.applyTheme(event.data.theme);
+    }
+});
+
+// --- スプレッドシート関連 ---
+const gsModal = document.getElementById("gs-modal");
+const openGsModalBtn = document.getElementById("open-gs-modal-btn");
+const closeBtn = document.querySelector(".modal .close-btn");
+
+openGsModalBtn.onclick = () => {
+    gsModal.style.display = "block";
+};
+closeBtn.onclick = () => {
+    gsModal.style.display = "none";
+};
+window.onclick = (event) => {
+    if (event.target == gsModal) {
+        gsModal.style.display = "none";
+    }
+};
+
+document.getElementById("load-gs-btn").addEventListener("click", async () => {
+    const urlInput = document.getElementById("gs-url-input");
+    const url = urlInput.value;
+    if (!url || !url.startsWith("https://docs.google.com/spreadsheets/")) {
+        showToast(t("gs-invalid-url"), true);
+        return;
+    }
+
+    try {
+        const result = await window.electron.invoke("load-from-google-sheet", url);
+        if (result.success) {
+            const config = await window.electron.invoke("get-config");
+            config.lastExcelFile = url; // ファイル名ではなくURLを保存
+            await window.electron.invoke("update-config", config);
+            document.getElementById("last-excel-file").textContent = url;
+            await updateExcelData();
+            gsModal.style.display = "none"; // 成功したらモーダルを閉じる
+            urlInput.value = ""; // 入力欄をクリア
+            showToastAndReload(t("excel-success"));
+        } else {
+            throw new Error(result.error);
+        }
+    } catch (error) {
+        console.error("Google Sheetの読み込みに失敗しました:", error);
+        showToast(t("excel-fail") + `\n${error.message}`, true);
     }
 });

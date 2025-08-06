@@ -434,6 +434,12 @@ summary {
     margin-left: 10px;
     color: #555;
     font-size: 0.95em;
+    white-space: normal; /* 折り返しを許可 */
+    overflow-wrap: break-word; /* 長い単語やURLを強制的に改行 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    min-width: 0;
 }
 
 /* --- 一括削除ボタンを初期化ボタンと同じデザインに --- */
@@ -581,4 +587,48 @@ summary {
     display: flex;
     gap: 8px;
     align-items: center;
+}
+
+/* --- GSSモーダルウィンドウ --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    position: relative;
+}
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+}
+.modal-content .url-input {
+    width: 100%;
+}
+.modal-content button {
+    margin-left: 10px;
+    padding: 8px 15px;
 }
