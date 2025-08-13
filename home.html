@@ -89,6 +89,7 @@
                         <button id="open-gs-modal-btn" class="custom-file-label" data-lang="gs-load-btn">Googleスプレッドシート読み込み</button>
                         <div class="right-buttons">
                             <button id="reset-data-btn" data-lang="excel-reset">初期化</button>
+                            <button id="reset-excel-only-btn" data-lang="excel-only-reset">句データリセット</button>
                         </div>
                     </div>
                     <div class="flex-row" style="margin-top: 10px;">
@@ -209,6 +210,16 @@
                 <button id="load-gs-btn" data-lang="gs-load">読み込み</button>
             </div>
         </div>
+    </div>
+    <div id="confirm-modal" class="modal" style="display:none;">
+      <div class="modal-content" style="max-width:420px;">
+        <h3 id="confirm-modal-title" data-lang="confirm-title">確認</h3>
+        <p id="confirm-modal-message"></p>
+        <div style="text-align:right;margin-top:12px;display:flex;gap:8px;justify-content:flex-end;">
+          <button id="confirm-cancel-btn" data-lang="cancel">キャンセル</button>
+          <button id="confirm-ok-btn" data-lang="ok">OK</button>
+        </div>
+      </div>
     </div>
 </body>
 </html>

@@ -271,6 +271,48 @@ ipcMain.handle('send-data-to-projector', (_e, data) => {
       return { success: false, error: err.message };
     }
   });
+  // 追加: BGM設定のリセット（config.json の bgm セクションを空に）
+  ipcMain.handle('reset-bgm-settings', async () => {
+    try {
+      let cfg = {};
+      if (fs.existsSync(configPath)) {
+        cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+      }
+      cfg.bgm = {};
+      fs.writeFileSync(configPath, JSON.stringify(cfg, null, 2), 'utf-8');
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // 追加: BGMファイル一括削除（music ディレクトリ内の対応拡張子を全削除）
+  ipcMain.handle('delete-all-bgm-files', async () => {
+    try {
+      if (!fs.existsSync(musicDir)) {
+        return { success: true };
+      }
+      const SUPPORTED_AUDIO_EXTS = ['.mp3', '.wav', '.ogg', '.aac', '.flac', '.m4a'];
+      const files = fs.readdirSync(musicDir);
+      let failed = [];
+      for (const f of files) {
+        const ext = path.extname(f).toLowerCase();
+        if (!SUPPORTED_AUDIO_EXTS.includes(ext)) continue;
+        try {
+          fs.unlinkSync(path.join(musicDir, f));
+        } catch (e) {
+          failed.push(`${f}: ${e.message}`);
+        }
+      }
+      if (failed.length > 0) {
+        return { success: false, error: failed.join('\n') };
+      }
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // (6) BGM 設定の取得／保存
   ipcMain.handle('get-bgm-config', async () => {
     try {

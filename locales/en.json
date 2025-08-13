@@ -54,7 +54,13 @@
   "gs-fail": "Failed to load Google Spreadsheet",
   "reset-success": "Reset completed",
   "reset-fail": "Reset failed",
+  "reset-cancel": "Reset was cancelled",
   "reset-confirm": "Do you want to reset the loaded data?",
+  "excel-only-reset": "Reset Phrase Data Only",
+  "excel-only-reset-confirm": "Reset ONLY phrase data (competition name, themes, haiku list)? BGM settings and files will remain.",
+  "excel-only-reset-success": "Phrase data reset.",
+  "excel-only-reset-fail": "Failed to reset phrase data.",
+  "excel-only-reset-cancel": "Phrase data reset was cancelled.",
   "onload": "Loading...",
   "red": "Red",
   "white": "White",
@@ -69,5 +75,8 @@
   "gs-modal-title": "Load from Google Spreadsheet",
   "gs-modal-desc1": "Open the Google Sheet you want to load and click the 'Share' button in the top right.",
   "gs-modal-desc2": "Change 'General access' to 'Anyone with the link' and ensure the permission is set to 'Viewer'.",
-  "gs-modal-desc3": "Then, click 'Copy link' and paste it into the input field below."
+  "gs-modal-desc3": "Then, click 'Copy link' and paste it into the input field below.",
+  "confirm-title": "Confirmation",
+  "ok": "OK",
+  "cancel": "Cancel"
 }

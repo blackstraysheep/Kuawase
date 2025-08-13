@@ -36,21 +36,26 @@ document.getElementById("excel-input").addEventListener("change", async (event) 
 });
 
 document.getElementById("reset-data-btn").addEventListener("click", async () => {
+    const ok = await showConfirm("reset-confirm");
+    if (!ok) { showToast(t("reset-cancel"), true); return; }
+    // 句データ・対戦設定・テーマカラー・BGM設定・BGMファイル一括削除
     const result = await window.electron.invoke("reset-data");
-    if (result.success) {
+    let allSuccess = result.success;
+    // テーマカラー初期化
+    try { localStorage.removeItem("theme"); if (window.applyTheme) window.applyTheme("Gray"); } catch {}
+    // BGM設定・BGMファイル一括削除
+    try { if (window.electron) { await window.electron.invoke("reset-bgm-settings"); await window.electron.invoke("delete-all-bgm-files"); } } catch {}
+    // 対戦設定・UIリセット
+    try {
         const config = await window.electron.invoke("get-config");
-        config.lastExcelFile = ""; // 設定をクリア
+        config.lastExcelFile = "";
         await window.electron.invoke("update-config", config);
-
         const lastExcelFileSpan = document.getElementById("last-excel-file");
-        lastExcelFileSpan.setAttribute("data-lang", "not-selected"); // 翻訳されるように属性を再設定
-        setLanguage(localStorage.getItem("lang") || "ja"); // 表示を即時更新
-
+        lastExcelFileSpan.setAttribute("data-lang", "not-selected");
+        setLanguage(localStorage.getItem("lang") || "ja");
         await updateExcelData();
-        showToastAndReload(t("reset-success"));
-    } else {
-        showToast(t("reset-fail"), true);
-    }
+    } catch {}
+    if (allSuccess) { showToastAndReload(t("reset-success")); } else { showToast(t("reset-fail"), true); }
 });
 
 document.getElementById("load-gs-btn").addEventListener("click", async () => {
@@ -75,13 +80,13 @@ document.getElementById("load-gs-btn").addEventListener("click", async () => {
             await updateExcelData();
             gsModal.style.display = "none"; // 成功したらモーダルを閉じる
             urlInput.value = ""; // 入力欄をクリア
-            showToastAndReload(t("excel-success"));
+            showToastAndReload(t("gs-success"));
         } else {
             throw new Error(result.error);
         }
     } catch (error) {
         console.error("Google Sheetの読み込みに失敗しました:", error);
-        showToast(t("excel-fail") + `\n${error.message}`, true);
+        showToast(t("gs-fail") + `\n${error.message}`, true);
     }
 });
 
@@ -444,3 +449,48 @@ document.getElementById("load-gs-btn").addEventListener("click", async () => {
         showToast(t("excel-fail") + `\n${error.message}`, true);
     }
 });
+
+// Documented change: add excel-only reset logic
+const excelOnlyBtn = document.getElementById("reset-excel-only-btn");
+if (excelOnlyBtn) {
+  excelOnlyBtn.addEventListener("click", async () => {
+    const ok = await showConfirm("excel-only-reset-confirm");
+    if (!ok) { showToast(t("excel-only-reset-cancel"), true); return; }
+    try {
+      const reset = await window.electron.invoke("reset-data");
+      if (!reset.success) throw new Error(reset.error || "reset-data failed");
+      let cfg = await window.electron.invoke("get-config");
+      const bgm = cfg.bgm || {};
+      cfg = { bgm };
+      await window.electron.invoke("update-config", cfg);
+      const lastExcelFileSpan = document.getElementById("last-excel-file");
+      if (lastExcelFileSpan) lastExcelFileSpan.setAttribute("data-lang", "not-selected");
+      setLanguage(localStorage.getItem("lang") || "ja");
+      await updateExcelData();
+      showToastAndReload(t("excel-only-reset-success"));
+    } catch (e) {
+      console.error("Excel-only reset failed", e);
+      showToast(t("excel-only-reset-fail"), true);
+    }
+  });
+}
+
+// --- 汎用確認モーダル ---
+function showConfirm(messageKey, rawTextOverride) {
+  return new Promise(resolve => {
+    const modal = document.getElementById('confirm-modal');
+    const msgEl = document.getElementById('confirm-modal-message');
+    const okBtn = document.getElementById('confirm-ok-btn');
+    const cancelBtn = document.getElementById('confirm-cancel-btn');
+    msgEl.textContent = rawTextOverride || t(messageKey);
+    modal.style.display = 'block';
+    function cleanup(result){
+      okBtn.onclick = null; cancelBtn.onclick = null;
+      modal.style.display = 'none';
+      resolve(result);
+    }
+    okBtn.onclick = () => cleanup(true);
+    cancelBtn.onclick = () => cleanup(false);
+  });
+}
+window.showConfirm = showConfirm;
