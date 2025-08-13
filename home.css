@@ -406,7 +406,8 @@ summary {
 }
 
 #file-manager #reset-data-btn,
-#file-manager #delete-all-music-btn {
+#file-manager #delete-all-music-btn,
+#file-manager #reset-excel-only-btn {
     background: #ffd6d6;
     color: #b22;
     border: 1.5px solid #b22;
@@ -419,7 +420,8 @@ summary {
     padding: 3px 12px;
 }
 #file-manager #reset-data-btn:hover,
-#file-manager #delete-all-music-btn:hover {
+#file-manager #delete-all-music-btn:hover,
+#file-manager #reset-excel-only-btn:hover {
     background: #ff8a8a;
     color: #fff;
 }

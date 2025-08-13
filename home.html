@@ -90,7 +90,6 @@
                         <input type="file" id="excel-input" accept=".xlsx" class="hide">
                         <button id="open-gs-modal-btn" class="custom-file-label" data-lang="gs-load-btn">Googleスプレッドシート読み込み</button>
                         <div class="right-buttons">
-                            <button id="reset-data-btn" data-lang="excel-reset">初期化</button>
                             <button id="reset-excel-only-btn" data-lang="excel-only-reset">句データリセット</button>
                         </div>
                     </div>
@@ -143,7 +142,7 @@
                 </div>
             </details>
             <details>
-                <summary data-lang="settings">表示設定</summary>
+                <summary data-lang="settings">表示設定・その他</summary>
                 <div id="file-manager">
                     <div>
                         <label for="theme-select" data-lang="color-setting">テーマカラー：</label>
@@ -154,6 +153,10 @@
                         <label for="language-setting" data-lang="lang-setting">言語: </label>
                         <button onclick="setLanguage('ja')">日本語</button>
                         <button onclick="setLanguage('en')">English</button>
+                    </div>
+                    <div>
+                        <label for="reset-all" data-lang="reset-all">全データ初期化 </label>
+                        <button id="reset-data-btn" data-lang="excel-reset">初期化</button>
                     </div>
                 </div>
             </details>
