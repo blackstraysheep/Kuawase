@@ -553,27 +553,6 @@ summary {
     box-shadow:0 2px 8px rgba(0,0,0,0.15);
 }
 
-.custom-file-label {
-    display: inline-block;
-    background: var(--primary);
-    color: var(--grey);
-    border: 1px solid var(--grey);
-    border-radius: 4px;
-    padding: 4px 14px;
-    font-size: 0.98em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.18s, color 0.18s;
-    margin-right: 8px;
-    margin-bottom: 0;
-    box-shadow: 0 2px 6px rgba(200,200,100,0.06);
-    user-select: none;
-    vertical-align: middle;
-}
-.custom-file-label:hover {
-    background: var(--primary-dark);
-    color: #000;
-}
 .flex-row {
     display: flex;
     flex-direction: row;
