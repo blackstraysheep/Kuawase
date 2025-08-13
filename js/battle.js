@@ -19,7 +19,7 @@ function renderTitle(data) {
     document.getElementById("whiteTeam").textContent = data.whiteTeamName || "";
 
     const gameid = document.getElementById("gameid");
-    if (gameid && data.matchTitle) gameid.innerHTML = data.matchTitle;
+    if (gameid && data.matchTitle) safeSetHTML(gameid, data.matchTitle);
 }
 
 window.addEventListener("message", (event) => {
@@ -39,7 +39,7 @@ window.addEventListener("message", (event) => {
             void el.offsetWidth;
             el.classList.add("fade-in");
         }
-        document.getElementById("redHaiku").innerHTML = Object.values(content)[0] || "";
+        safeSetHTML(document.getElementById("redHaiku"), Object.values(content)[0] || "");
     } else if (type === "white") {
         const er = document.getElementById("whiteHaiku");
         if (er) {
@@ -47,7 +47,7 @@ window.addEventListener("message", (event) => {
             void er.offsetWidth;
             er.classList.add("fade-in");
         }
-        document.getElementById("whiteHaiku").innerHTML = Object.values(content)[0] || "";
+        safeSetHTML(document.getElementById("whiteHaiku"), Object.values(content)[0] || "");
     }
 });
 
@@ -67,7 +67,7 @@ if (window.electron) {
             void el.offsetWidth;
             el.classList.add("fade-in");
         }
-            document.getElementById("redHaiku").innerHTML = Object.values(content)[0] || "";
+            safeSetHTML(document.getElementById("redHaiku"), Object.values(content)[0] || "");
         } else if (type === "white") {
             const er = document.getElementById("whiteHaiku");
             if (er) {
@@ -75,12 +75,12 @@ if (window.electron) {
             void er.offsetWidth;
             er.classList.add("fade-in");
         }
-            document.getElementById("whiteHaiku").innerHTML = Object.values(content)[0] || "";
+            safeSetHTML(document.getElementById("whiteHaiku"), Object.values(content)[0] || "");
         }
     });
 }
 
-document.getElementById("gameid").innerHTML = "Undefined";
+safeSetHTML(document.getElementById("gameid"), "Undefined");
 window.parent.postMessage({ type: "ready" }, "*");
 
 window.addEventListener("message", (event) => {

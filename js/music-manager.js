@@ -59,7 +59,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             fileList.appendChild(li);
         });
         Object.values(selects).forEach(sel => {
-            sel.innerHTML = "<option value=''>（未設定）</option>";
+            sel.innerHTML = "";
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "（未設定）";
+            sel.appendChild(defaultOption);
+            
             files.forEach(f => {
                 const opt = document.createElement("option");
                 opt.value = f;

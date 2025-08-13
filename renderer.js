@@ -237,12 +237,22 @@ function populateMatchSelectors(excelData) {
     const kendaiSel = document.getElementById("kendaiSelect");
 
     teams.forEach(([key, name]) => {
-        redSel.innerHTML += `<option value='${key}'>${name}</option>`;
-        whiteSel.innerHTML += `<option value='${key}'>${name}</option>`;
+        const redOption = document.createElement("option");
+        redOption.value = key;
+        redOption.textContent = name;
+        redSel.appendChild(redOption);
+
+        const whiteOption = document.createElement("option");
+        whiteOption.value = key;
+        whiteOption.textContent = name;
+        whiteSel.appendChild(whiteOption);
     });
 
     kendais.forEach(([key, name]) => {
-        kendaiSel.innerHTML += `<option value='${key}'>${name}</option>`;
+        const kendaiOption = document.createElement("option");
+        kendaiOption.value = key;
+        kendaiOption.textContent = name;
+        kendaiSel.appendChild(kendaiOption);
     });
 }
 
