@@ -32,9 +32,9 @@
         </div>
         <summary data-lang="bgmstart">BGM再生</summary>
         <div id="audio-controls">
-            <div class="btn" onclick="audio_in()" data-lang="bgm-in">入場</div>
-            <div class="btn" onclick="audio_out()" data-lang="bgm-out">退場</div>
-            <div class="btn" onclick="audio_wait()" data-lang="bgm-wait">待機</div>
+            <button type="button" class="btn" onclick="audio_in()" data-lang="bgm-in">入場</button>
+            <button type="button" class="btn" onclick="audio_out()" data-lang="bgm-out">退場</button>
+            <button type="button" class="btn" onclick="audio_wait()" data-lang="bgm-wait">待機</button>
             <button id="stop-bgm-btn" data-lang="bgm-stop">停止</button>
             <label>
                 <input type="checkbox" id="toggle-wait-loop-checkbox"><span data-lang="wait-loop">待機ループ</span>
@@ -84,9 +84,9 @@
                 <summary data-lang="ku-data">句データ管理</summary>
                 <div id="file-manager">
                     <div class="flex-row button-group">
-                        <label for="excel-input" class="custom-file-label" data-lang="excel-select">Excelファイルを選択</label>
+                        <button type="button" onclick="document.getElementById('excel-input').click()" class="custom-file-label" data-lang="excel-select">Excelファイル選択</button>
                         <input type="file" id="excel-input" accept=".xlsx" class="hide">
-                        <button id="open-gs-modal-btn" class="custom-file-label" data-lang="gs-load-btn">Googleスプレッドシートから読み込み</button>
+                        <button id="open-gs-modal-btn" class="custom-file-label" data-lang="gs-load-btn">Googleスプレッドシート読み込み</button>
                         <div class="right-buttons">
                             <button id="reset-data-btn" data-lang="excel-reset">初期化</button>
                         </div>
@@ -101,7 +101,7 @@
                 <summary data-lang="bgmcheck">BGMファイル管理</summary>
                 <div id="file-manager">
                     <div class="flex-row">
-                        <label for="music-upload-input" class="custom-file-label" data-lang="bgm-select">BGMファイルを選択</label>
+                        <button type="button" onclick="document.getElementById('music-upload-input').click()" class="custom-file-label" data-lang="bgm-select">BGMファイル選択</button>
                         <input type="file" id="music-upload-input" multiple accept="audio/*" class="hide">
                         <div class="right-buttons">
                             <button id="delete-all-music-btn" data-lang="bgm-delete-all">一括削除</button>

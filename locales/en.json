@@ -50,6 +50,8 @@
   "save-fail": "Failed to save",
   "excel-success": "Excel file loaded successfully!",
   "excel-fail": "Failed to load Excel file",
+  "gs-success": "Google Spreadsheet loaded successfully!",
+  "gs-fail": "Failed to load Google Spreadsheet",
   "reset-success": "Reset completed",
   "reset-fail": "Reset failed",
   "reset-confirm": "Do you want to reset the loaded data?",

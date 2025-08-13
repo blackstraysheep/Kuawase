@@ -4,13 +4,24 @@ let lastTitleData = null;
 function renderTitle(data) {
     if (!data) return;
     document.getElementById("Compe-name").textContent = data.compename || "";
-    document.getElementById("kendai").textContent = data.kendaiName || "";
+    // 言語設定に応じて兼題名に括弧を付与
+    let kendai = data.kendaiName || "";
+    let lang = (window.getCurrentLang ? window.getCurrentLang() : (localStorage.getItem("lang") || "ja"));
+    if (kendai) {
+        if (lang === "ja") {
+            kendai = `「${kendai}」`;
+        } else if (lang === "en") {
+            kendai = `\"${kendai}\"`;
+        }
+    }
+    document.getElementById("kendai").textContent = kendai;
     document.getElementById("redTeam").textContent = data.redTeamName || "";
     document.getElementById("whiteTeam").textContent = data.whiteTeamName || "";
 
     const gameid = document.getElementById("gameid");
     if (gameid && data.matchTitle) gameid.innerHTML = data.matchTitle;
 }
+
 
 window.addEventListener("message", (event) => {
     if (!event.data) return;
