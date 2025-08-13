@@ -479,18 +479,21 @@ if (excelOnlyBtn) {
 function showConfirm(messageKey, rawTextOverride) {
   return new Promise(resolve => {
     const modal = document.getElementById('confirm-modal');
+    const content = modal.querySelector('.confirm-modal-content');
     const msgEl = document.getElementById('confirm-modal-message');
     const okBtn = document.getElementById('confirm-ok-btn');
     const cancelBtn = document.getElementById('confirm-cancel-btn');
     msgEl.textContent = rawTextOverride || t(messageKey);
     modal.style.display = 'block';
     function cleanup(result){
-      okBtn.onclick = null; cancelBtn.onclick = null;
+      okBtn.onclick = null; cancelBtn.onclick = null; modal.onclick = null; document.onkeydown = null;
       modal.style.display = 'none';
       resolve(result);
     }
     okBtn.onclick = () => cleanup(true);
     cancelBtn.onclick = () => cleanup(false);
+    modal.onclick = (e) => { if (!content.contains(e.target)) cleanup(false); };
+    document.onkeydown = (e) => { if (e.key === 'Escape') cleanup(false); };
   });
 }
 window.showConfirm = showConfirm;

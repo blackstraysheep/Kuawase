@@ -611,3 +611,34 @@ summary {
     margin-left: 10px;
     padding: 8px 15px;
 }
+
+/* --- 確認モーダルウィンドウ --- */
+.confirm-modal-content {
+  background: #222;
+  color: #eee;
+  border: 1px solid #444;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.6);
+}
+.confirm-modal-content h3 { margin-top:0; font-size:18px; }
+.confirm-modal-content p { line-height:1.5; margin: 12px 0 4px; }
+.confirm-actions { display:flex; gap:10px; margin-top:18px; }
+.confirm-actions button { flex:1; margin-left:0; background:#444; color:#eee; border:1px solid #666; border-radius:4px; }
+.confirm-actions button:hover { background:#555; }
+.confirm-actions #confirm-ok-btn { background:#2d6cdf; border-color:#2d6cdf; }
+.confirm-actions #confirm-ok-btn:hover { background:#3979ec; }
+.confirm-actions #confirm-cancel-btn { background:#555; }
+.confirm-actions #confirm-cancel-btn:hover { background:#666; }
+
+.app-modal-content {
+  background:#222;
+  color:#eee;
+  border:1px solid #444;
+  box-shadow:0 4px 18px rgba(0,0,0,0.6);
+  border-radius:8px;
+}
+.app-modal-content h3 { margin-top:0; font-size:18px; }
+.app-modal-content p { line-height:1.5; }
+.app-modal-content button { background:#2d6cdf; border:1px solid #2d6cdf; color:#fff; border-radius:4px; }
+.app-modal-content button:hover { background:#3979ec; }
+.app-modal-content .close-btn { color:#bbb; }
+.app-modal-content .close-btn:hover { color:#fff; }

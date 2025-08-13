@@ -57,11 +57,11 @@
   "reset-fail": "初期化に失敗",
   "reset-cancel": "初期化はキャンセルしました",
   "reset-confirm": "読み込みデータを初期化しますか？",
-  "excel-only-reset": "句データ初期化",
-  "excel-only-reset-confirm": "句データ（大会名・兼題・句一覧）を初期化しますか？ BGM設定やファイルは残ります。",
-  "excel-only-reset-success": "句データを初期化しました",
-  "excel-only-reset-fail": "句データの初期化に失敗しました",
-  "excel-only-reset-cancel": "句データ初期化はキャンセルしました",
+  "excel-only-reset": "句データリセット",
+  "excel-only-reset-confirm": "句データ（大会名・兼題・句一覧）をリセットしますか？ BGM設定やファイルは残ります。",
+  "excel-only-reset-success": "句データをリセットしました",
+  "excel-only-reset-fail": "句データのリセットに失敗しました",
+  "excel-only-reset-cancel": "句データリセットはキャンセルしました",
   "onload": "読み込み中...",
   "red": "紅",
   "white": "白",
@@ -79,5 +79,7 @@
   "gs-invalid-url": "無効なURLです。正しいGoogleスプレッドシートのURLを入力してください。",
   "confirm-title": "確認",
   "ok": "OK",
-  "cancel": "キャンセル"
+  "cancel": "キャンセル",
+  "bgm-delete-all-confirm": "すべてのBGMファイルを削除しますか？",
+  "bgm-delete-one-confirm": "{name} を削除しますか？"
 }

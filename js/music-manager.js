@@ -47,7 +47,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             del.setAttribute("data-lang", "bgm-delete");
             del.textContent = t ? t("bgm-delete") : "削除";
             del.onclick = async () => {
-                const ok = await (window.showConfirm ? window.showConfirm(null, `${f} を削除しますか？`) : Promise.resolve(confirm(`${f} を削除しますか？`)));
+                const key = 'bgm-delete-one-confirm';
+                const msg = (window.t ? window.t(key) : `${f} を削除しますか？`).replace('{name}', f);
+                const ok = await (window.showConfirm ? window.showConfirm(null, msg) : Promise.resolve(confirm(msg)));
                 if (!ok) return;
                 await window.electron.deleteMusicFile(f);
                 refreshListAndSelects();
@@ -105,7 +107,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const deleteAllBtn = document.getElementById("delete-all-music-btn");
     if (deleteAllBtn) {
         deleteAllBtn.onclick = async () => {
-            const ok = await (window.showConfirm ? window.showConfirm(null, "すべてのBGMファイルを削除しますか？") : Promise.resolve(confirm("すべてのBGMファイルを削除しますか？")));
+            const key = 'bgm-delete-all-confirm';
+            const msg = window.t ? window.t(key) : 'すべてのBGMファイルを削除しますか？';
+            const ok = await (window.showConfirm ? window.showConfirm(null, msg) : Promise.resolve(confirm(msg)));
             if (!ok) return;
             const files = await window.electron.listMusicFiles();
             for (const f of files) { await window.electron.deleteMusicFile(f); }

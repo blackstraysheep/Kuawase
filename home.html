@@ -192,7 +192,7 @@
     <script defer src="renderer.js"></script>
     <div id="toast"></div>
     <div id="gs-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content app-modal-content">
             <span class="close-btn">&times;</span>
             <h3 data-lang="gs-modal-title">Googleスプレッドシートから読み込み</h3>
             <p data-lang="gs-modal-desc1">
@@ -201,7 +201,7 @@
             <p data-lang="gs-modal-desc2">
                 「一般的なアクセス」を「リンクを知っている全員」に変更し、権限が「閲覧者」になっていることを確認してください。
             </p>
-            <img src="img/gs_share_setting.png" alt="Google Sheet Share Setting" style="max-width: 100%; border: 1px solid #ccc; margin: 10px 0;">
+            <img src="img/gs_share_setting.png" alt="Google Sheet Share Setting" style="max-width: 100%; border: 1px solid #333; margin: 10px 0;">
             <p data-lang="gs-modal-desc3">
                 その後、「リンクをコピー」して、下の入力欄に貼り付けてください。
             </p>
@@ -212,12 +212,12 @@
         </div>
     </div>
     <div id="confirm-modal" class="modal" style="display:none;">
-      <div class="modal-content" style="max-width:420px;">
+      <div class="modal-content app-modal-content" style="max-width:420px;">
         <h3 id="confirm-modal-title" data-lang="confirm-title">確認</h3>
         <p id="confirm-modal-message"></p>
-        <div style="text-align:right;margin-top:12px;display:flex;gap:8px;justify-content:flex-end;">
-          <button id="confirm-cancel-btn" data-lang="cancel">キャンセル</button>
+        <div class="confirm-actions">
           <button id="confirm-ok-btn" data-lang="ok">OK</button>
+          <button id="confirm-cancel-btn" data-lang="cancel">キャンセル</button>
         </div>
       </div>
     </div>

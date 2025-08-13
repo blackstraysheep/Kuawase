@@ -56,8 +56,8 @@
   "reset-fail": "Reset failed",
   "reset-cancel": "Reset was cancelled",
   "reset-confirm": "Do you want to reset the loaded data?",
-  "excel-only-reset": "Reset Phrase Data Only",
-  "excel-only-reset-confirm": "Reset ONLY phrase data (competition name, themes, haiku list)? BGM settings and files will remain.",
+  "excel-only-reset": "Reset Phrase Data",
+  "excel-only-reset-confirm": "Reset phrase data (competition name, themes, haiku list)? BGM settings and files will remain.",
   "excel-only-reset-success": "Phrase data reset.",
   "excel-only-reset-fail": "Failed to reset phrase data.",
   "excel-only-reset-cancel": "Phrase data reset was cancelled.",
@@ -78,5 +78,7 @@
   "gs-modal-desc3": "Then, click 'Copy link' and paste it into the input field below.",
   "confirm-title": "Confirmation",
   "ok": "OK",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "bgm-delete-all-confirm": "Delete ALL BGM files?",
+  "bgm-delete-one-confirm": "Delete {name}?"
 }
