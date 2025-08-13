@@ -20,6 +20,12 @@
          const key = el.getAttribute("data-lang");
          el.textContent = t(key);
      });
+     
+     // placeholderの多言語対応
+     document.querySelectorAll("[data-lang-placeholder]").forEach(el => {
+         const key = el.getAttribute("data-lang-placeholder");
+         el.placeholder = t(key);
+     });
  }
 
  function getCurrentLang() {

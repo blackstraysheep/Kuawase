@@ -110,11 +110,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             const key = 'bgm-delete-all-confirm';
             const msg = window.t ? window.t(key) : 'すべてのBGMファイルを削除しますか？';
             const ok = await (window.showConfirm ? window.showConfirm(null, msg) : Promise.resolve(confirm(msg)));
-            if (!ok) return;
+            if (!ok) {
+                if (window.showToast && window.t) window.showToast(window.t('bgm-delete-all-cancel'), true);
+                return;
+            }
             const files = await window.electron.listMusicFiles();
             for (const f of files) { await window.electron.deleteMusicFile(f); }
             await refreshListAndSelects();
             await preloadBgmAudios();
+            if (window.showToast && window.t) window.showToast(window.t('bgm-delete-all-success'));
         };
     }
 

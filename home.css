@@ -638,7 +638,45 @@ summary {
 }
 .app-modal-content h3 { margin-top:0; font-size:18px; }
 .app-modal-content p { line-height:1.5; }
-.app-modal-content button { background:#2d6cdf; border:1px solid #2d6cdf; color:#fff; border-radius:4px; }
+.app-modal-content button { background:#2d6cdf; color:#fff; border-radius:4px; }
 .app-modal-content button:hover { background:#3979ec; }
 .app-modal-content .close-btn { color:#bbb; }
 .app-modal-content .close-btn:hover { color:#fff; }
+
+/* GSS読み込みモーダルの入力行 */
+.gs-input-row {
+    margin-top: 15px;
+    justify-content: space-between;
+}
+
+.gs-url-input-flex {
+    flex: 1;
+    margin-right: 10px;
+}
+
+/* 句データ管理の現在のファイル表示行 */
+.current-file-row {
+    margin-top: 10px;
+}
+
+.current-file-label {
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+/* 確認モーダルの最大幅設定 */
+.confirm-modal-max-width {
+    max-width: 420px;
+}
+
+/* 確認モーダルの初期状態（非表示） */
+.confirm-modal-hidden {
+    display: none;
+}
+
+/* GSS画像のスタイル */
+.gs-share-image {
+    max-width: 100%;
+    border: 1px solid #333;
+    margin: 10px 0;
+}

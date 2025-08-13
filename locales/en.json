@@ -41,11 +41,15 @@
   "audio-empty": "No BGM file selected",
   "color": "Theme Color",
   "lang": "Language",
+  "settings": "Display Settings",
+  "color-setting": "Theme Color",
+  "lang-setting": "Language",
   "battle-decide": "Match Setup Panel",
   "bd-red": "Red Team: ",
   "bd-white": "White Team: ",
   "theme": "Theme",
   "match-name": "Match Name: ",
+  "match-name-placeholder": "e.g. Block A<br>Match 1 *HTML tags available",
   "save-success": "Match settings saved!",
   "save-fail": "Failed to save",
   "excel-success": "Excel file loaded successfully!",
@@ -80,5 +84,7 @@
   "ok": "OK",
   "cancel": "Cancel",
   "bgm-delete-all-confirm": "Delete ALL BGM files?",
-  "bgm-delete-one-confirm": "Delete {name}?"
+  "bgm-delete-one-confirm": "Delete {name}?",
+  "bgm-delete-all-cancel": "BGM delete all was cancelled",
+  "bgm-delete-all-success": "All BGM files deleted"
 }

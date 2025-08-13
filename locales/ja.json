@@ -42,11 +42,15 @@
   "audio-empty": "BGMが設定されていません",
   "color": "テーマカラー",
   "lang": "Language",
+  "settings": "表示設定",
+  "color-setting": "テーマカラー",
+  "lang-setting": "言語",
   "battle-decide": "対戦指定パネル",
   "bd-red": "紅チーム: ",
   "bd-white": "白チーム: ",
   "theme": "兼題",
   "match-name": "対戦名: ",
+  "match-name-placeholder": "例: Ａブロック<br>第１試合 *HTMLタグが使えます",
   "save-success": "対戦指定を保存しました！",
   "save-fail": "保存に失敗しました",
   "excel-success": "Excelファイルを読み込みました！",
@@ -81,5 +85,7 @@
   "ok": "OK",
   "cancel": "キャンセル",
   "bgm-delete-all-confirm": "すべてのBGMファイルを削除しますか？",
-  "bgm-delete-one-confirm": "{name} を削除しますか？"
+  "bgm-delete-one-confirm": "{name} を削除しますか？",
+  "bgm-delete-all-cancel": "BGM一括削除はキャンセルしました",
+  "bgm-delete-all-success": "すべてのBGMファイルを削除しました"
 }
