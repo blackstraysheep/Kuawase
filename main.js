@@ -24,6 +24,9 @@ autoUpdater.setFeedURL({
 const configPath = path.join(app.getPath('userData'), "config.json");
 const musicDir = path.join(app.getPath('userData'), "music");
 let adminWindow, projectorWindow, lastKnownData = null;
+// 元デザイン想定の投影画面コンテンツ高さ（base height）
+// battle系HTMLは 1024x768 前提レイアウトなので 768 を基準にズーム計算
+const PROJECTOR_BASE_HEIGHT = 768;
 let splashWindow;
 
 app.whenReady().then(() => {
@@ -130,6 +133,22 @@ app.whenReady().then(() => {
       sandbox: false
     }
   });
+  // 投影ウィンドウの高さ変化に合わせてズーム（拡大縮小）を自動調整
+  // HTML/CSS を触らずに全体スケールを合わせたい要件のため webContents.setZoomFactor を利用
+  const applyProjectorAutoScale = () => {
+    if (!projectorWindow || projectorWindow.isDestroyed()) return;
+    try {
+      const [, contentHeight] = projectorWindow.getContentSize();
+      const factor = contentHeight / PROJECTOR_BASE_HEIGHT;
+      projectorWindow.webContents.setZoomFactor(factor);
+    } catch (e) { /* noop */ }
+  };
+  projectorWindow.on('resize', applyProjectorAutoScale);
+  projectorWindow.on('enter-full-screen', applyProjectorAutoScale);
+  projectorWindow.on('leave-full-screen', applyProjectorAutoScale);
+  projectorWindow.webContents.on('did-finish-load', applyProjectorAutoScale);
+  // 初期適用（描画準備が整っていなくても一度呼ぶ）
+  setTimeout(applyProjectorAutoScale, 100);
   projectorWindow.webContents.on('before-input-event', (e, input) => {
     if (
       input.type === 'keyDown' &&
