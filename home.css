@@ -38,6 +38,9 @@ button, select, input{
     border: 1px solid var(--grey);
     box-sizing: border-box;
     transform-origin: center;
+        /* スケーリング時の余白調整 */
+    margin: auto;
+    display: block;
 }
 
 #admin-panel {

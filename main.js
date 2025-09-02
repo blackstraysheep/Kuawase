@@ -27,6 +27,9 @@ let adminWindow, projectorWindow, lastKnownData = null;
 // 元デザイン想定の投影画面コンテンツ高さ（base height）
 // battle系HTMLは 1024x768 前提レイアウトなので 768 を基準にズーム計算
 const PROJECTOR_BASE_HEIGHT = 768;
+// ウィンドウ種別ごとの既定ズーム
+const ADMIN_BASE_ZOOM = 0.9;        // 要望: 管理画面 0.9倍
+const PROJECTOR_BASE_ZOOM = 0.75;    // 要望: 投影画面 0.8倍（さらに高さ自動調整を乗算）
 let splashWindow;
 
 app.whenReady().then(() => {
@@ -101,7 +104,9 @@ app.whenReady().then(() => {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false
+      sandbox: false,
+      // ここで既定ズームを適用（後から変更しない単純な管理画面）
+  zoomFactor: ADMIN_BASE_ZOOM
     }
   });
   adminWindow.loadFile('home.html');
@@ -126,11 +131,14 @@ app.whenReady().then(() => {
   projectorWindow = new BrowserWindow({
     icon: path.join(__dirname, 'img', 'icon.ico'),
     width: 1024, height: 768, title: 'Kuawase',
+  titleBarOverlay: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false
+      sandbox: false,
+      // 動的スケール計算前のベース倍率
+  zoomFactor: PROJECTOR_BASE_ZOOM
     }
   });
   // 投影ウィンドウの高さ変化に合わせてズーム（拡大縮小）を自動調整
@@ -139,7 +147,8 @@ app.whenReady().then(() => {
     if (!projectorWindow || projectorWindow.isDestroyed()) return;
     try {
       const [, contentHeight] = projectorWindow.getContentSize();
-      const factor = contentHeight / PROJECTOR_BASE_HEIGHT;
+      // ウィンドウ高さに応じた倍率 * 既定ベースズーム
+  const factor = (contentHeight / PROJECTOR_BASE_HEIGHT) * PROJECTOR_BASE_ZOOM;
       projectorWindow.webContents.setZoomFactor(factor);
     } catch (e) { /* noop */ }
   };
