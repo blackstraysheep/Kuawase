@@ -81,6 +81,7 @@
   "gs-modal-desc1": "Open the Google Sheet you want to load and click the 'Share' button in the top right.",
   "gs-modal-desc2": "Change 'General access' to 'Anyone with the link' and ensure the permission is set to 'Viewer'.",
   "gs-modal-desc3": "Then, click 'Copy link' and paste it into the input field below.",
+  "gs-invalid-url": "Invalid URL. Please enter a valid Google Spreadsheet URL.",
   "confirm-title": "Confirmation",
   "ok": "OK",
   "cancel": "Cancel",
