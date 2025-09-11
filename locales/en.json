@@ -88,5 +88,7 @@
   "bgm-delete-all-confirm": "Delete ALL BGM files?",
   "bgm-delete-one-confirm": "Delete {name}?",
   "bgm-delete-all-cancel": "BGM delete all was cancelled",
-  "bgm-delete-all-success": "All BGM files deleted"
+  "bgm-delete-all-success": "All BGM files deleted",
+  "unsaved-bgm": "BGM settings changed. Please save.",
+  "unsaved-match": "Match settings changed. Please save."
 }

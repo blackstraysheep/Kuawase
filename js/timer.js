@@ -32,6 +32,17 @@ function saveTimeSetting() {
 function startTimer() {
   if (isRunning) return;
 
+  const audio1 = document.getElementById("audio_timer1");
+  if (audio1) {
+    audio1.pause();
+    audio1.currentTime = 0;
+    audio1.remove();
+  }
+
+  // タイマー背景の赤表示を解除
+  const timerBlock4 = document.getElementById('timer')?.closest('.timer-block');
+  if (timerBlock4) timerBlock4.classList.remove('timer-expired');
+
   if (remainingTime <= 0) {
     const minutes = parseInt(document.getElementById('minutes').value) || 0;
     const seconds = parseInt(document.getElementById('seconds').value) || 0;
@@ -72,6 +83,9 @@ function startTimer() {
           if (alarm) alarm.play();
         }
         soundPlayed = true;
+        // 0秒到達時に背景を薄赤に
+        const timerBlock2 = document.getElementById('timer')?.closest('.timer-block');
+        if (timerBlock2) timerBlock2.classList.add('timer-expired');
       }
       resetTimer2();
     }
@@ -83,6 +97,14 @@ function startTimer() {
 function pauseTimer() {
   clearInterval(countdown);
   isRunning = false;
+  // 一時停止でも背景色は元に戻す
+  const timerBlock3 = document.getElementById('timer')?.closest('.timer-block');
+  if (timerBlock3) timerBlock3.classList.remove('timer-expired');
+  // 鳴動中のタイマーBGMを停止
+  let audio = document.getElementById("audio_timer1");
+  if (audio) { audio.pause(); audio.remove(); }
+  const alarm = document.getElementById('alarm-sound');
+  if (alarm && typeof alarm.pause === 'function') { alarm.pause(); }
 }
 
 function resetTimer() {
@@ -91,6 +113,9 @@ function resetTimer() {
   remainingTime = initialTime;
   updateDisplay();
   soundPlayed = false;
+  // リセットで背景の赤表示を解除
+  const timerBlockReset = document.getElementById('timer')?.closest('.timer-block');
+  if (timerBlockReset) timerBlockReset.classList.remove('timer-expired');
   let audio = document.getElementById("audio_timer1");
   if (audio) {
     audio.pause();
@@ -120,6 +145,17 @@ function saveTimeSetting2() {
 
 function startTimer2() {
   if (isRunning2) return;
+
+  const audio2 = document.getElementById("audio_timer2");
+  if (audio2) {
+    audio2.pause();
+    audio2.currentTime = 0;
+    audio2.remove();
+  }
+
+  // タイマー2の背景の赤表示を解除
+  const timer2Block = document.getElementById('timer2')?.closest('.timer-block');
+  if (timer2Block) timer2Block.classList.remove('timer-expired');
 
   if (remainingTime2 <= 0) {
     const seconds = parseInt(document.getElementById('seconds2').value) || 0;
@@ -160,6 +196,9 @@ function startTimer2() {
           if (alarm) alarm.play();
         }
         soundPlayed2 = true;
+        // 0秒到達時に背景を薄赤に
+        const timer2Block2 = document.getElementById('timer2')?.closest('.timer-block');
+        if (timer2Block2) timer2Block2.classList.add('timer-expired');
       }
     }
   }, 1000);
@@ -170,6 +209,14 @@ function startTimer2() {
 function pauseTimer2() {
   clearInterval(countdown2);
   isRunning2 = false;
+  // 一時停止でも背景色は元に戻す
+  const timer2Block3 = document.getElementById('timer2')?.closest('.timer-block');
+  if (timer2Block3) timer2Block3.classList.remove('timer-expired');
+  // 鳴動中のタイマーBGMを停止
+  let audio2 = document.getElementById("audio_timer2");
+  if (audio2) { audio2.pause(); audio2.remove(); }
+  const alarm2 = document.getElementById('alarm-sound2');
+  if (alarm2 && typeof alarm2.pause === 'function') { alarm2.pause(); }
 }
 
 function resetTimer2() {
@@ -178,6 +225,9 @@ function resetTimer2() {
   remainingTime2 = initialTime2;
   updateDisplay2();
   soundPlayed2 = false;
+  // リセットで背景の赤表示を解除
+  const timer2Block4 = document.getElementById('timer2')?.closest('.timer-block');
+  if (timer2Block4) timer2Block4.classList.remove('timer-expired');
   let audio = document.getElementById("audio_timer2");
   if (audio) {
     audio.pause();

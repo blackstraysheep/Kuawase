@@ -88,5 +88,7 @@
   "bgm-delete-all-confirm": "すべてのBGMファイルを削除しますか？",
   "bgm-delete-one-confirm": "{name} を削除しますか？",
   "bgm-delete-all-cancel": "BGM一括削除はキャンセルしました",
-  "bgm-delete-all-success": "すべてのBGMファイルを削除しました"
+  "bgm-delete-all-success": "すべてのBGMファイルを削除しました",
+  "unsaved-bgm": "BGM設定が変更されています。保存してください。",
+  "unsaved-match": "対戦指定が変更されています。保存してください。"
 }

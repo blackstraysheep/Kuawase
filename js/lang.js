@@ -39,3 +39,4 @@
 document.addEventListener('DOMContentLoaded', () => {
   loadLocale(currentLang);
 });
+
