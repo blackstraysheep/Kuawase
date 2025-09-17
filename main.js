@@ -1,3 +1,4 @@
+// ===== 1. モジュール・定数宣言 =====
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
@@ -5,98 +6,14 @@ const fs = require("fs");
 const path = require("path");
 const XLSX = require("xlsx");
 const axios = require('axios');
-
-require('@electron/remote/main').initialize();
-
-// ──────────── 自動アップデート設定 ────────────
-// ログを electron-log に出力
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
-
-// GitHub Releases をフィードに設定
-autoUpdater.setFeedURL({
-    provider: 'github',
-    owner: 'blackstraysheep',
-    repo: 'Kuawase',
-    private: false
-  });
-
-const configPath = path.join(app.getPath('userData'), "config.json");
-const musicDir = path.join(app.getPath('userData'), "music");
-let adminWindow, projectorWindow, lastKnownData = null;
-// 元デザイン想定の投影画面コンテンツ高さ（base height）
-// battle系HTMLは 1024x768 前提レイアウトなので 768 を基準にズーム計算
-const PROJECTOR_BASE_HEIGHT = 768;
-// ウィンドウ種別ごとの既定ズーム
-const ADMIN_BASE_ZOOM = 0.9;        // 要望: 管理画面 0.9倍
-const PROJECTOR_BASE_ZOOM = 0.75;    // 要望: 投影画面 0.8倍（さらに高さ自動調整を乗算）
-let splashWindow;
-
-app.whenReady().then(() => {
-  splashWindow = new BrowserWindow({
-        icon: path.join(__dirname, 'img', 'icon.ico'),
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
-            contextIsolation: true,
-            nodeIntegration: false
-            },       
-        width: 800,
-        height: 600,
-        frame: false,
-        alwaysOnTop: true,
-        transparent: false,
-        resizable: false,
-        show: true,
-    });
-    require('@electron/remote/main').enable(splashWindow.webContents);
-    splashWindow.loadFile('splash.html');
-    setTimeout(() => {
-    // --- 自動アップデートの起動 ---
-    autoUpdater.checkForUpdatesAndNotify();
-    autoUpdater.on('update-available', info => {
-        log.info('Update available:', info);
-        // 必要なら adminWindow.webContents.send('update-available', info);
-    });
-    autoUpdater.on('update-downloaded', info => {
-        log.info('Update downloaded:', info);
-        // ダウンロード完了後、自動で再起動する場合:
-        // autoUpdater.quitAndInstall();
-    });
-    autoUpdater.on('error', err => {
-        log.error('AutoUpdater error:', err);
-    });
-
-  // --- 初期設定ファイルの配置 ---
-  (function ensureConfigExists() {
-    const defaultConfig = path.join(__dirname, 'data', 'default_config.json');
-    if (!fs.existsSync(configPath)) {
-      fs.mkdirSync(path.dirname(configPath), { recursive: true });
-      fs.copyFileSync(defaultConfig, configPath);
-      log.info('初期設定ファイルをユーザーデータにコピーしました:', configPath);
-    }
-  })();
-
-    function ensureConfigExists() {
-        const userDataPath = app.getPath('userData');
-        const userConfigPath = path.join(userDataPath, 'config.json');
-        const defaultConfigPath = path.join(__dirname, 'data', 'default_config.json');
-    
-        if (!fs.existsSync(userConfigPath)) {
-            try {
-                if (!fs.existsSync(path.dirname(userConfigPath))) {
-                    fs.mkdirSync(path.dirname(userConfigPath), { recursive: true });
-                }
-                fs.copyFileSync(defaultConfigPath, userConfigPath);
-                console.log('初期設定ファイルを作成しました:', userConfigPath);
-            } catch (error) {
-                console.error('初期設定ファイルの作成に失敗しました:', error);
-            }
-        } else {
-            console.log('設定ファイルは既に存在しています:', userConfigPath);
-        }
-    }
-    
-  // --- 管理者ウィンドウ ---
+// --- Window creators ---
+/**
+ * 管理画面ウィンドウを生成し、基本イベントを設定する。
+ * - 既定ズームを適用（`ADMIN_BASE_ZOOM`）
+ * - F5/Ctrl+R/Cmd+R を無効化
+ * - 管理画面がリロードされた際に投影画面を再読込
+ */
+function createAdminWindow() {
   adminWindow = new BrowserWindow({
     icon: path.join(__dirname, 'img', 'icon.ico'),
     width: 1200, height: 800, title: 'Kuawase',
@@ -106,7 +23,7 @@ app.whenReady().then(() => {
       nodeIntegration: false,
       sandbox: false,
       // ここで既定ズームを適用（後から変更しない単純な管理画面）
-  zoomFactor: ADMIN_BASE_ZOOM
+      zoomFactor: ADMIN_BASE_ZOOM
     }
   });
   adminWindow.loadFile('home.html');
@@ -126,38 +43,29 @@ app.whenReady().then(() => {
         (input.key === 'r' && (input.control || input.meta)))
     ) e.preventDefault();
   });
+}
 
-  // --- 投影ウィンドウ ---
+/**
+ * 投影画面ウィンドウを生成し、基本イベントを設定する。
+ * - 既定ズームを適用（`PROJECTOR_BASE_ZOOM`）
+ * - F5/Ctrl+R/Cmd+R を無効化
+ * - `top.html` を読み込み、描画完了時に `lastKnownData` を送信
+ */
+function createProjectorWindow() {
   projectorWindow = new BrowserWindow({
     icon: path.join(__dirname, 'img', 'icon.ico'),
     width: 1024, height: 768, title: 'Kuawase',
-  titleBarOverlay: true,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: false,
       // 動的スケール計算前のベース倍率
-  zoomFactor: PROJECTOR_BASE_ZOOM
+      zoomFactor: PROJECTOR_BASE_ZOOM
     }
   });
-  // 投影ウィンドウの高さ変化に合わせてズーム（拡大縮小）を自動調整
-  // HTML/CSS を触らずに全体スケールを合わせたい要件のため webContents.setZoomFactor を利用
-  const applyProjectorAutoScale = () => {
-    if (!projectorWindow || projectorWindow.isDestroyed()) return;
-    try {
-      const [, contentHeight] = projectorWindow.getContentSize();
-      // ウィンドウ高さに応じた倍率 * 既定ベースズーム
-  const factor = (contentHeight / PROJECTOR_BASE_HEIGHT) * PROJECTOR_BASE_ZOOM;
-      projectorWindow.webContents.setZoomFactor(factor);
-    } catch (e) { /* noop */ }
-  };
-  projectorWindow.on('resize', applyProjectorAutoScale);
-  projectorWindow.on('enter-full-screen', applyProjectorAutoScale);
-  projectorWindow.on('leave-full-screen', applyProjectorAutoScale);
-  projectorWindow.webContents.on('did-finish-load', applyProjectorAutoScale);
-  // 初期適用（描画準備が整っていなくても一度呼ぶ）
-  setTimeout(applyProjectorAutoScale, 100);
+  // キーボードリロード抑制（F5, Ctrl+R, Cmd+R）
   projectorWindow.webContents.on('before-input-event', (e, input) => {
     if (
       input.type === 'keyDown' &&
@@ -165,19 +73,121 @@ app.whenReady().then(() => {
         (input.key === 'r' && (input.control || input.meta)))
     ) e.preventDefault();
   });
+  // 投影画面HTMLロード
   projectorWindow.loadFile('top.html');
+  // 初回描画完了時にデータ送信
   projectorWindow.webContents.once('did-finish-load', () => {
     if (lastKnownData) {
       projectorWindow.webContents.send('update-content', lastKnownData);
     }
   });
+  // リロード時にもデータ送信
   projectorWindow.webContents.on('did-finish-load', () => {
     if (lastKnownData) {
       projectorWindow.webContents.send('update-content', lastKnownData);
     }
   });
+}
 
-  // ウィンドウ閉じる連携
+require('@electron/remote/main').initialize();
+
+// ──────────── 自動アップデート設定 ────────────
+// ログを electron-log に出力
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+// GitHub Releases をフィードに設定
+autoUpdater.setFeedURL({
+  provider: 'github',
+  owner: 'blackstraysheep',
+  repo: 'Kuawase',
+  private: false
+});
+
+/**
+ * 自動アップデーターのイベントハンドラを登録する。
+ * - 利用可能通知 / ダウンロード完了 / エラー をログ出力
+ */
+function setupAutoUpdaterHandlers() {
+  autoUpdater.on('update-available', info => {
+    log.info('Update available:', info);
+    // 必要なら adminWindow.webContents.send('update-available', info);
+  });
+  autoUpdater.on('update-downloaded', info => {
+    log.info('Update downloaded:', info);
+    // ダウンロード完了後、自動で再起動する場合:
+    // autoUpdater.quitAndInstall();
+  });
+  autoUpdater.on('error', err => {
+    log.error('AutoUpdater error:', err);
+  });
+}
+
+const configPath = path.join(app.getPath('userData'), "config.json");
+const musicDir = path.join(app.getPath('userData'), "music");
+let adminWindow, projectorWindow, lastKnownData = null;
+// ウィンドウ種別ごとの既定ズーム
+const ADMIN_BASE_ZOOM = 0.9;        // 要望: 管理画面 0.9倍
+const PROJECTOR_BASE_ZOOM = 0.75;    // 要望: 投影画面 0.8倍（さらに高さ自動調整を乗算）
+let splashWindow;
+
+/**
+ * 設定ファイル（`config.json`）の存在を確認し、無ければデフォルトから作成する。
+ * - ユーザーデータ配下に `config.json` が無い場合、`data/default_config.json` をコピー
+ * - 進捗・エラーは `electron-log` に記録
+ */
+function ensureConfigExists() {
+  const userDataPath = app.getPath('userData');
+  const userConfigPath = path.join(userDataPath, 'config.json');
+  const defaultConfigPath = path.join(__dirname, 'data', 'default_config.json');
+  try {
+    if (!fs.existsSync(userConfigPath)) {
+      if (!fs.existsSync(path.dirname(userConfigPath))) {
+        fs.mkdirSync(path.dirname(userConfigPath), { recursive: true });
+      }
+      fs.copyFileSync(defaultConfigPath, userConfigPath);
+      log.info('初期設定ファイルを作成しました:', userConfigPath);
+    } else {
+      log.info('設定ファイルは既に存在しています:', userConfigPath);
+    }
+  } catch (error) {
+    log.error('初期設定ファイルの作成に失敗しました:', error);
+  }
+}
+
+// アプリ準備完了後の初期化（スプラッシュ表示 → 自動更新 → 設定初期化 → 画面生成）
+app.whenReady().then(() => {
+  splashWindow = new BrowserWindow({
+        icon: path.join(__dirname, 'img', 'icon.ico'),
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
+            contextIsolation: true,
+            nodeIntegration: false
+            },       
+        width: 800,
+        height: 600,
+        frame: false,
+        alwaysOnTop: true,
+        transparent: false,
+        resizable: false,
+        show: true,
+    });
+    require('@electron/remote/main').enable(splashWindow.webContents);
+    splashWindow.loadFile('splash.html');
+    setTimeout(() => {
+  // --- 自動アップデートの起動 ---
+  setupAutoUpdaterHandlers();
+  autoUpdater.checkForUpdatesAndNotify();
+
+  // --- 初期設定ファイルの配置 ---
+  ensureConfigExists();
+    
+  // --- 管理・投影ウィンドウ ---
+  createAdminWindow();
+  createProjectorWindow();
+
+  // （createProjectorWindow内で生成・初期化済み）
+
+  // ウィンドウ連携: どちらかが閉じたらもう一方も閉じる
   adminWindow.on('closed', () => {
     if (projectorWindow && !projectorWindow.isDestroyed()) {
       projectorWindow.close();
@@ -200,9 +210,16 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
-// ──────────── IPC ハンドラ ────────────
+// ===== 4. IPCハンドラ群 =====
 
 // (1) 対戦設定の保存（bgm セクションを保持してマージ）
+/**
+ * IPC: update-config
+ * 設定ファイルを更新して保存します。
+ * @param {_event} _event - IPCイベント（未使用）
+ * @param {object} newConfig - 保存する設定オブジェクト
+ * @returns {Promise<object>} 保存後の設定オブジェクト
+ */
 ipcMain.handle("update-config", async (_event, newConfig) => {
     try {
       // 1) 既存ファイルを読み込む
@@ -225,6 +242,11 @@ ipcMain.handle("update-config", async (_event, newConfig) => {
   });
   
 // (2) Excel データ取得／保存
+/**
+ * IPC: get-excel-data
+ * 直近に読み込まれたExcelのJSONデータを返します。
+ * @returns {object|null} Excel由来のデータ（未読ならnull）
+ */
 ipcMain.handle('get-excel-data', () => {
     try {
       const jsonPath = path.join(app.getPath('userData'), 'excelData.json');
@@ -236,6 +258,13 @@ ipcMain.handle('get-excel-data', () => {
     }
   });
 
+/**
+ * IPC: set-excel-file
+ * 指定されたExcelファイルを読み込み、問題数・チーム数を反映したJSONを保持します。
+ * @param {_e} _e - IPCイベント（未使用）
+ * @param {{filePath:string, numProblems:number, numTeams:number}} payload - 読み込み条件
+ * @returns {Promise<object>} 解析後のJSONデータ
+ */
 ipcMain.handle('set-excel-file', async (_e, { filePath, numProblems, numTeams }) => {
   if (!filePath || !fs.existsSync(filePath)) {
     console.error("ファイルが存在しません:", filePath);
@@ -250,6 +279,13 @@ ipcMain.handle('set-excel-file', async (_e, { filePath, numProblems, numTeams })
 });
 
 // (3) プロジェクタ表示切替
+/**
+ * IPC: change-projector-src
+ * 投影ウィンドウに表示するHTMLを切り替えます。
+ * @param {_e} _e - IPCイベント（未使用）
+ * @param {string} src - 例: 'top.html', '1.html' など
+ * @returns {Promise<void>} なし
+ */
 ipcMain.handle('change-projector-src', async (_e, src) => {
     if (!projectorWindow) return;
     const full = path.join(__dirname, src);
@@ -263,6 +299,13 @@ ipcMain.handle('change-projector-src', async (_e, src) => {
   });
 
 // (4) 管理画面 → 投影画面 データ転送
+/**
+ * IPC: send-data-to-projector
+ * 管理画面から投影ウィンドウへ任意データを送信します。
+ * @param {_e} _e - IPCイベント（未使用）
+ * @param {any} data - 送信するシリアライズ可能なデータ
+ * @returns {void}
+ */
 ipcMain.handle('send-data-to-projector', (_e, data) => {
     lastKnownData = data;
     if (projectorWindow) {
@@ -272,6 +315,11 @@ ipcMain.handle('send-data-to-projector', (_e, data) => {
 
 // ---(5)音楽ファイル関連 ---
   const SUPPORTED_AUDIO_EXTS = ['.mp3', '.wav', '.ogg', '.aac', '.flac', '.m4a'];
+  /**
+   * IPC: list-music-files
+   * BGMディレクトリ内のファイル一覧を返します。
+   * @returns {Promise<string[]>} ファイル名の配列
+   */
   ipcMain.handle('list-music-files', async () => {
   try {
       return fs
@@ -282,6 +330,13 @@ ipcMain.handle('send-data-to-projector', (_e, data) => {
       return [];
   }
   });
+  /**
+   * IPC: upload-music-file
+   * 新しいBGMファイルを保存します（同名は上書き）。
+   * @param {_e} _e - IPCイベント（未使用）
+   * @param {{name:string, buffer:Buffer|ArrayBuffer}} payload - 保存するファイル情報
+   * @returns {Promise<void>}
+   */
   ipcMain.handle('upload-music-file', async (_e, { name, buffer }) => {
     try {
       fs.mkdirSync(musicDir, { recursive: true });
@@ -291,6 +346,13 @@ ipcMain.handle('send-data-to-projector', (_e, data) => {
       return { success: false, error: err.message };
     }
   });
+  /**
+   * IPC: delete-music-file
+   * 指定したBGMファイルを削除します。
+   * @param {_e} _e - IPCイベント（未使用）
+   * @param {string} name - 削除するファイル名
+   * @returns {Promise<void>}
+   */
   ipcMain.handle('delete-music-file', async (_e, name) => {
     try {
       fs.unlinkSync(path.join(musicDir, name));
@@ -299,7 +361,12 @@ ipcMain.handle('send-data-to-projector', (_e, data) => {
       return { success: false, error: err.message };
     }
   });
-  // 追加: BGM設定のリセット（config.json の bgm セクションを空に）
+  // BGM設定のリセット（config.json の bgm セクションを空に）
+  /**
+   * IPC: reset-bgm-settings
+   * BGM再生に関する設定を初期化します（ファイルは保持）。
+   * @returns {Promise<void>}
+   */
   ipcMain.handle('reset-bgm-settings', async () => {
     try {
       let cfg = {};
@@ -314,7 +381,12 @@ ipcMain.handle('send-data-to-projector', (_e, data) => {
     }
   });
 
-  // 追加: BGMファイル一括削除（music ディレクトリ内の対応拡張子を全削除）
+  // BGMファイル一括削除（music ディレクトリ内の対応拡張子を全削除）
+  /**
+   * IPC: delete-all-bgm-files
+   * BGMディレクトリ内のすべてのファイルを削除します。
+   * @returns {Promise<void>}
+   */
   ipcMain.handle('delete-all-bgm-files', async () => {
     try {
       if (!fs.existsSync(musicDir)) {
@@ -342,12 +414,24 @@ ipcMain.handle('send-data-to-projector', (_e, data) => {
   });
 
   // (6) BGM 設定の取得／保存
+  /**
+   * IPC: get-bgm-config
+   * BGM関連の設定（音量やループなど）を取得します。
+   * @returns {Promise<object>} BGM設定オブジェクト
+   */
   ipcMain.handle('get-bgm-config', async () => {
     try {
       const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
       return cfg.bgm || {};
     } catch { return {}; }
   });
+  /**
+   * IPC: set-bgm-config
+   * BGM設定を保存します。
+   * @param {_e} _e - IPCイベント（未使用）
+   * @param {object} bgmConfig - 保存する設定
+   * @returns {Promise<object>} 保存後の設定
+   */
   ipcMain.handle('set-bgm-config', async (_e, bgmConfig) => {
     try {
       let cfg = {};
@@ -362,6 +446,11 @@ ipcMain.handle('send-data-to-projector', (_e, data) => {
     }
   });
   // (7) 設定全体の取得（renderer 側で get-config を呼べるように）
+  /**
+   * IPC: get-config
+   * アプリ全体の設定を取得します。
+   * @returns {Promise<object>} 設定オブジェクト
+   */
   ipcMain.handle('get-config', async () => {
       try {
       return JSON.parse(fs.readFileSync(configPath, 'utf-8'));
@@ -369,6 +458,13 @@ ipcMain.handle('send-data-to-projector', (_e, data) => {
       return {};
       }
   });
+  /**
+   * IPC: get-music-file-path
+   * 指定したBGMファイルの絶対パスを返します。
+   * @param {_event} _event - IPCイベント（未使用）
+   * @param {string} filename - ファイル名
+   * @returns {Promise<string>} 絶対パス
+   */
   ipcMain.handle("get-music-file-path", async (_event, filename) => {
       const userDataPath = app.getPath("userData");
       const filePath = path.join(userDataPath, "music", filename);
@@ -427,6 +523,11 @@ function saveExcelData(filePath, numProblems = 0, numTeams = 0) {
     return true;
 }
 
+/**
+ * IPC: reset-data
+ * 設定とデータを初期状態に戻します（BGMファイルはオプションに依存）。
+ * @returns {Promise<void>}
+ */
 ipcMain.handle('reset-data', async () => {
   try {
     // config.jsonを空オブジェクトで上書き
@@ -440,6 +541,13 @@ ipcMain.handle('reset-data', async () => {
   }
 });
 
+/**
+ * IPC: load-from-google-sheet
+ * Googleスプレッドシートの公開URL（xlsxエクスポート）からデータを取得・解析します。
+ * @param {_e} _e - IPCイベント（未使用）
+ * @param {string} url - 公開シートのURL
+ * @returns {Promise<object>} 解析結果のJSON
+ */
 ipcMain.handle('load-from-google-sheet', async (_e, url) => {
   try {
     // Google Sheet URLをCSVエクスポート用のURLに変換
@@ -483,5 +591,10 @@ ipcMain.handle('load-from-google-sheet', async (_e, url) => {
   }
 });
 
-//version取得
+// ===== 5. その他イベント =====
+/**
+ * IPC: get-app-version
+ * アプリのバージョン文字列を返します。
+ * @returns {string}
+ */
 ipcMain.handle('get-app-version', () => app.getVersion());
