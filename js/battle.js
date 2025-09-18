@@ -40,6 +40,7 @@ window.addEventListener("message", (event) => {
             el.classList.add("fade-in");
         }
         safeSetHTML(document.getElementById("redHaiku"), Object.values(content)[0] || "");
+        queueHaikuRelayout();
     } else if (type === "white") {
         const er = document.getElementById("whiteHaiku");
         if (er) {
@@ -48,6 +49,7 @@ window.addEventListener("message", (event) => {
             er.classList.add("fade-in");
         }
         safeSetHTML(document.getElementById("whiteHaiku"), Object.values(content)[0] || "");
+        queueHaikuRelayout();
     }
 });
 
@@ -68,6 +70,7 @@ if (window.electron) {
             el.classList.add("fade-in");
         }
             safeSetHTML(document.getElementById("redHaiku"), Object.values(content)[0] || "");
+            queueHaikuRelayout();
         } else if (type === "white") {
             const er = document.getElementById("whiteHaiku");
             if (er) {
@@ -76,6 +79,7 @@ if (window.electron) {
             er.classList.add("fade-in");
         }
             safeSetHTML(document.getElementById("whiteHaiku"), Object.values(content)[0] || "");
+            queueHaikuRelayout();
         }
     });
 }
@@ -99,4 +103,79 @@ if (window.electron) {
 document.addEventListener("DOMContentLoaded", () => {
     const theme = localStorage.getItem("theme") || "gray";
     if (window.applyTheme) window.applyTheme(theme);
+    // 初回にレイアウト調整
+    setTimeout(applyHaikuLayout, 150);
 });
+
+// --- Vertical auto layout (confirm 相当) ---
+function applyVerticalLayout(elementId, containerHeight) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    element.classList.add('auto-vertical');
+
+    const availableHeight = containerHeight || getAvailableHeight(element);
+
+    const text = element.textContent.replace(/\r?\n/g, '').trim();
+
+    element.style.letterSpacing = '0px';
+    element.style.transform = 'none';
+
+    const charCount = Array.from(text).length;
+
+    const naturalHeight = element.getBoundingClientRect().height;
+
+    if (naturalHeight > availableHeight + 0.5) {
+        const scale = availableHeight / naturalHeight;
+        element.style.transform = `scaleY(${scale})`;
+    } else {
+        if (charCount > 1) {
+            const gaps = charCount - 1;
+            let spacing = (availableHeight - naturalHeight) / gaps;
+            element.style.letterSpacing = `${spacing}px`;
+            const adjustedHeight = element.getBoundingClientRect().height;
+            if (Math.abs(adjustedHeight - availableHeight) > 0.5 && adjustedHeight > 0) {
+                const adjust = availableHeight / adjustedHeight;
+                spacing = spacing * adjust;
+                element.style.letterSpacing = `${spacing}px`;
+            }
+        }
+    }
+}
+
+function getAvailableHeight(element) {
+    // red/white の俳句はそれぞれ #left2 .left / #right2 .ku に入っている
+    const parent = element.closest('#left2, #right2');
+    if (parent) {
+        const parentHeight = parent.clientHeight;
+        const h3 = parent.querySelector('h3');
+        const h3Height = h3 ? h3.offsetHeight : 0;
+        // battle.css では header 高さは wrapper の計算に含まれているので余白分だけ控えめに
+        return parentHeight - h3Height - 40; // マージン分
+    }
+    return 200;
+}
+
+function applyHaikuLayout() {
+    const ids = ['redHaiku', 'whiteHaiku'];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.textContent.trim()) {
+            const available = getAvailableHeight(el);
+            applyVerticalLayout(id, available);
+        }
+    });
+}
+
+let relayoutTimer = null;
+function queueHaikuRelayout() {
+    if (relayoutTimer) {
+        clearTimeout(relayoutTimer);
+    }
+    relayoutTimer = setTimeout(() => {
+        applyHaikuLayout();
+        relayoutTimer = null;
+    }, 80);
+}
+
+// リサイズでも再調整
+window.addEventListener('resize', () => queueHaikuRelayout());

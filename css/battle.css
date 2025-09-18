@@ -151,16 +151,11 @@ h3 {
     color: black;
     writing-mode: vertical-rl;
     display: inline-block;
-    /* Key: height constrains block-direction (vertical in vertical-rl) */
-    height: 100%; /* use full container height */
-    /* For vertical-rl: height controls where lines wrap, width auto-expands */
-    width: auto;
-    /* Text wrapping behavior for vertical writing */
-    word-break: keep-all; /* preserve word boundaries in Japanese */
-    overflow-wrap: anywhere; /* allow wrapping at any character if needed */
-    text-align: start; /* align to writing-mode start */
-    /* Keep overflow visible for now (A1 only) */
-    overflow: visible;
+    text-align: start;
+    /* 半角文字の端欠け防止のため左右(視覚的)に余白を確保 */
+    padding-inline: 0.15em; /* vertical-rl では上下方向の見え方に影響 */
+    box-sizing: content-box;
+    overflow: visible; /* クリップ防止 */
 }
 /* 句のフェードイン */
 .fade-in {
@@ -179,4 +174,28 @@ h3 {
 /* 縦中横 */
 .tcy {
     text-combine-upright: all;
+}
+
+/* --- Auto vertical fit (confirm 相当) --- */
+/* 自動調整が適用された俳句欄のスタイル */
+.kunakami.auto-vertical {
+    font-size: 2.8em; /* 基本サイズを維持 */
+}
+
+/* 縦書き自動調整用のベース */
+.auto-vertical {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        white-space: nowrap; /* 折り返し禁止 */
+        display: inline-block;
+        transform-origin: top right;
+        /* letter-spacing と transform はJSで動的に設定 */
+    overflow: visible; /* transform時のグリフ欠け防止 */
+    will-change: letter-spacing, transform; /* レイアウト頻繁変化の最適化 */
+}
+
+/* 親側の中央配置が原因で左右ギリギリになる場合の安全余白 */
+#left2 > .left, #right2 > .ku {
+    overflow: visible; /* 内側をクリップしない */
+    padding-inline: 0.3rem; /* 俳句列の端欠け安全マージン */
 }
