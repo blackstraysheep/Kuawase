@@ -17,6 +17,7 @@ function createAdminWindow() {
   adminWindow = new BrowserWindow({
     icon: path.join(__dirname, 'img', 'icon.ico'),
     width: 1200, height: 800, title: 'Kuawase',
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -126,8 +127,8 @@ const configPath = path.join(app.getPath('userData'), "config.json");
 const musicDir = path.join(app.getPath('userData'), "music");
 let adminWindow, projectorWindow, lastKnownData = null;
 // ウィンドウ種別ごとの既定ズーム
-const ADMIN_BASE_ZOOM = 0.9;        // 要望: 管理画面 0.9倍
-const PROJECTOR_BASE_ZOOM = 0.75;    // 要望: 投影画面 0.8倍（さらに高さ自動調整を乗算）
+const ADMIN_BASE_ZOOM = 1;
+const PROJECTOR_BASE_ZOOM = 1;
 let splashWindow;
 
 /**
