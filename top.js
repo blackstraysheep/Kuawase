@@ -55,17 +55,40 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // 管理画面起動時に ready を通知
     window.parent.postMessage({ type: "ready" }, "*");
+
+    // config / localStorage から cssTheme を初期適用
+    try {
+        let cssTheme = localStorage.getItem("battle-css-file") || "battle.css";
+        if (window.electron?.invoke) {
+            const cfg = await window.electron.invoke("get-config");
+            if (cfg?.cssTheme) cssTheme = cfg.cssTheme;
+        }
+        const link = document.getElementById("active-style");
+        if (link) link.setAttribute("href", `css/${cssTheme}`);
+    } catch {}
 });
 
 window.addEventListener("message", (event) => {
     if (event.data?.type === "theme" && window.applyTheme) {
         window.applyTheme(event.data.theme);
     }
+    if (event.data?.type === "css-theme") {
+        const link = document.getElementById("active-style");
+        if (link && event.data.content) {
+            link.setAttribute("href", `css/${event.data.content}`);
+        }
+    }
 });
 if (window.electron) {
     window.electron.receive("update-content", (data) => {
         if (data.type === "theme" && window.applyTheme) {
             window.applyTheme(data.content);
+        }
+        if (data.type === "css-theme") {
+            const link = document.getElementById("active-style");
+            if (link && data.content) {
+                link.setAttribute("href", `css/${data.content}`);
+            }
         }
     });
 }

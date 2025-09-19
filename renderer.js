@@ -205,7 +205,56 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         };
     }
+    // CSS テーマ切替 UI 初期化
+    const cssSelect = document.getElementById("css-select");
+    if (cssSelect) {
+        // config から読み込み（なければ localStorage fallback）
+        try {
+            const cfg = await window.electron.invoke("get-config");
+            const savedCss = (cfg && cfg.cssTheme) || localStorage.getItem("battle-css-file") || "battle.css";
+            cssSelect.value = savedCss;
+            applyCssToIframe(savedCss);
+            // projector にも初期送信
+            window.electron?.invoke("send-data-to-projector", { type: "css-theme", content: savedCss });
+        } catch { /* ignore */ }
+        cssSelect.addEventListener("change", async () => {
+            const file = cssSelect.value;
+            localStorage.setItem("battle-css-file", file); // 一応残す（後方互換）
+            applyCssToIframe(file);
+            // config 保存
+            try {
+                const cfg = await window.electron.invoke("get-config");
+                cfg.cssTheme = file;
+                await window.electron.invoke("update-config", cfg);
+            } catch (e) { console.warn("cssTheme 保存失敗", e); }
+            // projector 同期
+            window.electron?.invoke("send-data-to-projector", { type: "css-theme", content: file });
+        });
+    }
  });
+
+function applyCssToIframe(file) {
+    const iframe = document.getElementById("slide-frame");
+    if (!iframe) return;
+    const swap = () => {
+        try {
+            const doc = iframe.contentDocument || iframe.contentWindow?.document;
+            if (!doc) return;
+            const link = doc.getElementById("active-style") || doc.querySelector('link[rel="stylesheet"]');
+            if (link) {
+                link.href = `css/${file}`;
+            } else {
+                const l = doc.createElement("link");
+                l.rel = "stylesheet"; l.id = "active-style"; l.href = `css/${file}`; doc.head.appendChild(l);
+            }
+        } catch (e) { console.error("CSS切替失敗", e); }
+    };
+    if (iframe.contentDocument?.readyState === "complete") {
+        swap();
+    } else {
+        iframe.addEventListener("load", swap, { once: true });
+    }
+}
 
 function setupIframeSync() {
     const iframe = document.getElementById("slide-frame");
