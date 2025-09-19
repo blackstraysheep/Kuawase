@@ -64,7 +64,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (cfg?.cssTheme) cssTheme = cfg.cssTheme;
         }
         const link = document.getElementById("active-style");
-        if (link) link.setAttribute("href", `css/${cssTheme}`);
+        if (link) {
+            if (cssTheme.startsWith('user:')) {
+                const fname = cssTheme.slice(5);
+                window.electron?.invoke('get-user-style-path', fname).then(p => {
+                    if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
+                }).catch(()=>link.setAttribute('href','css/battle.css'));
+            } else {
+                link.setAttribute("href", `css/${cssTheme}`);
+            }
+        }
     } catch {}
 });
 
@@ -75,7 +84,15 @@ window.addEventListener("message", (event) => {
     if (event.data?.type === "css-theme") {
         const link = document.getElementById("active-style");
         if (link && event.data.content) {
-            link.setAttribute("href", `css/${event.data.content}`);
+            const val = event.data.content;
+            if (val.startsWith('user:')) {
+                const fname = val.slice(5);
+                window.electron?.invoke('get-user-style-path', fname).then(p => {
+                    if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
+                }).catch(()=>link.setAttribute('href','css/battle.css'));
+            } else {
+                link.setAttribute("href", `css/${val}`);
+            }
         }
     }
 });
@@ -87,7 +104,15 @@ if (window.electron) {
         if (data.type === "css-theme") {
             const link = document.getElementById("active-style");
             if (link && data.content) {
-                link.setAttribute("href", `css/${data.content}`);
+                const val = data.content;
+                if (val.startsWith('user:')) {
+                    const fname = val.slice(5);
+                    window.electron?.invoke('get-user-style-path', fname).then(p => {
+                        if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
+                    }).catch(()=>link.setAttribute('href','css/battle.css'));
+                } else {
+                    link.setAttribute("href", `css/${val}`);
+                }
             }
         }
     });

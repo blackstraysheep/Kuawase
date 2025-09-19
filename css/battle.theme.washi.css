@@ -1,0 +1,65 @@
+@import url("battle.css");
+/* 和紙風テーマ: 柔らかな生成りと淡色。縦書き俳句の可読性重視 */
+:root {
+  --washi-bg: #f7f4ec;
+  --washi-fiber1: rgba(166,149,117,0.08);
+  --washi-fiber2: rgba(200,170,120,0.06);
+  --ink: #2d2a26;
+  --beniiro: #c53d43; /* 紅系 */
+  --shirone: #5c6b7a; /* 白側アクセントに少し青味 */
+  --panel-line: #d9d2c3;
+}
+html, body { background: var(--washi-bg); color: var(--ink); }
+
+/* 擬似要素で和紙の繊維質レイヤー */
+body::before, body::after {
+  content: ""; position: fixed; inset:0; pointer-events:none; z-index:-1;
+  background:
+    repeating-linear-gradient(115deg, var(--washi-fiber1) 0 22px, transparent 22px 44px),
+    repeating-linear-gradient(35deg, var(--washi-fiber2) 0 18px, transparent 18px 36px);
+  mix-blend-mode:multiply; opacity:.9;
+}
+body::after { filter: blur(2px) contrast(1.02) brightness(1.01); opacity:.55; }
+
+h1 { background-image: none; background: linear-gradient(90deg,#c53d43 0%,#e2b49a 70%); color:#fff; border-radius:4px 4px 0 0; }
+
+h2, h3, h4 { color: var(--ink); }
+
+#wrapper { gap: .8rem; padding: 0 .8rem .8rem; }
+#left2, #main, #right2, #left3, #right3,
+.poem-panel, .match-panel, .team-slot {
+  background: rgba(255,255,255,0.55);
+  border: 1px solid var(--panel-line);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset, 0 2px 4px rgba(0,0,0,0.06);
+  backdrop-filter: blur(3px) saturate(110%);
+  -webkit-backdrop-filter: blur(3px) saturate(110%);
+  border-radius: 10px;
+}
+#left2, .poem-panel--red { background: linear-gradient(135deg, rgba(197,61,67,0.12), rgba(255,255,255,0.6)); }
+#right2, .poem-panel--white { background: linear-gradient(135deg, rgba(92,107,122,0.12), rgba(255,255,255,0.6)); }
+
+h4[data-lang=red] { color: var(--beniiro); letter-spacing:.2em; }
+h4[data-lang=white] { color: var(--shirone); letter-spacing:.2em; }
+
+.team { color: var(--ink); font-weight:600; }
+.kunakami { font-size: 2.4em; line-height:1.25; letter-spacing:.05em; }
+
+/* 句フェードは少しゆったり */
+.fade-in { animation: fadeSlideDown 1.6s ease-out forwards; }
+
+/* 縦書き微調整: 余白広め */
+.kunakami, .auto-vertical { padding-inline: .35em; }
+
+/* ホバー: 影を濃く */
+#left2:hover, #right2:hover, #main:hover,
+.poem-panel:hover, .match-panel:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.15); transition:.3s; }
+#left2, #right2, #main,
+.poem-panel, .match-panel { transition:.3s; }
+
+/* 細罫線 (原稿用紙ニュアンス) */
+#wrapper { position: relative; }
+#wrapper::before {
+  content: ""; position:absolute; inset:0; pointer-events:none; z-index:-1;
+  background-image: repeating-linear-gradient(90deg, rgba(0,0,0,0.04) 0 1px, transparent 1px 48px);
+  mask: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}

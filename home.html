@@ -145,18 +145,26 @@
                 <summary data-lang="settings">表示設定・その他</summary>
                 <div id="file-manager">
                     <div>
-                        <label for="theme-select" data-lang="color-setting">テーマカラー：</label>
+                        <label for="theme-select" data-lang="color-setting">テーマカラー</label>
                         <select id="theme-select">
                         </select>
                     </div>
                     <div>
-                        <label for="css-select" data-lang="css-theme">表示CSS：</label>
+                        <label for="css-select" data-lang="css-theme">対戦デザイン(CSS)</label>
                         <select id="css-select">
                             <option value="battle.css" data-lang="css-base">標準</option>
                             <option value="battle.theme.dark.css" data-lang="css-dark">ダーク</option>
                             <option value="battle.theme.washi.css" data-lang="css-washi">和紙</option>
                             <option value="battle.theme.neo.css" data-lang="css-neo">ネオ</option>
                         </select>
+                        <div id="custom-css-uploader" class="mt-4">
+                            <button type="button" id="add-custom-css-btn" data-lang="add-custom-css">カスタムCSS追加</button>
+                            <input type="file" id="custom-css-input" accept=".css" class="hide">
+                            <div class="mt-2" id="user-css-list-wrapper">
+                                <span data-lang="custom-css-list-title">ユーザーCSS一覧:</span>
+                                <ul id="user-css-file-list" class="file-list"></ul>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <label for="language-setting" data-lang="lang-setting">言語: </label>

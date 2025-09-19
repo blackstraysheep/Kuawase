@@ -147,6 +147,7 @@ function setupAutoUpdaterHandlers() {
 
 const configPath = path.join(app.getPath('userData'), "config.json");
 const musicDir = path.join(app.getPath('userData'), "music");
+const userStylesDir = path.join(app.getPath('userData'), 'userStyles');
 let adminWindow, projectorWindow, lastKnownData = null;
 // ウィンドウ種別ごとの既定ズーム
 const ADMIN_BASE_ZOOM = 1;
@@ -483,6 +484,42 @@ ipcMain.handle('send-data-to-projector', (_e, data) => {
       } catch {
       return {};
       }
+  });
+  // (追加) カスタムCSS一覧取得
+  ipcMain.handle('list-user-styles', async () => {
+    try {
+      if (!fs.existsSync(userStylesDir)) return [];
+      return fs.readdirSync(userStylesDir).filter(f => f.toLowerCase().endsWith('.css'));
+    } catch (e) { return []; }
+  });
+  // (追加) カスタムCSS保存
+  ipcMain.handle('save-user-style', async (_e, { name, content }) => {
+    try {
+      if (!name) return { success: false, error: 'name is required' };
+      name = name.replace(/[^A-Za-z0-9._-]/g, '_');
+      if (!name.toLowerCase().endsWith('.css')) name += '.css';
+      fs.mkdirSync(userStylesDir, { recursive: true });
+      fs.writeFileSync(path.join(userStylesDir, name), content, 'utf-8');
+      return { success: true, file: name };
+    } catch (e) { return { success: false, error: e.message }; }
+  });
+  // (追加) カスタムCSS絶対パス取得
+  ipcMain.handle('get-user-style-path', async (_e, name) => {
+    try {
+      if (!name) return null;
+      const filePath = path.join(userStylesDir, name);
+      if (!fs.existsSync(filePath)) return null;
+      return `file://${filePath.replace(/\\/g, '/')}`;
+    } catch { return null; }
+  });
+  // (追加) カスタムCSS削除
+  ipcMain.handle('delete-user-style', async (_e, name) => {
+    try {
+      if (!name) return { success: false, error: 'name required' };
+      const filePath = path.join(userStylesDir, name);
+      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+      return { success: true };
+    } catch (e) { return { success: false, error: e.message }; }
   });
   /**
    * IPC: get-music-file-path

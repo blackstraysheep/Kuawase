@@ -90,5 +90,11 @@
   "bgm-delete-all-cancel": "BGM delete all was cancelled",
   "bgm-delete-all-success": "All BGM files deleted",
   "unsaved-bgm": "BGM settings changed. Please save.",
-  "unsaved-match": "Match settings changed. Please save."
+  "unsaved-match": "Match settings changed. Please save.",
+  "css-theme":"Match Design(CSS)",
+  "add-custom-css":"Add Custom CSS",
+  "custom-css-list-title":"User CSS List",
+    "confirm-delete-css":"Delete {name}?",
+  "user-css-delete-success":"Deleted",
+  "user-css-delete-fail":"Delete failed"
 }

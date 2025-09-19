@@ -90,5 +90,11 @@
   "bgm-delete-all-cancel": "BGM一括削除はキャンセルしました",
   "bgm-delete-all-success": "すべてのBGMファイルを削除しました",
   "unsaved-bgm": "BGM設定が変更されています。保存してください。",
-  "unsaved-match": "対戦指定が変更されています。保存してください。"
+  "unsaved-match": "対戦指定が変更されています。保存してください。",
+  "css-theme":"対戦デザイン(CSS)",
+  "add-custom-css":"カスタムCSS追加",
+  "custom-css-list-title":"ユーザーCSS一覧",
+    "confirm-delete-css":"{name} を削除しますか？",
+  "user-css-delete-success":"削除しました",
+  "user-css-delete-fail":"削除に失敗しました"
 }

@@ -47,13 +47,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             del.setAttribute("data-lang", "bgm-delete");
             del.textContent = t ? t("bgm-delete") : "削除";
             del.onclick = async () => {
-                const key = 'bgm-delete-one-confirm';
-                const msg = (window.t ? window.t(key) : `${f} を削除しますか？`).replace('{name}', f);
-                const ok = await (window.showConfirm ? window.showConfirm(null, msg) : Promise.resolve(confirm(msg)));
+                let ok = true;
+                if (window.showConfirm) {
+                    ok = await window.showConfirm('bgm-delete-one-confirm', { name: f });
+                } else {
+                    const fallbackMsg = (window.t ? window.t('bgm-delete-one-confirm') : `${f} を削除しますか？`).replace('{name}', f);
+                    ok = confirm(fallbackMsg);
+                }
                 if (!ok) return;
                 await window.electron.deleteMusicFile(f);
                 refreshListAndSelects();
-                await preloadBgmAudios(); // 削除時もプリロード更新
+                await preloadBgmAudios();
             };
             li.appendChild(del);
             fileList.appendChild(li);
@@ -112,9 +116,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const deleteAllBtn = document.getElementById("delete-all-music-btn");
     if (deleteAllBtn) {
         deleteAllBtn.onclick = async () => {
-            const key = 'bgm-delete-all-confirm';
-            const msg = window.t ? window.t(key) : 'すべてのBGMファイルを削除しますか？';
-            const ok = await (window.showConfirm ? window.showConfirm(null, msg) : Promise.resolve(confirm(msg)));
+            let ok = true;
+            if (window.showConfirm) {
+                ok = await window.showConfirm('bgm-delete-all-confirm');
+            } else {
+                ok = confirm(window.t ? window.t('bgm-delete-all-confirm') : 'すべてのBGMファイルを削除しますか？');
+            }
             if (!ok) {
                 if (window.showToast && window.t) window.showToast(window.t('bgm-delete-all-cancel'), true);
                 return;

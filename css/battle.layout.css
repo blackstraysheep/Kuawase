@@ -1,0 +1,63 @@
+/* 新レイアウト構造クラス + 旧ID互換 (一時) */
+@import url("battle.css");
+
+.battle-layout {
+  display:flex;
+  justify-content:space-between;
+  align-items:stretch;
+  gap:1rem;
+  height:calc(100vh - 4rem);
+  box-sizing:border-box;
+  padding:0 .5rem .5rem;
+}
+
+.poem-panel {
+  display:flex;
+  flex-direction:column;
+  text-align:center;
+  width:35%;
+  box-sizing:border-box;
+  border:2px solid #000;
+  background:#fff;
+}
+.poem-panel--red { background:#ffccff; }
+.poem-panel--white { background:#ffffff; }
+
+.match-panel {
+  display:flex;
+  flex-direction:column;
+  text-align:center;
+  width:30%;
+  box-sizing:border-box;
+  background:#fff;
+  padding:0 .5rem;
+}
+
+.team-slots { display:flex; justify-content:space-between; gap:1rem; margin-top:auto; }
+.team-slot {
+  flex:1 1 40%;
+  padding:1rem 0;
+  text-align:center;
+  box-sizing:border-box;
+  background:#fff;
+  border:2px solid #000;
+  display:flex; align-items:center; justify-content:center;
+}
+.team-slot--red { background:#ffccff; }
+
+.team-name {
+  font-weight:700;
+  font-size:1.5em;
+  writing-mode:vertical-rl;
+  text-align:left;
+  display:inline-block;
+  height:35vh;
+}
+
+.haiku-container { flex:1 1 auto; display:flex; flex-direction:column; justify-content:flex-start; align-items:center; min-height:0; }
+.haiku-text {
+  font-weight:700; font-size:2.3em; writing-mode:vertical-rl; display:inline-block; text-align:start; padding-inline:.15em; overflow:visible;
+}
+
+/* 既存アニメーション継承 */
+.fade-in { animation: fadeSlideDown 1.2s cubic-bezier(.4,0,.4,.5) forwards; }

@@ -262,6 +262,52 @@ button, select, input{
     color: #fff;
 }
 
+/* --- User CSS file list (match BGM style) --- */
+#user-css-file-list {
+    list-style: none;
+    padding: 0 0 0 2px;
+    margin: 4px 0 0 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+#user-css-file-list li {
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #e7e7e7;
+    border-radius: 5px;
+    padding: 2px 8px 2px 6px;
+    font-size: 0.95em;
+    gap: 10px;
+}
+.user-css-file-name {
+    display: block;
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#user-css-file-list button {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+    margin-left: 8px;
+    font-size: 0.9em;
+    padding: 2px 4px;
+    background: #ffd6d6;
+    color: #b22;
+    border: 1.5px solid #b22;
+    border-radius: 3px;
+    transition: background 0.18s;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+#user-css-file-list button:hover {
+    background: #ff8a8a;
+    color: #fff;
+}
+
 /* --- タイマーコンテナ --- */
 .timers-container {
     display: flex;

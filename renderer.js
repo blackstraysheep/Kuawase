@@ -208,6 +208,53 @@ document.addEventListener("DOMContentLoaded", async () => {
     // CSS テーマ切替 UI 初期化
     const cssSelect = document.getElementById("css-select");
     if (cssSelect) {
+        const userListEl = document.getElementById('user-css-file-list');
+        async function refreshUserCssList() {
+            if (!userListEl) return;
+            userListEl.innerHTML = '';
+            let files = [];
+            try { files = await window.electron.invoke('list-user-styles'); } catch {}
+            // セレクトの user: を一旦全部削除して再生成
+            Array.from(cssSelect.querySelectorAll('option')).forEach(o => { if (o.value.startsWith('user:')) o.remove(); });
+            files.forEach(f => {
+                if (!cssSelect.querySelector(`option[value="user:${f}"]`)) {
+                    const o = document.createElement('option');
+                    o.value = `user:${f}`;
+                    o.textContent = `ユーザー：${f}`;
+                    cssSelect.appendChild(o);
+                }
+                const li = document.createElement('li');
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'user-css-file-name';
+                nameSpan.textContent = f;
+                const delBtn = document.createElement('button');
+                delBtn.textContent = t ? t('bgm-delete') : 'Delete';
+                delBtn.className = 'delete-user-css-btn';
+                delBtn.onclick = async () => {
+                    const ok = await showConfirm('confirm-delete-css', { name: f });
+                    if (!ok) return;
+                    const res = await window.electron.invoke('delete-user-style', f);
+                    if (res?.success) {
+                        if (cssSelect.value === `user:${f}`) {
+                            cssSelect.value = 'battle.css';
+                            applyCssToIframe('battle.css');
+                            try { const cfg = await window.electron.invoke('get-config'); cfg.cssTheme = 'battle.css'; await window.electron.invoke('update-config', cfg); } catch {}
+                            window.electron?.invoke('send-data-to-projector', { type: 'css-theme', content: 'battle.css' });
+                        }
+                        refreshUserCssList();
+                        showToast(t('user-css-delete-success'));
+                    } else {
+                        showToast(t('user-css-delete-fail'), true);
+                    }
+                };
+                li.appendChild(nameSpan);
+                li.appendChild(delBtn);
+                userListEl.appendChild(li);
+            });
+        }
+        window.refreshUserCssList = refreshUserCssList;
+        // ユーザーCSS一覧を取得して既存選択肢の後に追加
+        await refreshUserCssList();
         // config から読み込み（なければ localStorage fallback）
         try {
             const cfg = await window.electron.invoke("get-config");
@@ -230,6 +277,44 @@ document.addEventListener("DOMContentLoaded", async () => {
             // projector 同期
             window.electron?.invoke("send-data-to-projector", { type: "css-theme", content: file });
         });
+        // アップロードボタン処理
+        const addBtn = document.getElementById('add-custom-css-btn');
+        const fileInput = document.getElementById('custom-css-input');
+        if (addBtn && fileInput) {
+            addBtn.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', async () => {
+                if (!fileInput.files || !fileInput.files[0]) return;
+                const file = fileInput.files[0];
+                try {
+                    const text = await file.text();
+                    const saveRes = await window.electron.invoke('save-user-style', { name: file.name, content: text });
+                    if (saveRes?.success) {
+                        const fname = saveRes.file;
+                        // まだ無ければ option を追加
+                        if (!cssSelect.querySelector(`option[value="user:${fname}"]`)) {
+                            const o = document.createElement('option');
+                            o.value = `user:${fname}`;
+                            o.textContent = `ユーザー：${fname}`;
+                            cssSelect.appendChild(o);
+                        }
+                        cssSelect.value = `user:${fname}`;
+                        applyCssToIframe(`user:${fname}`);
+                        // config 更新
+                        try {
+                            const cfg = await window.electron.invoke('get-config');
+                            cfg.cssTheme = `user:${fname}`;
+                            await window.electron.invoke('update-config', cfg);
+                        } catch {}
+                        window.electron?.invoke('send-data-to-projector', { type: 'css-theme', content: `user:${fname}` });
+                        refreshUserCssList();
+                    }
+                } catch (e) {
+                    console.error('カスタムCSS保存失敗', e);
+                } finally {
+                    fileInput.value = '';
+                }
+            });
+        }
     }
  });
 
@@ -241,11 +326,21 @@ function applyCssToIframe(file) {
             const doc = iframe.contentDocument || iframe.contentWindow?.document;
             if (!doc) return;
             const link = doc.getElementById("active-style") || doc.querySelector('link[rel="stylesheet"]');
-            if (link) {
-                link.href = `css/${file}`;
+            const setHref = (href) => {
+                if (link) {
+                    link.href = href;
+                } else {
+                    const l = doc.createElement('link');
+                    l.rel = 'stylesheet'; l.id = 'active-style'; l.href = href; doc.head.appendChild(l);
+                }
+            };
+            if (file.startsWith('user:')) {
+                const fname = file.slice(5);
+                window.electron.invoke('get-user-style-path', fname).then(p => {
+                    if (p) setHref(p); else setHref('css/battle.css');
+                }).catch(() => setHref('css/battle.css'));
             } else {
-                const l = doc.createElement("link");
-                l.rel = "stylesheet"; l.id = "active-style"; l.href = `css/${file}`; doc.head.appendChild(l);
+                setHref(`css/${file}`);
             }
         } catch (e) { console.error("CSS切替失敗", e); }
     };
@@ -499,13 +594,13 @@ document.getElementById("load-gs-btn").addEventListener("click", async () => {
             await updateExcelData();
             gsModal.style.display = "none"; // 成功したらモーダルを閉じる
             urlInput.value = ""; // 入力欄をクリア
-            showToastAndReload(t("excel-success"));
+            showToastAndReload(t("gs-success"));
         } else {
             throw new Error(result.error);
         }
     } catch (error) {
         console.error("Google Sheetの読み込みに失敗しました:", error);
-        showToast(t("excel-fail") + `\n${error.message}`, true);
+        showToast(t("gs-fail") + `\n${error.message}`, true);
     }
 });
 
@@ -535,24 +630,36 @@ if (excelOnlyBtn) {
 }
 
 // --- 汎用確認モーダル ---
-function showConfirm(messageKey, rawTextOverride) {
-  return new Promise(resolve => {
-    const modal = document.getElementById('confirm-modal');
-    const content = modal.querySelector('.confirm-modal-content');
-    const msgEl = document.getElementById('confirm-modal-message');
-    const okBtn = document.getElementById('confirm-ok-btn');
-    const cancelBtn = document.getElementById('confirm-cancel-btn');
-    msgEl.textContent = rawTextOverride || t(messageKey);
-    modal.style.display = 'block';
-    function cleanup(result){
-      okBtn.onclick = null; cancelBtn.onclick = null; modal.onclick = null; document.onkeydown = null;
-      modal.style.display = 'none';
-      resolve(result);
-    }
-    okBtn.onclick = () => cleanup(true);
-    cancelBtn.onclick = () => cleanup(false);
-    modal.onclick = (e) => { if (!content.contains(e.target)) cleanup(false); };
-    document.onkeydown = (e) => { if (e.key === 'Escape') cleanup(false); };
-  });
+function showConfirm(messageKey, paramsOrRaw) {
+    return new Promise(resolve => {
+        const modal = document.getElementById('confirm-modal');
+        const content = modal.querySelector('.confirm-modal-content');
+        const msgEl = document.getElementById('confirm-modal-message');
+        const okBtn = document.getElementById('confirm-ok-btn');
+        const cancelBtn = document.getElementById('confirm-cancel-btn');
+        let text = '';
+        if (typeof paramsOrRaw === 'string') {
+            text = paramsOrRaw; // 旧 rawTextOverride 互換
+        } else if (messageKey) {
+            try { text = t(messageKey); } catch { text = messageKey; }
+        }
+        if (paramsOrRaw && typeof paramsOrRaw === 'object' && !Array.isArray(paramsOrRaw)) {
+            for (const [k, v] of Object.entries(paramsOrRaw)) {
+                text = text.replace(new RegExp('\\{' + k + '\\}', 'g'), v);
+            }
+        }
+        if (!text) text = '';
+        msgEl.textContent = text;
+        modal.style.display = 'block';
+        function cleanup(result){
+            okBtn.onclick = null; cancelBtn.onclick = null; modal.onclick = null; document.onkeydown = null;
+            modal.style.display = 'none';
+            resolve(result);
+        }
+        okBtn.onclick = () => cleanup(true);
+        cancelBtn.onclick = () => cleanup(false);
+        modal.onclick = (e) => { if (!content.contains(e.target)) cleanup(false); };
+        document.onkeydown = (e) => { if (e.key === 'Escape') cleanup(false); };
+    });
 }
 window.showConfirm = showConfirm;
