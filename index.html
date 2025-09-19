@@ -12,37 +12,27 @@
     <h1>
       <span id="Compe-name"></span>
     </h1>
-    <section id="top">
-      <div id="wrapper">
-        <div id="left2">
+    <section class="battle-root">
+      <div class="battle-layout">
+        <div class="poem-panel poem-panel--red">
           <h4 data-lang="red">紅</h4>
-          <div class="left"> 
-              <div id="redHaiku" class="kunakami"><!--紅　句内容--></div>
+          <div class="haiku-container">
+            <div id="redHaiku" class="haiku-text"><!--紅　句内容--></div>
           </div>
         </div>
-        <div id="main">
-          <h2>
-            <div id="gameid"><!--　Ａブロック　第１試合　など--></div>
-          </h2>
-          <h2><span data-lang="theme">兼題</span><br>
-            <div id="kendai"><!--　兼題　--></div>
-          </h2>
-          <h3>
-            <div id="matchid" data-lang="pc0">対戦TOP</div>
-          </h3>
-          <div class="wrapper">
-            <div id="left3">
-              <div id="redTeam" class="team"><!--　紅　チーム名--></div>
-            </div>
-            <div id="right3">
-              <div id="whiteTeam" class="team"><!--　白　チーム名--></div>
-            </div>
+        <div class="match-panel">
+          <h2><div id="gameid"><!-- Ａブロック 第１試合 など --></div></h2>
+          <h2><span data-lang="theme">兼題</span><br><div id="kendai"><!-- 兼題 --></div></h2>
+          <h3><div id="matchid" data-lang="pc0">対戦TOP</div></h3>
+          <div class="team-slots">
+            <div class="team-slot team-slot--red"><div id="redTeam" class="team-name"><!-- 紅 チーム名 --></div></div>
+            <div class="team-slot team-slot--white"><div id="whiteTeam" class="team-name"><!-- 白 チーム名 --></div></div>
           </div>
         </div>
-        <div id="right2">
+        <div class="poem-panel poem-panel--white">
           <h4 data-lang="white">白</h4>
-          <div class="ku">
-            <div id="whiteHaiku" class="kunakami"><!--白　句内容--></div>
+          <div class="haiku-container">
+            <div id="whiteHaiku" class="haiku-text"><!--白　句内容--></div>
           </div>
         </div>
       </div>

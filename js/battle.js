@@ -143,8 +143,8 @@ function applyVerticalLayout(elementId, containerHeight) {
 }
 
 function getAvailableHeight(element) {
-    // red/white の俳句はそれぞれ #left2 .left / #right2 .ku に入っている
-    const parent = element.closest('#left2, #right2');
+    // red/white の俳句はそれぞれ .poem-panel--red / .poem-panel--white に入っている
+    const parent = element.closest('.poem-panel');
     if (parent) {
         const parentHeight = parent.clientHeight;
         const h3 = parent.querySelector('h3');
