@@ -66,6 +66,26 @@ function createProjectorWindow() {
       zoomFactor: PROJECTOR_BASE_ZOOM
     }
   });
+  // 自動拡縮用: サイズに応じてズームを更新
+  function adjustProjectorZoom() {
+    if (!projectorWindow || projectorWindow.isDestroyed()) return;
+    const [w, h] = projectorWindow.getContentSize();
+    // 安全のため0除算回避
+    const scaleW = w / PROJECTOR_BASE_WIDTH;
+    const scaleH = h / PROJECTOR_BASE_HEIGHT;
+    let factor = Math.min(scaleW, scaleH);
+    if (!isFinite(factor) || factor <= 0) factor = 1; // fallback
+    // 過剰な極端値を制限（任意調整: 0.3〜4）
+    factor = Math.max(0.3, Math.min(4, factor));
+    projectorWindow.webContents.setZoomFactor(factor);
+  }
+
+  // リサイズ/最大化/復元/フルスクリーン切替時に再計算
+  projectorWindow.on('resize', adjustProjectorZoom);
+  projectorWindow.on('maximize', adjustProjectorZoom);
+  projectorWindow.on('unmaximize', adjustProjectorZoom);
+  projectorWindow.on('enter-full-screen', adjustProjectorZoom);
+  projectorWindow.on('leave-full-screen', adjustProjectorZoom);
   // キーボードリロード抑制（F5, Ctrl+R, Cmd+R）
   projectorWindow.webContents.on('before-input-event', (e, input) => {
     if (
@@ -78,12 +98,14 @@ function createProjectorWindow() {
   projectorWindow.loadFile('top.html');
   // 初回描画完了時にデータ送信
   projectorWindow.webContents.once('did-finish-load', () => {
+    adjustProjectorZoom();
     if (lastKnownData) {
       projectorWindow.webContents.send('update-content', lastKnownData);
     }
   });
   // リロード時にもデータ送信
   projectorWindow.webContents.on('did-finish-load', () => {
+    adjustProjectorZoom();
     if (lastKnownData) {
       projectorWindow.webContents.send('update-content', lastKnownData);
     }
@@ -129,6 +151,9 @@ let adminWindow, projectorWindow, lastKnownData = null;
 // ウィンドウ種別ごとの既定ズーム
 const ADMIN_BASE_ZOOM = 1;
 const PROJECTOR_BASE_ZOOM = 1;
+// Projector 自動拡縮の基準解像度（設計想定サイズ）
+const PROJECTOR_BASE_WIDTH = 1024;
+const PROJECTOR_BASE_HEIGHT = 768;
 let splashWindow;
 
 /**
