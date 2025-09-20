@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (!cssSelect.querySelector(`option[value="user:${f}"]`)) {
                     const o = document.createElement('option');
                     o.value = `user:${f}`;
-                    o.textContent = `ユーザー：${f}`;
+                    o.textContent = f;
                     cssSelect.appendChild(o);
                 }
                 const li = document.createElement('li');
@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         if (!cssSelect.querySelector(`option[value="user:${fname}"]`)) {
                             const o = document.createElement('option');
                             o.value = `user:${fname}`;
-                            o.textContent = `ユーザー：${fname}`;
+                            o.textContent = fname;
                             cssSelect.appendChild(o);
                         }
                         cssSelect.value = `user:${fname}`;

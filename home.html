@@ -94,7 +94,7 @@
                         </div>
                     </div>
                     <div class="flex-row current-file-row">
-                        <span data-lang="current-file" class="current-file-label">読み込み元:</span>
+                        <span data-lang="current-file" class="current-file-label">読み込み元：</span>
                         <span id="last-excel-file" class="last-excel-file" data-lang="not-selected">選択されていません</span>
                     </div>
                 </div>
@@ -114,27 +114,27 @@
                     </div>
                     <div>
                         <label>
-                            <span data-lang="bgm-up-hikou">披講: </span>
+                            <span data-lang="bgm-up-hikou">披講：</span>
                             <select id="bgm-hikou"></select>
                         </label>
                         <label>
-                            <span data-lang="bgm-up-in">入場: </span>
+                            <span data-lang="bgm-up-in">入場：</span>
                             <select id="bgm-in"></select>
                         </label>
                         <label>
-                            <span data-lang="bgm-up-out">退場: </span>
+                            <span data-lang="bgm-up-out">退場：</span>
                             <select id="bgm-out"></select>
                         </label>
                         <label>
-                            <span data-lang="bgm-up-wait">待機: </span>
+                            <span data-lang="bgm-up-wait">待機：</span>
                             <select id="bgm-wait"></select>
                         </label>
                         <label>
-                            <span data-lang="bgm-up-timer1">タイマー1:</span>
+                            <span data-lang="bgm-up-timer1">上タイマー：</span>
                             <select id="bgm-timer1"></select>
                         </label>
                         <label>
-                            <span data-lang="bgm-up-timer2">タイマー2:</span>
+                            <span data-lang="bgm-up-timer2">下タイマー：</span>
                             <select id="bgm-timer2"></select>
                         </label>
                         <button id="save-bgm-config" data-lang="bgm-save">BGM設定保存</button>
@@ -150,29 +150,29 @@
                         </select>
                     </div>
                     <div>
-                        <label for="css-select" data-lang="css-theme">対戦デザイン(CSS)</label>
-                        <select id="css-select">
-                            <option value="battle.css" data-lang="css-base">標準</option>
-                            <option value="battle.theme.dark.css" data-lang="css-dark">ダーク</option>
-                            <option value="battle.theme.washi.css" data-lang="css-washi">和紙</option>
-                            <option value="battle.theme.neo.css" data-lang="css-neo">ネオ</option>
-                        </select>
-                        <div id="custom-css-uploader" class="mt-4">
+                        <label for="css-select" data-lang="css-theme" class="css-theme-label">対戦デザイン(CSS)</label>
+                        <div class="css-select-line">
+                            <select id="css-select">
+                                <option value="battle.css" data-lang="css-base">標準</option>
+                                <option value="battle.theme.dark.css" data-lang="css-dark">ダーク</option>
+                                <option value="battle.theme.washi.css" data-lang="css-washi">和紙</option>
+                                <option value="battle.theme.neo.css" data-lang="css-neo">ネオ</option>
+                            </select>
                             <button type="button" id="add-custom-css-btn" data-lang="add-custom-css">カスタムCSS追加</button>
                             <input type="file" id="custom-css-input" accept=".css" class="hide">
-                            <div class="mt-2" id="user-css-list-wrapper">
-                                <span data-lang="custom-css-list-title">ユーザーCSS一覧:</span>
-                                <ul id="user-css-file-list" class="file-list"></ul>
-                            </div>
+                        </div>
+                        <div id="user-css-list-wrapper" class="user-css-list-wrapper">
+                            <span data-lang="custom-css-list-title">ユーザーCSS一覧</span>
+                            <ul id="user-css-file-list" class="file-list"></ul>
                         </div>
                     </div>
                     <div>
-                        <label for="language-setting" data-lang="lang-setting">言語: </label>
+                        <label for="language-setting" data-lang="lang-setting">言語</label>
                         <button onclick="setLanguage('ja')">日本語</button>
                         <button onclick="setLanguage('en')">English</button>
                     </div>
                     <div>
-                        <label for="reset-all" data-lang="reset-all">全データ初期化 </label>
+                        <label for="reset-all" data-lang="reset-all">全データ初期化</label>
                         <button id="reset-data-btn" data-lang="excel-reset">初期化</button>
                     </div>
                 </div>
@@ -183,18 +183,18 @@
             <div class="match-setup-flex">
                 <div class="match-setup-fields">
                     <div id="match-setup-panel-row">
-                        <label><span data-lang="bd-red">紅チーム: </span>
+                        <label><span data-lang="bd-red">紅チーム</span>
                             <select id="redTeamSelect"></select>
                         </label>
-                        <label><span data-lang="bd-white">白チーム: </span>
+                        <label><span data-lang="bd-white">白チーム</span>
                             <select id="whiteTeamSelect"></select>
                         </label>
                     </div>
                     <div id="match-setup-panel-row">
-                        <label><span data-lang="theme">兼題: </span>
+                        <label><span data-lang="theme">兼題</span>
                             <select id="kendaiSelect"></select>
                         </label>
-                        <label><span data-lang="match-name">対戦名: </span>
+                        <label><span data-lang="match-name">対戦名</span>
                             <input type="text" id="matchTitleInput" data-lang-placeholder="match-name-placeholder">
                         </label>
                     </div>
