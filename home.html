@@ -109,10 +109,11 @@
                             <button id="delete-all-music-btn" data-lang="bgm-delete-all">一括削除</button>
                         </div>
                     </div>
-                    <div>
+                    <div class="file-list-wrapper">
+                        <span data-lang="bgm-file-list">ユーザーBGMファイル一覧</span>
                         <ul id="music-file-list"></ul>
                     </div>
-                    <div>
+                    <div class="bgm-selects-vertical">
                         <label>
                             <span data-lang="bgm-up-hikou">披講：</span>
                             <select id="bgm-hikou"></select>
@@ -137,13 +138,15 @@
                             <span data-lang="bgm-up-timer2">下タイマー：</span>
                             <select id="bgm-timer2"></select>
                         </label>
+                    </div>
+                    <div class="bgm-save-row">
                         <button id="save-bgm-config" data-lang="bgm-save">BGM設定保存</button>
                     </div>
                 </div>
             </details>
             <details>
                 <summary data-lang="settings">表示設定・その他</summary>
-                <div id="file-manager">
+                <div id="file-manager" class="settings-block">
                     <div>
                         <label for="theme-select" data-lang="color-setting">テーマカラー</label>
                         <select id="theme-select">
@@ -161,7 +164,7 @@
                             <button type="button" id="add-custom-css-btn" data-lang="add-custom-css">カスタムCSS追加</button>
                             <input type="file" id="custom-css-input" accept=".css" class="hide">
                         </div>
-                        <div id="user-css-list-wrapper" class="user-css-list-wrapper">
+                        <div id="user-css-list-wrapper" class="file-list-wrapper">
                             <span data-lang="custom-css-list-title">ユーザーCSS一覧</span>
                             <ul id="user-css-file-list" class="file-list"></ul>
                         </div>

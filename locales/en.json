@@ -29,6 +29,7 @@
   "excel-reset": "Reset",
   "excel-note": "Note: The display next to 'Choose File' will return to 'No file chosen' after loading. Please check if the file is loaded correctly by confirming the reflected competition name, etc.",
   "bgmcheck": "BGM File Manager",
+  "bgm-file-list": "User BGM File List",
   "bgm-up-hikou": "Recitation: ",
   "bgm-up-in": "Entrance: ",
   "bgm-up-out": "Exit: ",

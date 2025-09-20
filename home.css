@@ -169,20 +169,19 @@ button, select, input{
     border: 1.5px solid #d0d0d0;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(120,180,255,0.08);
-    font-size: 0.98rem;
-}
-#file-manager > div {
-    margin-bottom: 10px;
+    font-size: 0.9em;
 }
 #file-manager label {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-bottom: 4px;
     font-size: 0.9em;
     font-weight: 500;
     justify-content: space-between;
 }
+#file-manager.settings-block > div { margin-top:8px; }
+#file-manager.settings-block > div:first-child { margin-top:0; }
+#file-manager.settings-block label { padding:4px 0 2px; }
 #file-manager input[type="file"] {
     font-size: 0.9em;
     padding: 2px 0;
@@ -212,6 +211,16 @@ button, select, input{
     background: var(--primary-dark);
     color: #000;
 }
+/* BGM設定行をフレックスで右端に保存ボタン */
+/* 旧: 横並び .bgm-selects-row は廃止（残しても未使用） */
+.bgm-selects-row { align-items: flex-end; gap: 10px; }
+.bgm-selects-row label { flex: 1 1 140px; min-width: 120px; }
+/* 新: 1行1つのBGMセレクタ */
+.bgm-selects-vertical { display:flex; flex-direction:column; gap:4px; }
+.bgm-selects-vertical label { display:flex; align-items:center; gap:6px; }
+.bgm-selects-vertical label span { min-width:80px; }
+.bgm-selects-vertical select { flex:1 1 auto; }
+.bgm-save-row { display:flex; justify-content:flex-end; margin-top:6px; }
 #file-manager .css-select-line {
     display: flex;
     align-items: center;
@@ -223,9 +232,6 @@ button, select, input{
 #add-custom-css-btn {
     white-space: nowrap;
     flex: 0 0 auto;
-}
-#user-css-list-wrapper {
-    margin-top: 6px;
 }
 .css-theme-label { display:block; margin-bottom:4px; font-weight:600; }
 #file-manager #note {
@@ -240,11 +246,13 @@ button, select, input{
     white-space: nowrap;
     flex-shrink: 0;
 }
-
+.file-list-wrapper {
+    margin: 8px 0 8px 0;
+}
 #music-file-list {
+    margin: 0;
     list-style: none;
     padding: 0 0 0 2px;
-    margin: 0;
     max-height: 150px;
     overflow-y: auto;
 }
@@ -266,12 +274,8 @@ button, select, input{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-#music-file-list button {
-    width: 60px; /* 幅をやや広げて固定 */
-    min-width: 60px;
-    max-width: 60px;
+#music-file-list button, #user-css-file-list button {
     margin-left: 8px;
-    font-size: 0.93em;
     padding: 2px 4px;
     background: #ffd6d6;
     color: #b22;
@@ -310,21 +314,6 @@ button, select, input{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-#user-css-file-list button {
-    width: 60px;
-    min-width: 60px;
-    max-width: 60px;
-    margin-left: 8px;
-    font-size: 0.9em;
-    padding: 2px 4px;
-    background: #ffd6d6;
-    color: #b22;
-    border: 1.5px solid #b22;
-    border-radius: 3px;
-    transition: background 0.18s;
-    flex-shrink: 0;
-    cursor: pointer;
 }
 #user-css-file-list button:hover {
     background: #ff8a8a;
