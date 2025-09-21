@@ -73,7 +73,7 @@ function sanitizeHTML(content, options = {}) {
  */
 function fallbackSanitize(content) {
     // scriptタグを完全に除去
-    let sanitized = content.replace(/<script[^>]*>.*?<\/script>/gi, '');
+    let sanitized = content.replace(/<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/gi, '');
     
     // 危険なjavascript:プロトコルを除去
     sanitized = sanitized.replace(/javascript:/gi, '');
