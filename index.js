@@ -1,6 +1,16 @@
 window.appConfig = window.appConfig || {};
 let lastTitleData = null;
 
+// CSSファイル名を検証して安全なもののみ許可
+function sanitizeCssFilename(name) {
+    // 許可されたファイル名のみ: 英数字, -, _, .css, 拡張子のみ
+    if (typeof name !== "string") return "battle.css";
+    const allowed = /^[\w\-]+\.css$/;
+    if (allowed.test(name)) return name;
+    // 不正な場合はデフォルトへ
+    return "battle.css";
+}
+
 function renderTitle(data) {
     if (!data) return;
     document.getElementById("Compe-name").textContent = data.compename || "";
@@ -94,7 +104,8 @@ if (window.electron) {
                         if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
                     }).catch(()=>link.setAttribute('href','css/battle.css'));
                 } else {
-                    link.setAttribute("href", `css/${val}`);
+                    const safeVal = sanitizeCssFilename(val);
+                    link.setAttribute("href", `css/${safeVal}`);
                 }
             }
         }
@@ -119,7 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
                     }).catch(()=>link.setAttribute('href','css/battle.css'));
                 } else {
-                    link.setAttribute("href", `css/${cssTheme}`);
+                    const safeCssTheme = sanitizeCssFilename(cssTheme);
+                    link.setAttribute("href", `css/${safeCssTheme}`);
                 }
             }
         } catch {}
