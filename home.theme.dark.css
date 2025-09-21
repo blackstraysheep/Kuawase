@@ -1,0 +1,272 @@
+/* Home page dark theme overrides */
+/* CSS Variables for dark theme - respects color theme selection */
+body.home-dark {
+  --grey: #e0e0e0;
+  --white: #121212;
+  /* Keep original color theme variables but darken them appropriately */
+  /* --primary, --primary-dark, --primary-light values are preserved from color.js theme selection */
+  
+  /* Dark theme specific variables */
+  --bg-main: #1a1a1a;
+  --bg-panel: #202020;
+  --bg-panel-darker: #181818;
+  --bg-input: #2a2a2a;
+  --bg-card: #242424;
+  --border-main: #444;
+  --border-light: #333;
+  --border-input: #555;
+  --text-main: #eee;
+  --text-secondary: #ccc;
+  --text-bright: #fafafa;
+  
+  /* Special button colors for dark theme */
+  --btn-danger-bg: #7f2b2b;
+  --btn-danger-hover: #b43c3c;
+  --btn-danger-border: #bb4444;
+  --btn-red-bg: #8b3c6b;
+  --btn-red-hover: #c45599;
+  --btn-white-bg: #4a4a4a;
+  --btn-white-hover: #666;
+}
+
+/* Base layout */
+body.home-dark {
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+/* Preview area */
+body.home-dark #slide-preview { 
+  background: #111; 
+  border-color: var(--border-main); 
+}
+
+body.home-dark #slide-frame { 
+  border-color: var(--border-input); 
+}
+
+/* Admin panel */
+body.home-dark #admin-panel { 
+  background: var(--bg-panel-darker); 
+  border-left-color: var(--border-light); 
+}
+
+/* Panel containers */
+body.home-dark #match-setup-panel { 
+  background: var(--bg-panel); 
+  border-color: var(--border-light); 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6); 
+}
+
+body.home-dark #file-manager, 
+body.home-dark #page-controls, 
+body.home-dark #hikou, 
+body.home-dark #audio-controls { 
+  background: var(--bg-panel); 
+  border-color: var(--border-light); 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5); 
+}
+
+/* File lists */
+body.home-dark #music-file-list li, 
+body.home-dark #user-css-file-list li { 
+  background: #000; 
+  color: #fff;
+}
+
+body.home-dark .music-file-name,
+body.home-dark .user-css-file-name {
+  color: #fff;
+}
+
+/* Text elements */
+body.home-dark summary { 
+  color: var(--text-secondary); 
+}
+
+body.home-dark h3 {
+  color: var(--text-main);
+}
+
+body.home-dark label {
+  color: var(--text-main);
+}
+
+body.home-dark .last-excel-file {
+  color: var(--text-secondary);
+}
+
+/* Form inputs */
+body.home-dark select,
+body.home-dark #match-setup-panel select,
+body.home-dark #file-manager select { 
+  background: #000 ; 
+  color: #fff ; 
+  border-color: var(--border-input) ; 
+}
+
+body.home-dark input[type="text"], 
+body.home-dark input[type="number"],
+body.home-dark #match-setup-panel input[type="text"] { 
+  background: #000 ; 
+  color: #fff ; 
+  border-color: var(--border-input) ; 
+}
+
+body.home-dark select:focus,
+body.home-dark #match-setup-panel select:focus,
+body.home-dark #file-manager select:focus {
+  border-color: var(--primary) ;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) ;
+}
+
+body.home-dark input[type="text"]:focus,
+body.home-dark input[type="number"]:focus,
+body.home-dark #match-setup-panel input[type="text"]:focus {
+  border-color: var(--primary) ;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) ;
+}
+
+/* Select dropdown options */
+body.home-dark select option,
+body.home-dark #match-setup-panel select option,
+body.home-dark #file-manager select option {
+  background: #000 ;
+  color: #fff ;
+}
+
+/* Regular buttons - use color theme variables */
+body.home-dark button, 
+body.home-dark #admin-panel .btn,
+body.home-dark #admin-panel button, 
+body.home-dark #match-setup-panel button, 
+body.home-dark .timer-block button,
+body.home-dark #page-controls button,
+body.home-dark #hikou button,
+body.home-dark #audio-controls .btn,
+body.home-dark #file-manager button { 
+  background: var(--primary); 
+  color: #000 ; 
+  border-color: var(--border-input); 
+}
+
+body.home-dark button:hover, 
+body.home-dark #admin-panel .btn:hover,
+body.home-dark #admin-panel button:hover, 
+body.home-dark #match-setup-panel button:hover, 
+body.home-dark .timer-block button:hover,
+body.home-dark #page-controls button:hover,
+body.home-dark #hikou button:hover,
+body.home-dark #audio-controls .btn:hover,
+body.home-dark #file-manager button:hover { 
+  background: var(--primary-dark); 
+  color: #000 ; 
+}
+
+/* Special colored buttons */
+body.home-dark #admin-panel #showRed {
+  background: var(--btn-red-bg);
+  color: #000;
+  border-color: var(--btn-red-hover);
+}
+
+body.home-dark #admin-panel #showRed:hover {
+  background: var(--btn-red-hover);
+  color: #000;
+}
+
+body.home-dark #admin-panel #showWhite {
+  background: var(--btn-white-bg);
+  color: #000;
+  border-color: var(--btn-white-hover);
+}
+
+body.home-dark #admin-panel #showWhite:hover {
+  background: var(--btn-white-hover);
+  color: #000;
+}
+
+/* Danger buttons */
+body.home-dark #music-file-list button, 
+body.home-dark #user-css-file-list button, 
+body.home-dark #file-manager #reset-data-btn, 
+body.home-dark #file-manager #delete-all-music-btn, 
+body.home-dark #file-manager #reset-excel-only-btn, 
+body.home-dark #audio-controls #stop-bgm-btn { 
+  background: var(--btn-danger-bg) ; 
+  color: var(--text-bright) ; 
+  border-color: var(--btn-danger-border) ; 
+}
+
+body.home-dark #music-file-list button:hover, 
+body.home-dark #user-css-file-list button:hover, 
+body.home-dark #file-manager #reset-data-btn:hover, 
+body.home-dark #file-manager #delete-all-music-btn:hover, 
+body.home-dark #file-manager #reset-excel-only-btn:hover, 
+body.home-dark #audio-controls #stop-bgm-btn:hover { 
+  background: var(--btn-danger-hover) ; 
+  color: var(--text-bright) ; 
+}
+
+/* Timer blocks */
+body.home-dark .timer-block { 
+  background: var(--bg-card); 
+  border-color: var(--border-light); 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6); 
+}
+
+body.home-dark #timer, 
+body.home-dark #timer2 { 
+  background: var(--bg-input); 
+  color: var(--text-bright); 
+  border: 1px solid var(--border-input);
+}
+
+/* Toast notifications */
+body.home-dark #toast { 
+  background: var(--border-main); 
+  color: var(--text-bright);
+}
+
+/* Warning states */
+body.home-dark .panel-unsaved { 
+  background: #402222 ; 
+  border-color: #663333 ; 
+  box-shadow: 0 2px 10px rgba(255,0,0,0.25) ; 
+}
+
+body.home-dark .timer-block.timer-expired { 
+  background: #402222; 
+  border-color: #663333; 
+}
+
+body.home-dark #one-minute-warning {
+  color: #ff6b6b;
+}
+
+/* Modal dialogs */
+body.home-dark .modal {
+  background-color: rgba(0,0,0,0.8);
+}
+
+body.home-dark .modal-content,
+body.home-dark .app-modal-content {
+  background: var(--bg-panel);
+  color: var(--text-main);
+  border-color: var(--border-main);
+}
+
+body.home-dark .close-btn {
+  color: var(--text-secondary);
+}
+
+body.home-dark .close-btn:hover {
+  color: var(--text-bright);
+}
+
+/* Checkboxes */
+body.home-dark input[type="checkbox"] {
+  accent-color: var(--primary);
+}

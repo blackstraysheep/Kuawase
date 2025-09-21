@@ -101,5 +101,6 @@
   "custom-css-list-title":"ユーザーCSS一覧",
   "confirm-delete-css":"{name} を削除しますか？",
   "user-css-delete-success":"削除しました",
-  "user-css-delete-fail":"削除に失敗しました"
+  "user-css-delete-fail":"削除に失敗しました",
+  "home-dark-mode":"管理画面ダークモード"
 }

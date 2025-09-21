@@ -101,5 +101,6 @@
   "custom-css-list-title":"User CSS List",
     "confirm-delete-css":"Delete {name}?",
   "user-css-delete-success":"Deleted",
-  "user-css-delete-fail":"Delete failed"
+  "user-css-delete-fail":"Delete failed",
+  "home-dark-mode":"Admin Panel Dark Mode"
 }

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="home.css">
+    <link rel="stylesheet" type="text/css" href="home.theme.dark.css">
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
     <script src="js/sanitize.js"></script>
 </head>
@@ -173,6 +174,10 @@
                         <label for="language-setting" data-lang="lang-setting">言語</label>
                         <button onclick="setLanguage('ja')">日本語</button>
                         <button onclick="setLanguage('en')">English</button>
+                    </div>
+                    <div>
+                        <label for="home-darkmode-toggle" data-lang="home-dark-mode">管理画面ダークモード</label>
+                        <input type="checkbox" id="home-darkmode-toggle" />
                     </div>
                     <div>
                         <label for="reset-all" data-lang="reset-all">全データ初期化</label>
