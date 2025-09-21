@@ -4,6 +4,7 @@ const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 const fs = require("fs");
 const path = require("path");
+let adminFirstLoadDone = false; // 管理画面初回ロード判定
 const XLSX = require("xlsx");
 const axios = require('axios');
 // --- Window creators ---
@@ -32,7 +33,9 @@ function createAdminWindow() {
     adminWindow.webContents.send('set-role', 'admin');
   });
   adminWindow.webContents.on('did-finish-load', () => {
-    // adminWindowがリロードされたらprojectorWindowもリロード
+    // 初回 (アプリ起動直後) は projector の二重ロードを避ける
+    if (!adminFirstLoadDone) { adminFirstLoadDone = true; return; }
+    // 2回目以降：管理画面がリロードされたら projector も再読込
     if (projectorWindow && !projectorWindow.isDestroyed()) {
       projectorWindow.loadFile('top.html');
     }
@@ -99,9 +102,20 @@ function createProjectorWindow() {
   // 初回描画完了時にデータ送信
   projectorWindow.webContents.once('did-finish-load', () => {
     adjustProjectorZoom();
-    if (lastKnownData) {
-      projectorWindow.webContents.send('update-content', lastKnownData);
-    }
+    // すべてのロード完了毎にテーマ & 直近データを送信
+    try {
+      let themeToSend = 'battle.css';
+      if (fs.existsSync(configPath)) {
+        try {
+          const initCfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+          if (initCfg && typeof initCfg.cssTheme === 'string' && initCfg.cssTheme.trim()) {
+            themeToSend = initCfg.cssTheme.trim();
+          }
+        } catch { /* ignore parse */ }
+      }
+      projectorWindow.webContents.send('update-content', { type: 'css-theme', content: themeToSend });
+    } catch {}
+    if (lastKnownData) projectorWindow.webContents.send('update-content', lastKnownData);
   });
   // リロード時にもデータ送信
   projectorWindow.webContents.on('did-finish-load', () => {

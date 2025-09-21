@@ -49,49 +49,19 @@ if (window.electron?.receive) {
 // 3) 初回ロード時に直接 Excel データから大会名を取得して描画
 //    これで admin 側からのメッセージがなくても必ず表示されます
 document.addEventListener("DOMContentLoaded", async () => {
-        let compename = "";
-        try {
-            if (window.electron?.invoke) {
-                const excelData = await window.electron.invoke("get-excel-data");
-                compename = excelData["B1"] || "";
-            }
-        } catch (e) {
-            console.error("[top.js] 初回 Excel データ取得エラー:", e);
-        }
-        // 取得できなかった／空文字ならデフォルトを表示
-        if (!compename) compename = "Kuawase";
-        renderTitle({ compename });
-
-    // 管理画面起動時に ready を通知
-    window.parent.postMessage({ type: "ready" }, "*");
-
-    // config / localStorage から cssTheme を初期適用
+    let compename = "";
     try {
-        let cssTheme = localStorage.getItem("battle-css-file") || "battle.css";
         if (window.electron?.invoke) {
-            const cfg = await window.electron.invoke("get-config");
-            if (cfg?.cssTheme) cssTheme = cfg.cssTheme;
+            const excelData = await window.electron.invoke("get-excel-data");
+            compename = excelData["B1"] || "";
         }
-        const link = document.getElementById("active-style");
-        if (link) {
-            if (cssTheme.startsWith('user:')) {
-                // Only use resolved path from backend; never interpolate direct value
-                const fname = cssTheme.slice(5);
-                window.electron?.invoke('get-user-style-path', fname).then(p => {
-                    // Double-check: only set href if the result is a non-empty string
-                    if (typeof p === "string" && p) {
-                        link.setAttribute('href', p);
-                    } else {
-                        link.setAttribute('href', 'css/battle.css');
-                    }
-                }).catch(() => link.setAttribute('href', 'css/battle.css'));
-            } else {
-                // Sanitize cssTheme before using; sanitizeCssFileName always returns safe filename
-                const safeTheme = sanitizeCssFileName(cssTheme);
-                link.setAttribute("href", `css/${safeTheme}`);
-            }
-        }
-    } catch {}
+    } catch (e) {
+        console.error("[top.js] 初回 Excel データ取得エラー:", e);
+    }
+    if (!compename) compename = "Kuawase";
+    renderTitle({ compename });
+    window.parent.postMessage({ type: "ready" }, "*");
+    // cssTheme 初期適用は main.js からの初回 'update-content' (css-theme) 送信に一本化
 });
 
 window.addEventListener("message", (event) => {
