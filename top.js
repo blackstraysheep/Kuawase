@@ -9,14 +9,7 @@ let lastTitleData = null;
  */
 function sanitizeCssFileName(name) {
     if (!name) return "battle.css";
-    if (name.startsWith("user:")) {
-        const fname = name.slice(5);
-        // Only allow alphanumerics, -, _, ., no slashes or special chars
-        if (/^[\w\-\.]+\.css$/.test(fname)) return name;
-        // fallback
-        return "battle.css";
-    }
-    // For built-in themes, only allow alphanumerics, -, _, and .css ending
+    // Only allow built-in themes: alphanumerics, -, _, ending with .css
     if (/^[\w\-]+\.css$/.test(name)) return name;
     // fallback
     return "battle.css";
@@ -82,12 +75,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         const link = document.getElementById("active-style");
         if (link) {
             if (cssTheme.startsWith('user:')) {
+                // Only use resolved path from backend; never interpolate direct value
                 const fname = cssTheme.slice(5);
                 window.electron?.invoke('get-user-style-path', fname).then(p => {
-                    if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
-                }).catch(()=>link.setAttribute('href','css/battle.css'));
+                    // Double-check: only set href if the result is a non-empty string
+                    if (typeof p === "string" && p) {
+                        link.setAttribute('href', p);
+                    } else {
+                        link.setAttribute('href', 'css/battle.css');
+                    }
+                }).catch(() => link.setAttribute('href', 'css/battle.css'));
             } else {
-                // Sanitize cssTheme before using
+                // Sanitize cssTheme before using; sanitizeCssFileName always returns safe filename
                 const safeTheme = sanitizeCssFileName(cssTheme);
                 link.setAttribute("href", `css/${safeTheme}`);
             }
