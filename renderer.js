@@ -289,12 +289,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const text = await file.text();
                     const saveRes = await window.electron.invoke('save-user-style', { name: file.name, content: text });
                     if (saveRes?.success) {
-                        const fname = saveRes.file;
-                        // まだ無ければ option を追加
-                        if (!cssSelect.querySelector(`option[value="user:${fname}"]`)) {
+                        // Sanitize the file name before using it in the option
+                        const sanitizedName = /^[\w\-\.]+\.css$/.test(saveRes.file) ? saveRes.file : null;
+                        if (sanitizedName && !cssSelect.querySelector(`option[value="user:${sanitizedName}"]`)) {
                             const o = document.createElement('option');
-                            o.value = `user:${fname}`;
-                            o.textContent = fname;
+                            o.value = `user:${sanitizedName}`;
+                            o.textContent = sanitizedName;
                             cssSelect.appendChild(o);
                         }
                         cssSelect.value = `user:${fname}`;
@@ -317,6 +317,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
  });
+function sanitizeCssFilename(file) {
+    // Accept only known patterns: user:filename or filename.css with strict rules
+    if (file.startsWith('user:')) {
+        // Allow only safe filenames (letters, digits, underscores, dashes, dot)
+        const fname = file.slice(5);
+        if (/^[\w\-\.]+\.css$/.test(fname)) {
+            return { type: 'user', name: fname };
+        }
+    } else if (/^[\w\-\.]+\.css$/.test(file)) {
+        return { type: 'builtin', name: file };
+    }
+    // If invalid, fallback to known safe css
+    return { type: 'builtin', name: 'battle.css' };
+}
+
 
 function applyCssToIframe(file) {
     const iframe = document.getElementById("slide-frame");
@@ -334,13 +349,13 @@ function applyCssToIframe(file) {
                     l.rel = 'stylesheet'; l.id = 'active-style'; l.href = href; doc.head.appendChild(l);
                 }
             };
-            if (file.startsWith('user:')) {
-                const fname = file.slice(5);
-                window.electron.invoke('get-user-style-path', fname).then(p => {
+            const sanitized = sanitizeCssFilename(file);
+            if (sanitized.type === 'user') {
+                window.electron.invoke('get-user-style-path', sanitized.name).then(p => {
                     if (p) setHref(p); else setHref('css/battle.css');
                 }).catch(() => setHref('css/battle.css'));
             } else {
-                setHref(`css/${file}`);
+                setHref(`css/${sanitized.name}`);
             }
         } catch (e) { console.error("CSS切替失敗", e); }
     };
