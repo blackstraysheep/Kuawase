@@ -1,10 +1,26 @@
 window.appConfig = window.appConfig || {};
 let lastTitleData = null;
 
+
 /**
- * 大会名を描画する
- * @param {{ compename?: string }} data
+ * CSSファイル名を安全に検証・サニタイズする
+ * @param {string} name
+ * @returns {string} サニタイズ後ファイル名 or "battle.css" fallback
  */
+function sanitizeCssFileName(name) {
+    if (!name) return "battle.css";
+    if (name.startsWith("user:")) {
+        const fname = name.slice(5);
+        // Only allow alphanumerics, -, _, ., no slashes or special chars
+        if (/^[\w\-\.]+\.css$/.test(fname)) return name;
+        // fallback
+        return "battle.css";
+    }
+    // For built-in themes, only allow alphanumerics, -, _, and .css ending
+    if (/^[\w\-]+\.css$/.test(name)) return name;
+    // fallback
+    return "battle.css";
+}
 function renderTitle(data) {
     if (!data) return;
     const el = document.getElementById("Compe-name");
@@ -71,7 +87,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
                 }).catch(()=>link.setAttribute('href','css/battle.css'));
             } else {
-                link.setAttribute("href", `css/${cssTheme}`);
+                // Sanitize cssTheme before using
+                const safeTheme = sanitizeCssFileName(cssTheme);
+                link.setAttribute("href", `css/${safeTheme}`);
             }
         }
     } catch {}
@@ -91,7 +109,9 @@ window.addEventListener("message", (event) => {
                     if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
                 }).catch(()=>link.setAttribute('href','css/battle.css'));
             } else {
-                link.setAttribute("href", `css/${val}`);
+                // Sanitize val before using
+                const safeTheme = sanitizeCssFileName(val);
+                link.setAttribute("href", `css/${safeTheme}`);
             }
         }
     }
