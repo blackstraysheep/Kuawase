@@ -85,7 +85,11 @@ function fallbackSanitize(content) {
     sanitized = sanitized.replace(/javascript:/gi, '');
     
     // 危険なイベントハンドラーを除去
-    sanitized = sanitized.replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, '');
+    // イベントハンドラー属性 (例: onclick, onerror等) を繰り返し除去
+    do {
+        previous = sanitized;
+        sanitized = sanitized.replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, '');
+    } while (sanitized !== previous);
     
     // 許可されたタグのみを保持
     const allowedTags = /^<\/?(?:ruby|rt|rp|span|div|p|strong|em|b|i|br|small|sup|sub)(?:\s[^>]*)?>$/i;
