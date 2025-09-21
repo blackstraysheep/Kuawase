@@ -59,7 +59,7 @@ button, select, input{
     border: 1px solid var(--grey);
     border-radius: 3px;
     padding: 4px 4px;
-    margin: 6px 0;
+    margin: 0;
     font-size: 0.9em;
     font-weight: bold;
     cursor: pointer;

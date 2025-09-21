@@ -42,7 +42,7 @@ h2, h3, h4 { color: #f4f6f8; }
   box-shadow: var(--panel-shadow);
   border-radius: 14px;
 }
-
+.team-slot {margin: 8px;}
 #left2, .poem-panel--red { background: linear-gradient(135deg, rgba(255,85,119,0.18), rgba(255,85,119,0.05)); }
 #right2, .poem-panel--white { background: linear-gradient(135deg, rgba(102,217,255,0.18), rgba(102,217,255,0.05)); }
 

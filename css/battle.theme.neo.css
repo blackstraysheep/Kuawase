@@ -27,9 +27,42 @@ h2, h3, h4 { color:#fafcff; text-shadow:0 0 6px rgba(0,213,255,0.35); }
   box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 8px 24px -6px rgba(0,0,0,0.75);
   position: relative; overflow:hidden; border-radius: 18px;
 }
+.team-slot {margin: 8px;}
 #left2::before, #main::before, #right2::before,
 .poem-panel::before, .match-panel::before {
-  content:""; position:absolute; inset:0; padding:1px; border-radius:inherit; background: var(--neo-line); -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; opacity:.9;
+  content:""; position:absolute; inset:0; padding:1px; border-radius:inherit;
+  background: conic-gradient(from var(--rotate-angle), #ff007c, #7c00ff, #00d5ff, #ff007c);
+  animation: neoBorderRotate 4s linear infinite;
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude; opacity:.95;
+  will-change: --rotate-angle;
+}
+/* 紅系パネル: 赤〜紫寄りに強調 */
+#left2::before, .poem-panel--red::before {
+  background: conic-gradient(from var(--rotate-angle), #ff2975, #ff007c, #7c00ff, #ff2975);
+  animation-duration: 3s;
+}
+/* 白系パネル: シアン〜バイオレット寄りに強調 */
+#right2::before, .poem-panel--white::before {
+  background: conic-gradient(from var(--rotate-angle), #23d5ff, #00d5ff, #7c00ff, #23d5ff);
+  animation-duration: 4s;
+}
+/* メイン/対戦情報は中立グラデーション維持 */
+#main::before, .match-panel::before {
+  background: conic-gradient(from var(--rotate-angle), #ff007c, #7c00ff, #00d5ff, #ff007c);
+}
+
+/* 回転アニメーション用のカスタムプロパティ定義 */
+@property --rotate-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes neoBorderRotate {
+  0% { --rotate-angle: 0deg; }
+  100% { --rotate-angle: 360deg; }
 }
 
 #left2, .poem-panel--red { box-shadow: 0 0 0 1px rgba(255,41,117,0.5), var(--neo-glow); }
