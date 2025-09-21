@@ -135,6 +135,9 @@ button, select, input{
     font-weight: 500;
     margin-bottom: 0;
 }
+#match-setup-panel label span {
+    white-space: nowrap; /* 対戦指定パネルのラベル名を改行させない */
+}
 #match-setup-panel select,
 #match-setup-panel input[type="text"] {
     flex: 1 1 0;
@@ -144,6 +147,11 @@ button, select, input{
     font-size: 0.9em;
     background: #fff;
     margin-left: 6px;
+}
+#match-setup-panel select {
+    width: 100%;          /* ラベル内の残り幅いっぱいに */
+    min-width: 120px;         /* Flex収縮を許可（固定幅化防止） */
+    box-sizing: border-box;
 }
 #match-setup-panel button {
     background: var(--primary);
@@ -551,11 +559,11 @@ summary {
     box-shadow: 0 2px 8px rgba(120,180,255,0.08);
     padding: 8px;
     margin-bottom: 14px;
+    gap: 6px; /* 各要素間の余白をgapで管理 */
 }
 #audio-controls .btn,
 #audio-controls button {
     width: 60px;
-    margin: 0 0 0 6px;
     background: var(--primary);
     color: var(--grey);
     border: 1px solid var(--grey);
