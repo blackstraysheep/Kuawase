@@ -77,6 +77,7 @@
       "home.html",
       "home.js",
       "home.css",
+      "home.theme.dark.css",
       "preload.js",
       "main.js",
       "renderer.js",

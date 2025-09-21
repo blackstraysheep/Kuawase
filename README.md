@@ -1,4 +1,4 @@
-# Kuawase User Manual (v0.8.0)
+# Kuawase User Manual (v0.10.0)
 
 ## 1. Overview - For First-Time Users
 
@@ -16,22 +16,26 @@ The app consists of **two windows**:
 1. **Administrator Window**: The operator's control screen (normal PC screen)
 2. **Projector Window**: The audience display screen (projected via projector, etc.)
 
-### Major Updates in v0.8.0
-- **Google Spreadsheet link loading** support
-- **Phrase data reset** button added
-- Improvements to data reset functionality, security and UI refinements
+### Major Updates in v0.10.0
+- **Enhanced build system** with improved dependency management
+- **Resolved sanitize-html dependency issues** for better security
+- **Updated electron-builder configuration** for more reliable packaging
+- **Improved stability** and performance optimizations
+- Continued support for Google Spreadsheet link loading and phrase data reset functionality
 
 ---
 
 ## 2. System Requirements
-- OS: Windows 10 or later
+- OS: Windows 10 or later (Windows 11 recommended)
 - Internet connection: Used for auto-updates and Google Spreadsheet loading
+- Disk space: Approximately 200MB for installation
+- Memory: 4GB RAM recommended for optimal performance
 
 ---
 
 ## 3. Installation / Updates
 1. Download and run the latest installer (`.exe`).
-2. **v0.5.x or later** users will receive **automatic updates** to v0.8.0 (restart required after update).
+2. **v0.5.x or later** users will receive **automatic updates** to v0.10.0 (restart required after update).
 3. **Pre-v0.5.0** users should uninstall the old version first, then run the new installer.
 
 ### Initial Setup on First Launch
@@ -125,7 +129,7 @@ The Administrator Window has a **projector screen preview** on the left and **co
 2. Upon successful loading, reflects in screen header (verify via competition name and source display)
 3. "Source:" on the right shows the loaded filename
 
-### 5.3 Loading from Google Spreadsheets (v0.8.0)
+### 5.3 Loading from Google Spreadsheets (v0.8.0+)
 1. **Change sharing settings**:
    - Click the **Share** button (top right) in the spreadsheet
    - Change "General access" to "**Anyone with the link**"
@@ -185,8 +189,10 @@ The Administrator Window has a **projector screen preview** on the left and **co
 
 ### 8.1 Upload/Delete
 - Select and upload audio files from **BGM File Manager**
-- Files appear in list with **Delete** (individual) and **Delete All** options available
+- Files appear in **User BGM File List** with **Delete** (individual) and **Delete All** options available
+- **Confirmation modal** appears before deletion to prevent accidental file removal
 - Deletion affects **app's working copy** only; **original files remain unchanged**
+- Supports common audio formats (MP3, WAV, M4A, etc.)
 
 ### 8.2 Scene-based Configuration and Playback
 - Assign songs to **Recitation/Entrance/Exit/Wait/Timer end (per timer)**
@@ -224,23 +230,36 @@ The Administrator Window has a **projector screen preview** on the left and **co
 - **Theme Color Change**:
   - Select from "Theme Color" dropdown menu in "Display Settings/Others" panel on Administrator screen
   - Selection immediately reflects in projector screen color scheme
+- **Battle Design (CSS) Theme**:
+  - Choose from multiple projector display themes: Standard, Dark, Washi (Japanese paper), Neo
+  - Custom CSS files can be added via "Add Custom CSS" button
+  - User-uploaded CSS files appear in the custom CSS list with individual delete options
+- **Administrator Screen Dark Mode**:
+  - Toggle dark mode for the administrator interface using the checkbox in "Display Settings/Others"
+  - Does not affect projector screen appearance
 
 ---
 
 ## 11. Display & Operation Settings
 - **Display Size Adjustment**:
-  - `Ctrl` + `-` (shrink) / `Ctrl` + `Shift` + `+` (enlarge) / `Ctrl` + `0` (reset)
+  - `Ctrl` + `-` (zoom out/shrink) / `Ctrl` + `Shift` + `+` (zoom in/enlarge) / `Ctrl` + `0` (reset to 100%)
   - Keyboard shortcuts available for both Administrator and Projector windows individually
   - Click to activate each window before using shortcut keys
+  - Useful for adjusting display size based on screen resolution or projector setup
+  - Zoom settings are preserved between sessions
 - **Panel Collapse**:
   - ▼ button at top-right of each panel (Timer, BGM File Manager, Phrase Data Management, etc.) allows panel collapse
   - Functions continue operating even when collapsed (e.g., timers continue running)
+- **User Interface Feedback**:
+  - **Toast notifications** appear at bottom of screen for successful operations (file loading, settings saved, etc.)
+  - **Confirmation modals** prevent accidental deletions and data loss
+  - **Error messages** provide specific guidance when operations fail
 
 ---
 
 ## 12. Save & Reset Types and Behavior
 - **Match setup save**: Saving in Administrator screen's match setup panel immediately reflects in projector display and internal settings
-- **Reset Phrase Data**: **Initializes only phrase data (competition name, themes, poem list)** (added in v0.8.0)
+- **Reset Phrase Data**: **Initializes only phrase data (competition name, themes, poem list)** (enhanced in v0.10.0)
   - BGM settings and uploaded BGM files are **preserved**
   - Executed via dedicated button in Phrase Data Management panel
 - **Reset All Data**: Initializes all loaded Excel data, match setup, and **BGM settings**
@@ -290,6 +309,10 @@ The Administrator Window has a **projector screen preview** on the left and **co
 - **Cannot load Excel/Google Sheets**
   - Recheck sharing settings (link sharing/viewer) and file format
   - Restart app and retry
+- **Build/Installation Issues (v0.10.0 improvements)**
+  - Fixed dependency resolution issues with sanitize-html package
+  - Enhanced electron-builder configuration for more reliable packaging
+  - If experiencing installation problems, try downloading the latest installer
 - **Projector not updating**
   - Try switching stages again on Administrator side
 - **Recitation buttons not displayed**
