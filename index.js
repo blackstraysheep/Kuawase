@@ -70,6 +70,21 @@ if (window.electron) {
 safeSetHTML(document.getElementById("gameid"), "Undefined");
 window.parent.postMessage({ type: "ready" }, "*");
 
+function sanitizeCssFilename(file) {
+    // Accept only known patterns: user:filename or filename.css with strict rules
+    if (file.startsWith('user:')) {
+        // Allow only safe filenames (letters, digits, underscores, dashes, dot)
+        const fname = file.slice(5);
+        if (/^[\w\-\.]+\.css$/.test(fname)) {
+            return fname;
+        }
+    } else if (/^[\w\-\.]+\.css$/.test(file)) {
+        return file;
+    }
+    // If invalid, fallback to known safe css
+    return 'battle.css';
+}
+
 window.addEventListener("message", (event) => {
     if (event.data?.type === "theme" && window.applyTheme) {
         window.applyTheme(event.data.theme);

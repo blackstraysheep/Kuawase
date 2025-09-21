@@ -120,6 +120,19 @@ function createProjectorWindow() {
   // リロード時にもデータ送信
   projectorWindow.webContents.on('did-finish-load', () => {
     adjustProjectorZoom();
+    // リロード時もCSS設定を送信
+    try {
+      let themeToSend = 'battle.css';
+      if (fs.existsSync(configPath)) {
+        try {
+          const initCfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+          if (initCfg && typeof initCfg.cssTheme === 'string' && initCfg.cssTheme.trim()) {
+            themeToSend = initCfg.cssTheme.trim();
+          }
+        } catch { /* ignore parse */ }
+      }
+      projectorWindow.webContents.send('update-content', { type: 'css-theme', content: themeToSend });
+    } catch {}
     if (lastKnownData) {
       projectorWindow.webContents.send('update-content', lastKnownData);
     }

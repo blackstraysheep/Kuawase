@@ -64,6 +64,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     // cssTheme 初期適用は main.js からの初回 'update-content' (css-theme) 送信に一本化
 });
 
+function sanitizeCssFilename(file) {
+    // Accept only known patterns: user:filename or filename.css with strict rules
+    if (file.startsWith('user:')) {
+        // Allow only safe filenames (letters, digits, underscores, dashes, dot)
+        const fname = file.slice(5);
+        if (/^[\w\-\.]+\.css$/.test(fname)) {
+            return fname;
+        }
+    } else if (/^[\w\-\.]+\.css$/.test(file)) {
+        return file;
+    }
+    // If invalid, fallback to known safe css
+    return 'battle.css';
+}
+
 window.addEventListener("message", (event) => {
     if (event.data?.type === "theme" && window.applyTheme) {
         window.applyTheme(event.data.theme);
@@ -79,7 +94,7 @@ window.addEventListener("message", (event) => {
                 }).catch(()=>link.setAttribute('href','css/battle.css'));
             } else {
                 // Sanitize val before using
-                const safeTheme = sanitizeCssFileName(val);
+                const safeTheme = sanitizeCssFilename(val);
                 link.setAttribute("href", `css/${safeTheme}`);
             }
         }
@@ -107,7 +122,30 @@ if (window.electron) {
     });
 }
 // 初回ロード時にlocalStorageからテーマ適用
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const theme = localStorage.getItem("theme") || "yellow";
     if (window.applyTheme) window.applyTheme(theme);
+    
+    // CSS設定も初期化時に適用（iframe内での初期設定）
+    try {
+        let cssTheme = localStorage.getItem("battle-css-file") || "battle.css";
+        if (window.electron?.invoke) {
+            const cfg = await window.electron.invoke("get-config");
+            if (cfg?.cssTheme) cssTheme = cfg.cssTheme;
+        }
+        const link = document.getElementById("active-style");
+        if (link) {
+            if (cssTheme.startsWith('user:')) {
+                const fname = cssTheme.slice(5);
+                window.electron?.invoke('get-user-style-path', fname).then(p => {
+                    if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
+                }).catch(()=>link.setAttribute('href','css/battle.css'));
+            } else {
+                const safeTheme = sanitizeCssFilename(cssTheme);
+                link.setAttribute("href", `css/${safeTheme}`);
+            }
+        }
+    } catch (e) {
+        console.warn('CSS初期化失敗:', e);
+    }
 });
