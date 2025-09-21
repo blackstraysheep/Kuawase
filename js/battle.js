@@ -106,6 +106,17 @@ window.addEventListener("message", (event) => {
         }
     }
 });
+// Utility: Sanitize CSS file name. Allows only .css files in a safe pattern.
+function sanitizeCssFileName(name) {
+    // Only allow letters, numbers, underscores, hyphens and periods, must end with ".css"
+    if (typeof name !== 'string') return null;
+    // Prevent path traversal, absolute paths, schemes, etc.
+    if (name.includes('/') || name.includes('\\') || name.includes('\0')) return null;
+    if (/^user:[\w.-]+\.css$/.test(name)) return name; // user:* safe user file
+    if (/^[\w.-]+\.css$/.test(name)) return name; // allowed file in css dir
+    return null;
+}
+
 if (window.electron) {
     window.electron.receive("update-content", (data) => {
         if (data.type === "theme" && window.applyTheme) {
@@ -114,7 +125,11 @@ if (window.electron) {
         if (data.type === "css-theme") {
             const link = document.getElementById("active-style");
             if (link && data.content) {
-                const val = data.content;
+                const val = sanitizeCssFileName(data.content);
+                if (!val) {
+                    link.setAttribute('href', 'css/battle.css');
+                    return;
+                }
                 if (val.startsWith('user:')) {
                     const fname = val.slice(5);
                     window.electron?.invoke('get-user-style-path', fname).then(p => {
@@ -142,13 +157,16 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             const link = document.getElementById("active-style");
             if (link) {
-                if (cssTheme.startsWith('user:')) {
-                    const fname = cssTheme.slice(5);
+                const safeVal = sanitizeCssFileName(cssTheme);
+                if (!safeVal) {
+                    link.setAttribute('href', 'css/battle.css');
+                } else if (safeVal.startsWith('user:')) {
+                    const fname = safeVal.slice(5);
                     window.electron?.invoke('get-user-style-path', fname).then(p => {
                         if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
                     }).catch(()=>link.setAttribute('href','css/battle.css'));
                 } else {
-                    link.setAttribute("href", `css/${cssTheme}`);
+                    link.setAttribute("href", `css/${safeVal}`);
                 }
             }
         } catch {}
