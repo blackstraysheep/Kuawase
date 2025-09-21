@@ -80,24 +80,46 @@ function fallbackSanitize(content) {
         previous = sanitized;
         sanitized = sanitized.replace(/<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/gi, '');
     } while (sanitized !== previous);
-    
+
     // 危険なjavascript:プロトコルを除去
     sanitized = sanitized.replace(/javascript:/gi, '');
-    
+
     // 危険なイベントハンドラーを除去
     // イベントハンドラー属性 (例: onclick, onerror等) を繰り返し除去
     do {
         previous = sanitized;
         sanitized = sanitized.replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, '');
     } while (sanitized !== previous);
-    
+
     // 許可されたタグのみを保持
+    // 利用可能ならsanitize-htmlを使う
+    try {
+        // Node.jsならrequireできる
+        if (typeof require !== 'undefined') {
+            const sanitizeHtml = require('sanitize-html');
+            sanitized = sanitizeHtml(sanitized, {
+                allowedTags: [
+                    'ruby', 'rt', 'rp', 'span', 'div', 'p',
+                    'strong', 'em', 'b', 'i', 'br', 'small', 'sup', 'sub'
+                ],
+                allowedAttributes: {
+                    'span': [ 'class', 'style' ],
+                    'div': [ 'class', 'style' ],
+                    '*': []
+                }
+            });
+            return sanitized;
+        }
+    } catch (e) {
+        // sanitize-htmlの利用に失敗したら、旧実装にフォールバック
+    }
+
+    // sanitize-html が使えない場合: 旧正規表現方式(非推奨かつ安全ではない)
     const allowedTags = /^<\/?(?:ruby|rt|rp|span|div|p|strong|em|b|i|br|small|sup|sub)(?:\s[^>]*)?>$/i;
-    
     sanitized = sanitized.replace(/<[^>]+>/g, (match) => {
         return allowedTags.test(match) ? match : '';
     });
-    
+
     return sanitized;
 }
 
