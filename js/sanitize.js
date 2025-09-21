@@ -78,7 +78,7 @@ function fallbackSanitize(content) {
     let previous;
     do {
         previous = sanitized;
-        sanitized = sanitized.replace(/<script[^>]*>.*?<\/script>/gi, '');
+        sanitized = content.replace(/<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/gi, '');
     } while (sanitized !== previous);
     
     // 危険なjavascript:プロトコルを除去
