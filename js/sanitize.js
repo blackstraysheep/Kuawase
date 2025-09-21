@@ -116,9 +116,13 @@ function fallbackSanitize(content) {
 
     // sanitize-html が使えない場合: 旧正規表現方式(非推奨かつ安全ではない)
     const allowedTags = /^<\/?(?:ruby|rt|rp|span|div|p|strong|em|b|i|br|small|sup|sub)(?:\s[^>]*)?>$/i;
-    sanitized = sanitized.replace(/<[^>]+>/g, (match) => {
-        return allowedTags.test(match) ? match : '';
-    });
+    // 未許可タグの除去も繰り返す
+    do {
+        previous = sanitized;
+        sanitized = sanitized.replace(/<[^>]+>/g, (match) => {
+            return allowedTags.test(match) ? match : '';
+        });
+    } while (sanitized !== previous);
 
     return sanitized;
 }
