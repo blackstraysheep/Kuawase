@@ -106,6 +106,19 @@ function changeIframeSrc(src) {
        // 2) iframe切り替え前に披講パネルの表示/非表示を更新
    updateHikouPanelVisibility(src);
 
+   // ステージボタン押下時：披講BGMを一時的な音量で再生
+   // デバッグ中は既存音量の「半分」に設定（将来は0に切り替え予定）
+   try {
+       // 普通の披講再生関数（audio_hikou）を利用しつつ、一時的に音量0で再生
+       if (typeof window.audio_hikou === 'function') {
+           window.hikouNextPlayVolumeOverride = 0.0;
+           window.audio_hikou();
+           try { console.log('[renderer.js] ステージ切替に伴い披講BGMを音量0で再生（audio_hikou使用）'); } catch {}
+       }
+   } catch (e) {
+       try { console.warn('[renderer.js] 披講BGM一時音量再生に失敗', e); } catch {}
+   }
+
    const iframe = document.getElementById('slide-frame');
    iframe.onload = () => {
        console.log("[changeIframeSrc] iframeが読み込まれたのでデータを送信します");
