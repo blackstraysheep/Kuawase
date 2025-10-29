@@ -1,6 +1,6 @@
 {
   "name": "kuawase",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Kuawase is a software application that assists in organizing competitions in the “Kuawase style” by pairing haiku, tanka, or other short-form poems.",
   "homepage": "https://github.com/blackstraysheep/Kuawase#readme",
   "bugs": {

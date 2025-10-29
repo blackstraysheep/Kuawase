@@ -1,4 +1,4 @@
-# Kuawase 取扱説明書（v0.10.0）
+# Kuawase 取扱説明書（v0.11.0）
 
 ## 1. 概要・初めてご利用の方へ
 
@@ -326,36 +326,3 @@
 - **句が正しく表示されない**  
   - Excelテンプレートの形式が正しいか確認  
   - 試合指定パネルで紅・白チーム、兼題が正しく設定されているか確認
-
-## 15. レイアウト命名リファクタ (v0.8.x)
-v0.8.x で表示レイアウトの CSS / HTML 命名を直感的なクラスベースへ移行しました。旧 ID は今後削除予定です。
-
-| 旧 ID / クラス | 新クラス / ID | 用途 | 備考 |
-|----------------|---------------|------|------|
-| `#wrapper` | `.battle-layout` | 3カラム全体ラッパ | 旧は `display:contents` 化 |
-| `#left2` | `.poem-panel.poem-panel--red` | 紅 句パネル | 暫定: 旧ID残存 |
-| `#right2` | `.poem-panel.poem-panel--white` | 白 句パネル | 暫定: 旧ID残存 |
-| `#main` | `.match-panel` | 中央試合情報 |  |
-| `#left3` | `.team-slot.team-slot--red` | 紅 チーム名枠 | |
-| `#right3` | `.team-slot.team-slot--white` | 白 チーム名枠 | |
-| `.team` | `.team-name` | チーム名縦書き | |
-| `.kunakami` | `.haiku-text` | 句表示テキスト | 縦書き保持 |
-| `.left` / `.ku` | `.haiku-container` | 句コンテナ | 統一 |
-| `#redHaiku` / `#whiteHaiku` | (同) | 句要素ID | 維持 |
-| `#gameid` | (同) | 試合グループ表示 | 維持 |
-| `#kendai` | (同) | 兼題表示 | 維持 |
-| `#matchid` | (同) | ステージラベル | 維持 |
-| `#redTeam` / `#whiteTeam` | `#redTeam` / `#whiteTeam` | チーム名 | 維持 |
-
-### テーマCSS互換
-`battle.theme.*.css` は新クラス (`.poem-panel`, `.match-panel`, `.team-slot`) へスタイルを複製済みです。段階的に旧 ID セレクタを削除可能です。
-
-### JS 変更点
-`battle.js` 内の `closest('#left2, #right2')` は `.poem-panel` 参照へ更新。その他 ID 参照は変更なし。
-
-### 移行ガイド
-1. 外部プラグイン等で旧 ID を参照している場合は新クラスへ置換してください。
-2. カスタム CSS を上書きしている場合はセレクタ調整が必要です。
-3. 旧 ID を利用した独自スクリプトが無ければ次期バージョンで旧 ID 削除予定です。
-
----

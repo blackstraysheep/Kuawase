@@ -1,4 +1,4 @@
-# Kuawase User Manual (v0.10.0)
+# Kuawase User Manual (v0.11.0)
 
 ## 1. Overview - For First-Time Users
 
