@@ -54,7 +54,7 @@ h2, h3, h4 { color: #f4f6f8; }
 [h4][data-lang=red], h4[data-lang=red] { color: var(--accent-red); }
 h4[data-lang=white] { color: var(--accent-blue); }
 
-/* 対戦TOPエリア */
+/* 試合TOPエリア */
 #main h3 { letter-spacing: .05em; }
 
 /* スクロールのない固定高さ内で視認性向上 */

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // 対戦指定パネル
+  // 試合指定パネル
   const matchPanel = document.getElementById('match-setup-panel');
   const matchFields = {
     red: document.getElementById('redTeamSelect'),
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
-    // 対戦指定
+    // 試合指定パネル
     if (matchPanel && matchDirty) {
       const insideMatch = matchPanel.contains(target);
       const isSave = target === matchSaveBtn;

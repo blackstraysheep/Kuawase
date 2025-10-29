@@ -136,7 +136,7 @@ button, select, input{
     margin-bottom: 0;
 }
 #match-setup-panel label span {
-    white-space: nowrap; /* 対戦指定パネルのラベル名を改行させない */
+    white-space: nowrap; /* 試合指定パネルのラベル名を改行させない */
 }
 #match-setup-panel select,
 #match-setup-panel input[type="text"] {
