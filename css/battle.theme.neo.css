@@ -27,7 +27,7 @@ h2, h3, h4 { color:#fafcff; text-shadow:0 0 6px rgba(0,213,255,0.35); }
   box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 8px 24px -6px rgba(0,0,0,0.75);
   position: relative; overflow:hidden; border-radius: 18px;
 }
-.team-slot {margin: 8px;}
+.team-slot {margin: 8px; min-height: 0;}
 #left2::before, #main::before, #right2::before,
 .poem-panel::before, .match-panel::before {
   content:""; position:absolute; inset:0; padding:1px; border-radius:inherit;

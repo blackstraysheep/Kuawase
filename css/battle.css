@@ -13,14 +13,22 @@ h4 { font-size:1.2em; margin:0; padding:.2rem 0; }
    新レイアウトクラス構造
    ============================= */
 .battle-layout { display:flex; justify-content:space-between; align-items:stretch; gap:1rem; height:calc(100vh - 4rem); box-sizing:border-box; padding:0 .5rem .5rem; }
-.poem-panel { display:flex; flex-direction:column; text-align:center; width:30%; box-sizing:border-box; border:2px solid #000; background:#fff; }
+.poem-panel { display:flex; flex-direction:column; text-align:center; width:30%; box-sizing:border-box; border:2px solid #000; background:#fff; overflow:hidden; }
 .poem-panel--red { background:#ffccff; }
 .poem-panel--white { background:#ffffff; }
-.match-panel { display:flex; flex-direction:column; text-align:center; width:40%; box-sizing:border-box; background:#fff; padding:0 .5rem; }
-.team-slots { display:flex; justify-content:space-between; gap:1rem; margin-top:auto; }
-.team-slot { flex:0 0 var(--team-slot-width); max-width:var(--team-slot-width); padding:1rem 0; text-align:center; box-sizing:border-box; background:#fff; border:2px solid #000; display:flex; align-items:center; justify-content:center; }
+.match-panel { display:flex; flex-direction:column; text-align:center; width:40%; box-sizing:border-box; background:#fff; padding:0 .5rem; overflow:hidden; min-height:0; }
+.team-slots { display:flex; justify-content:space-between; gap:1rem; margin-top:auto; min-height:0; flex-shrink:1; }
+.team-slot { flex:0 0 var(--team-slot-width); max-width:var(--team-slot-width); padding:1rem 0; text-align:center; box-sizing:border-box; background:#fff; border:2px solid #000; display:flex; align-items:center; justify-content:center; overflow:hidden; min-height:0; }
 .team-slot--red { background:#ffccff; }
-.team-name { font-weight:700; font-size:1.5em; writing-mode:vertical-rl; text-align:left; display:inline-block; height:35vh; }
+.team-name { font-weight:700; font-size:1.5em; writing-mode:vertical-rl; text-align:left; display:inline-block; height:35vh; min-height:8rem; overflow:hidden; }
+
+/* 小さい画面でのみ高さを調整 */
+@media (max-height: 600px) {
+  .team-name { height:25vh; max-height:25vh; }
+}
+@media (max-height: 500px) {
+  .team-name { height:20vh; max-height:20vh; }
+}
 .haiku-container { flex:1 1 auto; display:flex; flex-direction:column; justify-content:flex-start; align-items:center; min-height:0; }
 .haiku-text { font-weight:700; font-size:2.3em; writing-mode:vertical-rl; display:inline-block; text-align:start; padding-inline:.15em; box-sizing:content-box; overflow:visible; }
 

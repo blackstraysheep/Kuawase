@@ -34,8 +34,9 @@ h2, h3, h4 { color: var(--ink); }
   backdrop-filter: blur(3px) saturate(110%);
   -webkit-backdrop-filter: blur(3px) saturate(110%);
   border-radius: 10px;
+  overflow: hidden;
 }
-.team-slot {margin: 8px;}
+.team-slot {margin: 8px; min-height: 0;}
 #left2, .poem-panel--red { background: linear-gradient(135deg, rgba(197,61,67,0.12), rgba(255,255,255,0.6)); }
 #right2, .poem-panel--white { background: linear-gradient(135deg, rgba(92,107,122,0.12), rgba(255,255,255,0.6)); }
 
