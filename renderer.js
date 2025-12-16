@@ -310,15 +310,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                             o.textContent = sanitizedName;
                             cssSelect.appendChild(o);
                         }
-                        cssSelect.value = `user:${fname}`;
-                        applyCssToIframe(`user:${fname}`);
+                        cssSelect.value = `user:${saveRes.file}`;
+                        applyCssToIframe(`user:${saveRes.file}`);
                         // config 更新
                         try {
                             const cfg = await window.electron.invoke('get-config');
-                            cfg.cssTheme = `user:${fname}`;
+                            cfg.cssTheme = `user:${saveRes.file}`;
                             await window.electron.invoke('update-config', cfg);
                         } catch {}
-                        window.electron?.invoke('send-data-to-projector', { type: 'css-theme', content: `user:${fname}` });
+                        window.electron?.invoke('send-data-to-projector', { type: 'css-theme', content: `user:${saveRes.file}` });
                         refreshUserCssList();
                     }
                 } catch (e) {
