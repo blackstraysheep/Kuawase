@@ -95,6 +95,10 @@ window.addEventListener("message", (event) => {
         const link = document.getElementById("active-style");
         if (link && event.data.content) {
             const val = event.data.content;
+            if (typeof val === 'string' && (val.startsWith('file://') || val.startsWith('css/'))) {
+                link.setAttribute('href', val);
+                return;
+            }
             if (val.startsWith('user:')) {
                 const fname = val.slice(5);
                 window.electron?.invoke('get-user-style-path', fname).then(p => {
@@ -126,6 +130,10 @@ if (window.electron) {
             const link = document.getElementById("active-style");
             if (link && data.content) {
                 const val = sanitizeCssFileName(data.content);
+                if (typeof data.content === 'string' && (data.content.startsWith('file://') || data.content.startsWith('css/'))) {
+                    link.setAttribute('href', data.content);
+                    return;
+                }
                 if (!val) {
                     link.setAttribute('href', 'css/battle.css');
                     return;

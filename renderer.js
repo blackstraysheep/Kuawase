@@ -4,7 +4,7 @@ function updateHikouPanelVisibility(src) {
       if (!panel) return;
       // src が "1.html" ～ "5.html" なら表示、それ以外は非表示
       // iframe.src がフルURLの場合も考慮してファイル名だけ抽出
-      const filename = src.split("/").pop().split("\\").pop();
+    const filename = src.split("/").pop().split("\\").pop().split("?")[0];
       const isMatchPage = /^[1-5]\.html$/.test(filename);
       panel.style.display = isMatchPage ? "" : "none";
     }
@@ -102,7 +102,7 @@ function sendContent(type, content) {
     window.electron.invoke("send-data-to-projector", data).catch(console.error);
 }
 
-function changeIframeSrc(src) {
+async function changeIframeSrc(src) {
        // 2) iframe切り替え前に披講パネルの表示/非表示を更新
    updateHikouPanelVisibility(src);
 
@@ -124,9 +124,18 @@ function changeIframeSrc(src) {
        console.log("[changeIframeSrc] iframeが読み込まれたのでデータを送信します");
        sendInitialData();
    };
-   iframe.src = src;
+   let cssTheme = localStorage.getItem("battle-css-file") || "battle.css";
+   try {
+       if (window.electron?.invoke) {
+           const cfg = await window.electron.invoke("get-config");
+           if (cfg?.cssTheme) cssTheme = cfg.cssTheme;
+       }
+   } catch {}
+   const cssHref = await resolveCssHref(cssTheme);
+   const srcWithCss = buildSrcWithCssParam(src, cssHref);
+   iframe.src = srcWithCss;
 
-   window.electron.invoke("change-projector-src", src)
+   window.electron.invoke("change-projector-src", srcWithCss)
        .then(() => {
            console.log("[renderer.js] projectorWindowの切り替えを指示しました:", src);
        })
@@ -252,7 +261,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                             cssSelect.value = 'battle.css';
                             applyCssToIframe('battle.css');
                             try { const cfg = await window.electron.invoke('get-config'); cfg.cssTheme = 'battle.css'; await window.electron.invoke('update-config', cfg); } catch {}
-                            window.electron?.invoke('send-data-to-projector', { type: 'css-theme', content: 'battle.css' });
+                            const href = await resolveCssHref('battle.css');
+                            window.electron?.invoke('send-data-to-projector', { type: 'css-theme', content: href });
                         }
                         refreshUserCssList();
                         showToast(t('user-css-delete-success'));
@@ -275,7 +285,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             cssSelect.value = savedCss;
             applyCssToIframe(savedCss);
             // projector にも初期送信
-            window.electron?.invoke("send-data-to-projector", { type: "css-theme", content: savedCss });
+            const href = await resolveCssHref(savedCss);
+            window.electron?.invoke("send-data-to-projector", { type: "css-theme", content: href });
         } catch { /* ignore */ }
         cssSelect.addEventListener("change", async () => {
             const file = cssSelect.value;
@@ -288,7 +299,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 await window.electron.invoke("update-config", cfg);
             } catch (e) { console.warn("cssTheme 保存失敗", e); }
             // projector 同期
-            window.electron?.invoke("send-data-to-projector", { type: "css-theme", content: file });
+            const href = await resolveCssHref(file);
+            window.electron?.invoke("send-data-to-projector", { type: "css-theme", content: href });
         });
         // アップロードボタン処理
         const addBtn = document.getElementById('add-custom-css-btn');
@@ -318,7 +330,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                             cfg.cssTheme = `user:${saveRes.file}`;
                             await window.electron.invoke('update-config', cfg);
                         } catch {}
-                        window.electron?.invoke('send-data-to-projector', { type: 'css-theme', content: `user:${saveRes.file}` });
+                        const href = await resolveCssHref(`user:${saveRes.file}`);
+                        window.electron?.invoke('send-data-to-projector', { type: 'css-theme', content: href });
                         refreshUserCssList();
                     }
                 } catch (e) {
@@ -345,6 +358,31 @@ function sanitizeCssFilename(file) {
     return { type: 'builtin', name: 'battle.css' };
 }
 
+const cssHrefCache = new Map();
+async function resolveCssHref(file) {
+    const sanitized = sanitizeCssFilename(file);
+    if (sanitized.type === 'user') {
+        if (cssHrefCache.has(sanitized.name)) return cssHrefCache.get(sanitized.name);
+        try {
+            const p = await window.electron.invoke('get-user-style-path', sanitized.name);
+            if (p) {
+                cssHrefCache.set(sanitized.name, p);
+                return p;
+            }
+        } catch {}
+        return 'css/battle.css';
+    }
+    return `css/${sanitized.name}`;
+}
+
+function buildSrcWithCssParam(src, cssHref) {
+    const [base, query] = src.split('?');
+    const params = new URLSearchParams(query || '');
+    if (cssHref) params.set('css', cssHref);
+    const q = params.toString();
+    return q ? `${base}?${q}` : base;
+}
+
 
 function applyCssToIframe(file) {
     const iframe = document.getElementById("slide-frame");
@@ -362,14 +400,7 @@ function applyCssToIframe(file) {
                     l.rel = 'stylesheet'; l.id = 'active-style'; l.href = href; doc.head.appendChild(l);
                 }
             };
-            const sanitized = sanitizeCssFilename(file);
-            if (sanitized.type === 'user') {
-                window.electron.invoke('get-user-style-path', sanitized.name).then(p => {
-                    if (p) setHref(p); else setHref('css/battle.css');
-                }).catch(() => setHref('css/battle.css'));
-            } else {
-                setHref(`css/${sanitized.name}`);
-            }
+            resolveCssHref(file).then(setHref).catch(() => setHref('css/battle.css'));
         } catch (e) { console.error("CSS切替失敗", e); }
     };
     if (iframe.contentDocument?.readyState === "complete") {
@@ -497,7 +528,7 @@ async function showWhiteHaiku() {
 function getMatchIndexFromIframe() {
     const iframe = document.getElementById("slide-frame");
     if (!iframe || !iframe.src) return null;
-    const match = iframe.src.match(/(\d+)\.html$/);
+    const match = iframe.src.match(/(\d+)\.html(?:\?.*)?$/);
     if (match) {
         return parseInt(match[1], 10);
     }
@@ -529,7 +560,7 @@ function getTeamRow(teamKey) {
 function getMatchIndexFromIframe() {
     const iframe = document.getElementById("slide-frame");
     if (!iframe || !iframe.src) return null;
-    const match = iframe.src.match(/(\d+)\.html$/);
+    const match = iframe.src.match(/(\d+)\.html(?:\?.*)?$/);
     if (match) {
         return parseInt(match[1], 10);
     }

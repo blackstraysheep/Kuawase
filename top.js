@@ -79,6 +79,10 @@ function sanitizeCssFilename(file) {
     return 'battle.css';
 }
 
+function isDirectCssHref(val) {
+    return typeof val === 'string' && (val.startsWith('file://') || val.startsWith('css/'));
+}
+
 window.addEventListener("message", (event) => {
     if (event.data?.type === "theme" && window.applyTheme) {
         window.applyTheme(event.data.theme);
@@ -87,6 +91,10 @@ window.addEventListener("message", (event) => {
         const link = document.getElementById("active-style");
         if (link && event.data.content) {
             const val = event.data.content;
+            if (isDirectCssHref(val)) {
+                link.setAttribute('href', val);
+                return;
+            }
             if (val.startsWith('user:')) {
                 const fname = val.slice(5);
                 window.electron?.invoke('get-user-style-path', fname).then(p => {
@@ -109,6 +117,10 @@ if (window.electron) {
             const link = document.getElementById("active-style");
             if (link && data.content) {
                 const val = data.content;
+                if (isDirectCssHref(val)) {
+                    link.setAttribute('href', val);
+                    return;
+                }
                 if (val.startsWith('user:')) {
                     const fname = val.slice(5);
                     window.electron?.invoke('get-user-style-path', fname).then(p => {

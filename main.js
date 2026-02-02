@@ -97,8 +97,19 @@ function createProjectorWindow() {
         (input.key === 'r' && (input.control || input.meta)))
     ) e.preventDefault();
   });
-  // 投影画面HTMLロード
-  projectorWindow.loadFile('top.html');
+  // 投影画面HTMLロード（CSSテーマをクエリで先行適用）
+  let initialCssHref = 'css/battle.css';
+  try {
+    if (fs.existsSync(configPath)) {
+      const initCfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+      if (initCfg && typeof initCfg.cssTheme === 'string' && initCfg.cssTheme.trim()) {
+        initialCssHref = resolveCssThemeToHref(initCfg.cssTheme.trim());
+      }
+    }
+  } catch { /* ignore */ }
+  const initialFull = path.join(__dirname, 'top.html');
+  const initialUrl = `file://${initialFull.replace(/\\/g, '/')}` + (initialCssHref ? `?css=${encodeURIComponent(initialCssHref)}` : '');
+  projectorWindow.loadURL(initialUrl);
   // 初回描画完了時にデータ送信
   projectorWindow.webContents.once('did-finish-load', () => {
     adjustProjectorZoom();
@@ -113,7 +124,8 @@ function createProjectorWindow() {
           }
         } catch { /* ignore parse */ }
       }
-      projectorWindow.webContents.send('update-content', { type: 'css-theme', content: themeToSend });
+      const cssHref = resolveCssThemeToHref(themeToSend);
+      projectorWindow.webContents.send('update-content', { type: 'css-theme', content: cssHref });
     } catch {}
     if (lastKnownData) projectorWindow.webContents.send('update-content', lastKnownData);
   });
@@ -131,7 +143,8 @@ function createProjectorWindow() {
           }
         } catch { /* ignore parse */ }
       }
-      projectorWindow.webContents.send('update-content', { type: 'css-theme', content: themeToSend });
+      const cssHref = resolveCssThemeToHref(themeToSend);
+      projectorWindow.webContents.send('update-content', { type: 'css-theme', content: cssHref });
     } catch {}
     if (lastKnownData) {
       projectorWindow.webContents.send('update-content', lastKnownData);
@@ -183,6 +196,32 @@ const PROJECTOR_BASE_ZOOM = 1;
 const PROJECTOR_BASE_WIDTH = 1024;
 const PROJECTOR_BASE_HEIGHT = 768;
 let splashWindow;
+
+function getCssThemeFromConfig() {
+  try {
+    if (fs.existsSync(configPath)) {
+      const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+      if (cfg && typeof cfg.cssTheme === 'string' && cfg.cssTheme.trim()) {
+        return cfg.cssTheme.trim();
+      }
+    }
+  } catch {}
+  return 'battle.css';
+}
+
+function resolveCssThemeToHref(cssTheme) {
+  let theme = (typeof cssTheme === 'string' && cssTheme.trim()) ? cssTheme.trim() : 'battle.css';
+  if (theme.startsWith('user:')) {
+    const name = theme.slice(5);
+    if (/^[\w.-]+\.css$/.test(name)) {
+      const filePath = path.join(userStylesDir, name);
+      if (fs.existsSync(filePath)) return `file://${filePath.replace(/\\/g, '/')}`;
+    }
+    return 'css/battle.css';
+  }
+  if (/^[\w.-]+\.css$/.test(theme)) return `css/${theme}`;
+  return 'css/battle.css';
+}
 
 /**
  * 設定ファイル（`config.json`）の存在を確認し、無ければデフォルトから作成する。
@@ -342,8 +381,15 @@ ipcMain.handle('set-excel-file', async (_e, { filePath, numProblems, numTeams })
  */
 ipcMain.handle('change-projector-src', async (_e, src) => {
     if (!projectorWindow) return;
-    const full = path.join(__dirname, src);
-    const url  = `file://${full.replace(/\\/g, '/')}`;
+    const [filePart, queryPart] = src.split('?');
+    const full = path.join(__dirname, filePart);
+    const params = new URLSearchParams(queryPart || '');
+    if (!params.has('css')) {
+      const cssHref = resolveCssThemeToHref(getCssThemeFromConfig());
+      params.set('css', cssHref);
+    }
+    const query = params.toString();
+    const url  = `file://${full.replace(/\\/g, '/')}` + (query ? `?${query}` : '');
     await projectorWindow.loadURL(url);
     if (lastKnownData) {
       projectorWindow.webContents.send('update-content', lastKnownData);
