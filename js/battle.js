@@ -1,6 +1,10 @@
 window.appConfig = window.appConfig || {};
 let lastTitleData = null;
 
+if (window.CommonTheme) {
+    window.CommonTheme.setupThemeHandlers();
+}
+
 function renderTitle(data) {
     if (!data) return;
     document.getElementById("Compe-name").textContent = data.compename || "";
@@ -87,98 +91,13 @@ if (window.electron) {
 safeSetHTML(document.getElementById("gameid"), "Undefined");
 window.parent.postMessage({ type: "ready" }, "*");
 
-window.addEventListener("message", (event) => {
-    if (event.data?.type === "theme" && window.applyTheme) {
-        window.applyTheme(event.data.theme);
-    }
-    if (event.data?.type === "css-theme") {
-        const link = document.getElementById("active-style");
-        if (link && event.data.content) {
-            const val = event.data.content;
-            if (typeof val === 'string' && (val.startsWith('file://') || val.startsWith('css/'))) {
-                link.setAttribute('href', val);
-                return;
-            }
-            if (val.startsWith('user:')) {
-                const fname = val.slice(5);
-                window.electron?.invoke('get-user-style-path', fname).then(p => {
-                    if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
-                }).catch(()=>link.setAttribute('href','css/battle.css'));
-            } else {
-                link.setAttribute("href", `css/${val}`);
-            }
-        }
-    }
-});
-// Utility: Sanitize CSS file name. Allows only .css files in a safe pattern.
-function sanitizeCssFileName(name) {
-    // Only allow letters, numbers, underscores, hyphens and periods, must end with ".css"
-    if (typeof name !== 'string') return null;
-    // Prevent path traversal, absolute paths, schemes, etc.
-    if (name.includes('/') || name.includes('\\') || name.includes('\0')) return null;
-    if (/^user:[\w.-]+\.css$/.test(name)) return name; // user:* safe user file
-    if (/^[\w.-]+\.css$/.test(name)) return name; // allowed file in css dir
-    return null;
-}
-
-if (window.electron) {
-    window.electron.receive("update-content", (data) => {
-        if (data.type === "theme" && window.applyTheme) {
-            window.applyTheme(data.content);
-        }
-        if (data.type === "css-theme") {
-            const link = document.getElementById("active-style");
-            if (link && data.content) {
-                const val = sanitizeCssFileName(data.content);
-                if (typeof data.content === 'string' && (data.content.startsWith('file://') || data.content.startsWith('css/'))) {
-                    link.setAttribute('href', data.content);
-                    return;
-                }
-                if (!val) {
-                    link.setAttribute('href', 'css/battle.css');
-                    return;
-                }
-                if (val.startsWith('user:')) {
-                    const fname = val.slice(5);
-                    window.electron?.invoke('get-user-style-path', fname).then(p => {
-                        if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
-                    }).catch(()=>link.setAttribute('href','css/battle.css'));
-                } else {
-                    link.setAttribute("href", `css/${val}`);
-                }
-            }
-        }
-    });
-}
 // 初回ロード時にlocalStorageからテーマ適用
 document.addEventListener("DOMContentLoaded", () => {
-    const theme = localStorage.getItem("theme") || "gray";
-    if (window.applyTheme) window.applyTheme(theme);
+    if (window.CommonTheme) {
+        window.CommonTheme.initThemeFromStorage({ defaultTheme: "gray", applyCssFromConfig: true });
+    }
     // 初回にレイアウト調整
     setTimeout(applyHaikuLayout, 150);
-    (async () => {
-        try {
-            let cssTheme = localStorage.getItem("battle-css-file") || "battle.css";
-            if (window.electron?.invoke) {
-                const cfg = await window.electron.invoke("get-config");
-                if (cfg?.cssTheme) cssTheme = cfg.cssTheme;
-            }
-            const link = document.getElementById("active-style");
-            if (link) {
-                const safeVal = sanitizeCssFileName(cssTheme);
-                if (!safeVal) {
-                    link.setAttribute('href', 'css/battle.css');
-                } else if (safeVal.startsWith('user:')) {
-                    const fname = safeVal.slice(5);
-                    window.electron?.invoke('get-user-style-path', fname).then(p => {
-                        if (p) link.setAttribute('href', p); else link.setAttribute('href','css/battle.css');
-                    }).catch(()=>link.setAttribute('href','css/battle.css'));
-                } else {
-                    link.setAttribute("href", `css/${safeVal}`);
-                }
-            }
-        } catch {}
-    })();
 });
 
 // --- Vertical auto layout (confirm 相当) ---
