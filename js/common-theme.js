@@ -2,11 +2,16 @@
   const DEFAULT_CSS = "css/battle.css";
 
   function isDirectCssHref(val) {
-    return typeof val === "string" && (val.startsWith("file://") || val.startsWith("css/"));
+    // Only allow css/ paths with a safe filename; never allow arbitrary file:// URLs
+    if (typeof val !== "string") return false;
+    if (!val.startsWith("css/")) return false;
+    const name = val.slice(4);
+    return /^[\w.-]+\.css$/.test(name);
   }
 
   function sanitizeCssThemeValue(val) {
     if (typeof val !== "string") return null;
+    // Direct hrefs must be css/ + safe filename
     if (isDirectCssHref(val)) return { type: "direct", href: val };
     if (val.startsWith("user:")) {
       const name = val.slice(5);
