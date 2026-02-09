@@ -31,6 +31,12 @@ h1::after {
 
 h2, h3, h4 { color: #f4f6f8; }
 
+.compe-title .compe-logo-powered,
+.compe-title .compe-logo {
+  color: rgba(246,248,251,0.78);
+  text-shadow: 0 0 4px rgba(0,0,0,0.4);
+}
+
 #wrapper { gap: 1.2rem; }
 
 #left2, #main, #right2, #left3, #right3,

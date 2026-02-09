@@ -5,13 +5,25 @@
   <title id="page-title"></title>
   <link rel="icon" href="favicon.ico">
   <link id="active-style" rel="stylesheet">
+  <link rel="stylesheet" href="css/cmu-serif.css">
+  <style>
+    .compe-logo-wrap { position:absolute; right:.6rem; top:50%; transform:translateY(-50%); display:flex; align-items:center; gap:.5rem; opacity:.25; pointer-events:none; }
+    .compe-logo-image { height:1.2em; width:auto; }
+  </style>
   <script src="js/early-css.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
   <script src="js/sanitize.js"></script>
 </head>
 <body>
-    <h1>
+    <h1 class="compe-title">
       <span id="Compe-name"></span>
+      <span class="compe-logo-wrap" aria-hidden="true">
+        <img class="compe-logo-image" src="img/logo.svg" alt="">
+        <span class="compe-logo-stack">
+          <span class="compe-logo-powered">powered by</span>
+          <span class="compe-logo">Kuawase</span>
+        </span>
+      </span>
     </h1>
     <section class="battle-root">
       <div class="battle-layout">

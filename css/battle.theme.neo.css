@@ -18,6 +18,12 @@ h1::after { content:""; position:absolute; inset:0; background: linear-gradient(
 
 h2, h3, h4 { color:#fafcff; text-shadow:0 0 6px rgba(0,213,255,0.35); }
 
+.compe-title .compe-logo-powered,
+.compe-title .compe-logo {
+  color: rgba(250,252,255,0.8);
+  text-shadow: 0 0 6px rgba(0,213,255,0.35), 0 0 2px rgba(0,0,0,0.5);
+}
+
 #wrapper { gap: 1rem; padding: .6rem 1rem 1rem; }
 
 #left2, #main, #right2, #left3, #right3,
