@@ -9,6 +9,12 @@
     return /^[\w.-]+\.css$/.test(name);
   }
 
+  function isSafeCssHref(href) {
+    if (typeof href !== "string") return false;
+    // Final href must be a css/ path with a safe filename
+    return /^css\/[\w.-]+\.css$/.test(href);
+  }
+
   function sanitizeCssThemeValue(val) {
     if (typeof val !== "string") return null;
     // Direct hrefs must be css/ + safe filename
@@ -31,7 +37,7 @@
       try {
         if (window.electron?.invoke) {
           const p = await window.electron.invoke("get-user-style-path", parsed.name);
-          if (p) return p;
+          if (p && isSafeCssHref(p)) return p;
         }
       } catch {}
       return DEFAULT_CSS;
@@ -42,8 +48,9 @@
   async function applyCssTheme(val) {
     const link = document.getElementById("active-style");
     if (!link) return;
-    const href = await resolveCssHref(val);
-    link.setAttribute("href", href || DEFAULT_CSS);
+    const resolved = await resolveCssHref(val);
+    const href = isSafeCssHref(resolved) ? resolved : DEFAULT_CSS;
+    link.setAttribute("href", href);
   }
 
   function applyTheme(val) {
