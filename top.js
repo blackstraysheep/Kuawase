@@ -55,5 +55,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 if (window.CommonTheme) {
-    window.CommonTheme.initThemeFromStorage({ defaultTheme: "yellow", applyCssFromConfig: false });
+    window.CommonTheme.initThemeFromStorage({ defaultTheme: "yellow", applyCssFromConfig: true });
 }
