@@ -1,7 +1,6 @@
 @font-face {
   font-family: "CMU Serif";
-  src: url("../fonts/cmu-serif/CMUSerif-Roman.woff2") format("woff2"),
-       url("../fonts/cmu-serif/CMUSerif-Roman.woff") format("woff");
+  src: local("CMU Serif"), local("CMU Serif Roman");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -9,7 +8,7 @@
 
 @font-face {
   font-family: "CMU Serif";
-  src: url("../fonts/cmu-serif/cmunbx.ttf") format("truetype");
+  src: url("fonts/cmu-serif/cmunbx.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
