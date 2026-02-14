@@ -24,6 +24,8 @@ h2, h3, h4 { color:#fafcff; text-shadow:0 0 6px rgba(0,213,255,0.35); }
   text-shadow: 0 0 6px rgba(0,213,255,0.35), 0 0 2px rgba(0,0,0,0.5);
 }
 
+.compe-title .compe-logo-wrap { padding-right: .25rem; }
+
 #wrapper { gap: 1rem; padding: .6rem 1rem 1rem; }
 
 #left2, #main, #right2, #left3, #right3,

@@ -10,8 +10,8 @@ h3 { font-weight:500; font-size:3em; margin:auto; padding:1rem 0 1rem; }
 h4 { font-size:1.2em; margin:0; padding:.2rem 0; }
 
 .compe-title { position:relative; }
+.compe-title #Compe-name { padding-left:.2rem; display:inline-block; }
 .compe-title .compe-logo-wrap { position:absolute; right:.6rem; top:50%; transform:translateY(-50%); display:flex; align-items:center; gap:.5rem; opacity:.25; pointer-events:none; }
-.compe-title .compe-logo-image { height:1.2em; width:auto; }
 .compe-title .compe-logo-stack { display:flex; flex-direction:column; align-items:flex-end; gap:.1em; }
 .compe-title .compe-logo-powered { font-size:.45em; letter-spacing:.08em; font-family:"CMU Serif",serif; margin-top:.25em; }
 .compe-title .compe-logo { font-family:"CMU Serif",serif; font-weight:700; line-height:1; font-size:.69em; }
