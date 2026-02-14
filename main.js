@@ -17,7 +17,7 @@ const axios = require('axios');
 function createAdminWindow() {
   adminWindow = new BrowserWindow({
     icon: path.join(__dirname, 'img', 'icon.ico'),
-    width: 1200, height: 800, title: 'Kuawase',
+    width: 1200, height: 800, title: 'Kuawase - AdminWindow',
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -58,7 +58,7 @@ function createAdminWindow() {
 function createProjectorWindow() {
   projectorWindow = new BrowserWindow({
     icon: path.join(__dirname, 'img', 'icon.ico'),
-    width: 1024, height: 768, title: 'Kuawase',
+    width: 1024, height: 768, title: 'Kuawase - ProjectorWindow',
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -189,6 +189,7 @@ const configPath = path.join(app.getPath('userData'), "config.json");
 const musicDir = path.join(app.getPath('userData'), "music");
 const userStylesDir = path.join(app.getPath('userData'), 'userStyles');
 let adminWindow, projectorWindow, lastKnownData = null;
+app.setName('Kuawase');
 // ウィンドウ種別ごとの既定ズーム
 const ADMIN_BASE_ZOOM = 1;
 const PROJECTOR_BASE_ZOOM = 1;

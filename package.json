@@ -48,6 +48,7 @@
     "update-electron-app": "^3.1.1"
   },
   "build": {
+    "productName": "Kuawase",
     "appId": "com.blackstraysheep.kuawase",
     "icon": "img/icon.ico",
     "publish": [
