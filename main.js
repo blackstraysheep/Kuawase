@@ -1,5 +1,5 @@
 // ===== 1. モジュール・定数宣言 =====
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 const fs = require("fs");
@@ -370,6 +370,23 @@ ipcMain.handle('set-excel-file', async (_e, { filePath, numProblems, numTeams })
   } else {
     return { success: false, error: "Excelデータ保存に失敗しました" };
   }
+});
+
+/**
+ * IPC: select-excel-file
+ * OSのファイル選択ダイアログでExcelファイルを選ばせます。
+ * @returns {Promise<{canceled:boolean,filePath?:string}>}
+ */
+ipcMain.handle('select-excel-file', async () => {
+  const result = await dialog.showOpenDialog(adminWindow, {
+    title: 'Excelファイル選択',
+    properties: ['openFile'],
+    filters: [{ name: 'Excel', extensions: ['xlsx'] }]
+  });
+  if (result.canceled || result.filePaths.length === 0) {
+    return { canceled: true };
+  }
+  return { canceled: false, filePath: result.filePaths[0] };
 });
 
 // (3) プロジェクタ表示切替

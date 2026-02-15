@@ -9,30 +9,43 @@ function updateHikouPanelVisibility(src) {
       panel.style.display = isMatchPage ? "" : "none";
     }
 
+async function loadExcelFile(filePath) {
+    if (!filePath) return;
+    try {
+        const fileName = filePath.split("/").pop().split("\\").pop();
+        const result = await window.electron.invoke("set-excel-file", { filePath });
+        if (result.success) {
+            const config = await window.electron.invoke("get-config");
+            config.lastExcelFile = fileName;
+            await window.electron.invoke("update-config", config);
+
+            const lastExcelFileSpan = document.getElementById("last-excel-file");
+            lastExcelFileSpan.textContent = config.lastExcelFile;
+            lastExcelFileSpan.removeAttribute("data-lang"); // 翻訳されないように属性を削除
+
+            await updateExcelData();
+            showToastAndReload(t("excel-success"));
+        } else {
+            throw new Error(result.error);
+        }
+    } catch (error) {
+        console.error("Excelファイルの読み込みに失敗しました:", error);
+        showToastAndReload(t("excel-fail") + `\n${error.message}`, true);
+    }
+}
+
+document.getElementById("excel-select-btn").addEventListener("click", async () => {
+    const picked = await window.electron.invoke("select-excel-file");
+    if (picked?.canceled || !picked?.filePath) return;
+    await loadExcelFile(picked.filePath);
+});
+
 document.getElementById("excel-input").addEventListener("change", async (event) => {
     const file = event.target.files[0];
-    if (file) {
-        try {
-            const result = await window.electron.invoke("set-excel-file", { filePath: file.path });
-            if (result.success) {
-                const config = await window.electron.invoke("get-config");
-                config.lastExcelFile = file.name;
-                await window.electron.invoke("update-config", config);
-
-                const lastExcelFileSpan = document.getElementById("last-excel-file");
-                lastExcelFileSpan.textContent = config.lastExcelFile;
-                lastExcelFileSpan.removeAttribute("data-lang"); // 翻訳されないように属性を削除
-
-                await updateExcelData();
-                showToastAndReload(t("excel-success"));
-            } else {
-                throw new Error(result.error);
-            }
-        } catch (error) {
-            console.error("Excelファイルの読み込みに失敗しました:", error);
-            showToastAndReload(t("excel-fail") + `\n${error.message}`, true);
-        }
-    }
+    const filePath = file?.path;
+    const isFakePath = !filePath || /\\fakepath\\/i.test(filePath);
+    if (isFakePath) return;
+    await loadExcelFile(filePath);
 });
 
 document.getElementById("reset-data-btn").addEventListener("click", async () => {
