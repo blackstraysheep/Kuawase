@@ -14,6 +14,50 @@ document.addEventListener("DOMContentLoaded", async () => {
     // --- 追加: BGMプリロード用 ---
     window.bgmAudioElements = {}; // グローバルで参照できるように
 
+    function extractFileNameFromUrl(url) {
+        if (!url) return "";
+        try {
+            const parsed = new URL(url);
+            const pathname = decodeURIComponent(parsed.pathname || "");
+            return pathname.split("/").pop() || "";
+        } catch {
+            return url.split("/").pop() || "";
+        }
+    }
+
+    function releaseAudioElement(audio) {
+        try { audio.pause(); } catch {}
+        try { audio.removeAttribute("src"); } catch {}
+        try { audio.load(); } catch {}
+    }
+
+    function releaseBgmAudiosByFile(fileName) {
+        if (!fileName) return;
+        Object.entries(window.bgmAudioElements || {}).forEach(([type, audio]) => {
+            const current = extractFileNameFromUrl(audio?.src || "");
+            if (current && current === fileName) {
+                releaseAudioElement(audio);
+                try { audio.remove(); } catch {}
+                delete window.bgmAudioElements[type];
+            }
+        });
+    }
+
+    async function clearBgmConfigForFile(fileName) {
+        if (!window.electron?.getBgmConfig || !window.electron?.setBgmConfig) return;
+        const bgm = await window.electron.getBgmConfig();
+        let changed = false;
+        Object.keys(bgm || {}).forEach((key) => {
+            if (bgm[key] === fileName) {
+                bgm[key] = "";
+                changed = true;
+            }
+        });
+        if (changed) {
+            await window.electron.setBgmConfig(bgm);
+        }
+    }
+
     async function preloadBgmAudios() {
         if (!window.electron?.getBgmConfig) return;
         const bgm = await window.electron.getBgmConfig();
@@ -55,7 +99,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                     ok = confirm(fallbackMsg);
                 }
                 if (!ok) return;
-                await window.electron.deleteMusicFile(f);
+                releaseBgmAudiosByFile(f);
+                const res = await window.electron.deleteMusicFile(f);
+                if (!res?.success) {
+                    const msg = res?.error || (window.t ? window.t("bgm-delete-fail") : "削除に失敗しました");
+                    showToast(msg, true);
+                    return;
+                }
+                await clearBgmConfigForFile(f);
                 refreshListAndSelects();
                 await preloadBgmAudios();
             };
@@ -126,8 +177,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (window.showToast && window.t) window.showToast(window.t('bgm-delete-all-cancel'), true);
                 return;
             }
-            const files = await window.electron.listMusicFiles();
-            for (const f of files) { await window.electron.deleteMusicFile(f); }
+            window.stopBgm && window.stopBgm(0);
+            Object.values(window.bgmAudioElements || {}).forEach(releaseAudioElement);
+            window.bgmAudioElements = {};
+            const res = await window.electron.invoke("delete-all-bgm-files");
+            if (!res?.success) {
+                const msg = res?.error || (window.t ? window.t("bgm-delete-fail") : "削除に失敗しました");
+                showToast(msg, true);
+                return;
+            }
+            if (window.electron?.setBgmConfig) {
+                await window.electron.setBgmConfig({});
+            }
             await refreshListAndSelects();
             await preloadBgmAudios();
             if (window.showToast && window.t) window.showToast(window.t('bgm-delete-all-success'));
