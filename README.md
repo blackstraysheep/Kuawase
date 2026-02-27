@@ -1,4 +1,4 @@
-# Kuawase User Manual (v0.11.0)
+# Kuawase User Manual (v0.13.0)
 
 ## 1. Overview - For First-Time Users
 
@@ -16,12 +16,12 @@ The app consists of **two windows**:
 1. **Administrator Window**: The operator's control screen (normal PC screen)
 2. **Projector Window**: The audience display screen (projected via projector, etc.)
 
-### Major Updates in v0.10.0
-- **Enhanced build system** with improved dependency management
-- **Resolved sanitize-html dependency issues** for better security
-- **Updated electron-builder configuration** for more reliable packaging
-- **Improved stability** and performance optimizations
-- Continued support for Google Spreadsheet link loading and phrase data reset functionality
+### Major Updates in v0.13.0
+- **Upgraded to the v0.13.0 release** with overall maintenance and stability improvements
+- **Improved BGM behavior and Excel input handling** for smoother event operation
+- **Refreshed dependency stack** (including Electron updates) and npm install flow for reliable setup
+- **Improved window/app naming, splash handling, and font path behavior** in recent releases
+- Continued support for Google Spreadsheet loading, phrase data reset, and custom CSS themes
 
 ---
 
@@ -34,9 +34,9 @@ The app consists of **two windows**:
 ---
 
 ## 3. Installation / Updates
-1. Download and run the latest installer (`.exe`).
-2. **v0.5.x or later** users will receive **automatic updates** to v0.10.0 (restart required after update).
-3. **Pre-v0.5.0** users should uninstall the old version first, then run the new installer.
+1. Download and run the latest installer (`.exe`) from GitHub Releases.
+2. Existing users can use **automatic updates** when a new version is available (restart required after update).
+3. If update or installation fails, uninstall the previous app and reinstall the latest installer.
 
 ### Initial Setup on First Launch
 1. When you start the app, two windows will appear: **Administrator Window** and **Projector Window**
@@ -53,8 +53,16 @@ The app consists of **two windows**:
 ### 4.1 Administrator Window
 The Administrator Window has a **projector screen preview** on the left and **control panels** on the right.
 
-#### Basic Control Panel
-- **Change Match (Stage Buttons)**
+#### Bottom-left: Match Setup Panel (Configuration)
+- **Match Setup Panel (bottom-left)**
+  - Specify Red Team / White Team / Theme / Match Name and save
+  - **Match Name** supports HTML tags (e.g., `<br>`)
+  - Saved values are immediately reflected on the projector match display
+
+#### Right Side: Panels for Live Control
+
+##### Basic Controls (Change Match / Recitation)
+- **Change Match**
   - Compe TOP / Match TOP / Open. Bout / Sec. Bout / Mid. Bout / Penult. Bout / Fin. Bout
   - Clicking buttons instantly switches the projector display
 - **Recitation Panel**
@@ -63,7 +71,7 @@ The Administrator Window has a **projector screen preview** on the left and **co
   - Pressing buttons displays the corresponding team's poem full-screen on the projector
   - Automatically plays recitation BGM (if configured)
 
-#### BGM & Audio Control
+##### BGM & Audio Control
 - **Play BGM Panel**
   - **Ent.**: Plays entrance BGM
   - **Exit**: Plays exit BGM
@@ -71,17 +79,14 @@ The Administrator Window has a **projector screen preview** on the left and **co
   - **Stop**: Stops currently playing BGM
   - **Wait Loop**: When checked, repeats waiting BGM continuously
 
-#### Timer Functions
+##### Timer Functions
 - **Two independent countdown timers**
   - **Upper Timer**: Configurable in minutes/seconds, individual **Save/Start/Pause/Reset** controls
   - **Lower Timer**: Configurable in seconds only, individual **Save/Start/Pause/Reset** controls
   - **Upper Timer** displays "1 min remaining" at 1:00 remaining and "Time's up" at 0:00 (Administrator screen only)
   - **Auto-plays BGM** when timer reaches 0 (if timer BGM is configured)
 
-#### Match & Data Management
-- **Match Setup Panel**
-  - Specify Red Team / White Team / Theme / Match Name and save
-  - **Match Name** supports HTML tags (e.g., `<br>`)
+##### Data & Settings Management
 - **Phrase Data Management (Excel / Google Sheets)**
   - **Choose Excel File** → Load
   - **Load from Google Sheet** → Paste link and load
@@ -108,7 +113,7 @@ The Administrator Window has a **projector screen preview** on the left and **co
   - Center-bottom displays each bout name ("Open. Bout", "Sec. Bout", etc.)
   - Pressing recitation buttons displays the corresponding team's poem full-screen
 - **Language Switching**: Automatically switches Japanese/English labels
-- Updates automatically in response to stage operations on the Administrator side
+- Updates automatically in response to "Change Match" operations on the Administrator side
 
 ---
 
@@ -175,8 +180,8 @@ The Administrator Window has a **projector screen preview** on the left and **co
 
 ---
 
-## 7. Display Control (Stage Switching and Recitation)
-- Use **Stage buttons** to switch projector pages (Compe TOP/Match TOP/each bout)
+## 7. Display Control (Change Match and Recitation)
+- Use **Change Match** to switch projector pages (Compe TOP/Match TOP/each bout)
 - **Recitation function**:
   - **Red Recitation**/**White Recitation** buttons are only displayed during Open. Bout through Fin. Bout
   - Pressing buttons displays corresponding team's poem full-screen on projector
@@ -259,7 +264,7 @@ The Administrator Window has a **projector screen preview** on the left and **co
 
 ## 12. Save & Reset Types and Behavior
 - **Match setup save**: Saving in Administrator screen's match setup panel immediately reflects in projector display and internal settings
-- **Reset Phrase Data**: **Initializes only phrase data (competition name, themes, poem list)** (enhanced in v0.10.0)
+- **Reset Phrase Data**: **Initializes only phrase data (competition name, themes, poem list)**
   - BGM settings and uploaded BGM files are **preserved**
   - Executed via dedicated button in Phrase Data Management panel
 - **Reset All Data**: Initializes all loaded Excel data, match setup, and **BGM settings**
@@ -309,12 +314,11 @@ The Administrator Window has a **projector screen preview** on the left and **co
 - **Cannot load Excel/Google Sheets**
   - Recheck sharing settings (link sharing/viewer) and file format
   - Restart app and retry
-- **Build/Installation Issues (v0.10.0 improvements)**
-  - Fixed dependency resolution issues with sanitize-html package
-  - Enhanced electron-builder configuration for more reliable packaging
-  - If experiencing installation problems, try downloading the latest installer
+- **Build/Installation Issues (v0.13.x improvements)**
+  - Dependency stack and packaging flow were refreshed in recent releases
+  - If experiencing installation problems, uninstall old versions and install the latest release build
 - **Projector not updating**
-  - Try switching stages again on Administrator side
+  - Try using **Change Match** again on the Administrator side
 - **Recitation buttons not displayed**
   - Recitation buttons are only displayed during Open. Bout through Fin. Bout
   - They do not appear on Match TOP or Compe TOP
